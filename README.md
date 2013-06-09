@@ -33,37 +33,37 @@ PHP 5.0.2+ with the cURL extension installed
 
 ```php
 
-    <?php
+<?php
 
-    function callback($result) {
+function callback($result) {
 
-        // remember, the "body" property of $result is run through
-        // "htmlentities()", so you may need to "html_entity_decode" it
+    // remember, the "body" property of $result is run through
+    // "htmlentities()", so you may need to "html_entity_decode" it
 
-        // show everything
-        print_r('<pre>');
-        print_r($result->info);
+    // show everything
+    print_r('<pre>');
+    print_r($result->info);
 
-    }
+}
 
-    require 'path/to/Zebra_cURL.php';
+require 'path/to/Zebra_cURL.php';
 
-    // instantiate the Zebra_cURL class
-    $curl = new Zebra_cURL();
+// instantiate the Zebra_cURL class
+$curl = new Zebra_cURL();
 
-    // cache results 60 seconds
-    $curl->cache('cache', 60);
+// cache results 60 seconds
+$curl->cache('cache', 60);
 
-    // get RSS feeds of some popular tech websites
-    $curl->get(array(
-        'http://rss1.smashingmagazine.com/feed/',
-        'http://allthingsd.com/feed/',
-        'http://feeds.feedburner.com/nettuts',
-        'http://www.webmonkey.com/feed/',
-        'http://feeds.feedburner.com/alistapart/main',
-    ), 'callback');
+// get RSS feeds of some popular tech websites
+$curl->get(array(
+    'http://rss1.smashingmagazine.com/feed/',
+    'http://allthingsd.com/feed/',
+    'http://feeds.feedburner.com/nettuts',
+    'http://www.webmonkey.com/feed/',
+    'http://feeds.feedburner.com/alistapart/main',
+), 'callback');
 
-    ?>
+?>
 
 ```
 
@@ -71,34 +71,34 @@ PHP 5.0.2+ with the cURL extension installed
 
 ```php
 
-    <?php
+<?php
 
-    function callback($result) {
+function callback($result) {
 
-        // results from twitter is json-encoded;
-        // remember, the "body" property of $result is run through
-        // "htmlentities()" so we need to "html_entity_decode" it
-        $result->body = json_decode(html_entity_decode($result->body));
+    // results from twitter is json-encoded;
+    // remember, the "body" property of $result is run through
+    // "htmlentities()" so we need to "html_entity_decode" it
+    $result->body = json_decode(html_entity_decode($result->body));
 
-        // show everything
-        print_r('<pre>');
-        print_r($result);
+    // show everything
+    print_r('<pre>');
+    print_r($result);
 
-    }
+}
 
-    // include the library
-    require 'path/to/Zebra_cURL.php';
+// include the library
+require 'path/to/Zebra_cURL.php';
 
-    // instantiate the Zebra_cURL class
-    $curl = new Zebra_cURL();
+// instantiate the Zebra_cURL class
+$curl = new Zebra_cURL();
 
-    // cache results 60 seconds
-    $curl->cache('cache', 60);
+// cache results 60 seconds
+$curl->cache('cache', 60);
 
-    // search twitter for the "jquery" hashtag
-    $curl->get('http://search.twitter.com/search.json?q=' . urlencode('#jquery'), 'callback');
+// search twitter for the "jquery" hashtag
+$curl->get('http://search.twitter.com/search.json?q=' . urlencode('#jquery'), 'callback');
 
-    ?>
+?>
 
 ```
 
@@ -106,18 +106,18 @@ PHP 5.0.2+ with the cURL extension installed
 
 ```php
 
-    <?php
+<?php
 
-    // include the library
-    require 'path/to/Zebra_cURL.php';
+// include the library
+require 'path/to/Zebra_cURL.php';
 
-    // instantiate the Zebra_cURL class
-    $curl = new Zebra_cURL();
+// instantiate the Zebra_cURL class
+$curl = new Zebra_cURL();
 
-    // download one of the official twitter image
-    $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
+// download one of the official twitter image
+$curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
 
-    ?>
+?>
 
 ```
 
