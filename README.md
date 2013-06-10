@@ -20,7 +20,7 @@ The code is heavily commented and generates no warnings/errors/notices when PHPâ
 - allows the running of multiple requests at once asynchronously, in parallel, but also as soon as one thread finishes it can be processed right away without having to wait for the other threads in the queue to finish
 - downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from the server of having to read files into memory first, and then writing them to disk
 - provides a very detailed information about the made requests
-- has comprehensive documentation
+- has <a href="http://stefangabos.ro/wp-content/docs/Zebra_cURL/Zebra_cURL/Zebra_cURL.html">comprehensive documentation</a>
 - code is heavily commented and generates no warnings/errors/notices when PHPâ€™s error reporting level is set to E_ALL
 
 ## Requirements
