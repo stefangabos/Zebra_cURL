@@ -1,5 +1,5 @@
 {
-    "name": "stefangabos/Zebra_cURL",
+    "name": "stefangabos/zebra_curl",
     "type": "library",
     "description": "A high performance PHP library acting as a wrapper to PHP's libcurl library allowing multiple requests at once asynchronously, in parallel",
     "keywords": ["php","curl", "libcurl", "wrapper", "asynchronous", "request"],
