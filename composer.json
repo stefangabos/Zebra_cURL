@@ -1,0 +1,23 @@
+{
+    "name": "stefangabos/Zebra_cURL",
+    "type": "library",
+    "description": "A high performance PHP library acting as a wrapper to PHP's libcurl library allowing multiple requests at once asynchronously, in parallel",
+    "keywords": ["php","curl", "libcurl", "wrapper", "asynchronous", "request"],
+    "homepage": "http://stefangabos.ro/",
+    "license": "LGPL-3.0",
+    "authors": [
+        {
+            "name": "Stefan Gabos",
+            "email": "contact@stefangabos.ro",
+            "homepage": "http://stefangabos.ro/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.0.2"
+    },
+    "version": "1.0.1",
+    "autoload": {
+        "psr-0": { "Zebra_cURL": "" }
+    }
+}
