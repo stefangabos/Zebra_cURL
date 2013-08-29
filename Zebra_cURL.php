@@ -56,6 +56,16 @@ class Zebra_cURL {
     public $threads;
 
     /**
+     * Default value is true, can be changed by giving the constractor parameter value false.
+     *
+     * Used by the {@link _process()} to determine if we run response body through PHP's htmlentities function.
+     *
+     * @access private
+     *
+     */
+    private $_htmlentities;
+
+    /**
      *  An associative array linked with all the resources, used to store original URL and file pointer resources, used
      *  for streaming downloads.
      *
@@ -223,7 +233,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    function __construct()
+    function __construct($htmlentities = true)
     {
 
         // if the cURL extension is not available, trigger an error and stop execution
@@ -241,6 +251,9 @@ class Zebra_cURL {
 
         // the default number of parallel, asynchronous, requests to be processed by the library at once.
         $this->threads = 10;
+
+        // by default process runs response body through htmlentities
+        $this->_htmlentities = $htmlentities;
 
     }
 
@@ -1535,11 +1548,14 @@ class Zebra_cURL {
 
                         ((isset($this->options[CURLOPT_HEADER]) && $this->options[CURLOPT_HEADER] == 1) ?
 
-                        htmlentities(substr($content, $result->info['header_size'])) :
+                        substr($content, $result->info['header_size']) :
 
-                        htmlentities($content)) :
+                        $content) :
 
                         '';
+
+                    // run htmlentities if it is set and body is set
+                    if ($this->_htmlentities && !empty($result->body)) htmlentities($result->body);
 
                     // get CURLs response code and associated message
                     $result->response = array($this->_response_messages[$info['result']], $info['result']);
