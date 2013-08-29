@@ -56,9 +56,9 @@ class Zebra_cURL {
     public $threads;
 
     /**
-     * Default value is true, can be changed by giving the constractor parameter value false.
+     * Default value is TRUE, can be changed by giving the constructor parameter value false.
      *
-     * Used by the {@link _process()} to determine if we run response body through PHP's htmlentities function.
+     * Used by the {@link _process()} method to determine if we run response body through PHP's htmlentities function.
      *
      * @access private
      *
@@ -229,7 +229,12 @@ class Zebra_cURL {
      *
      *  -   <b>CURLOPT_USERAGENT</b>        -   A (slightly) random user agent (Internet Explorer 9 or 10, on Windows
      *                                          Vista, 7 or 8, with other extra strings). Some web services will not
-     *                                          respond unless a valid user-agent string is provided;
+     *                                          respond unless a valid user-agent string is provided
+     *
+     *  @param  boolean $htmlentities           Instructs the strict whether the response body returned by the {@link get()},
+     *                                          {@link download()}, {@link ftp_download()} and {@link post()} methods should
+     *                                          be run through PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
+     *                                          function.
      *
      *  @return void
      */
@@ -252,7 +257,7 @@ class Zebra_cURL {
         // the default number of parallel, asynchronous, requests to be processed by the library at once.
         $this->threads = 10;
 
-        // by default process runs response body through htmlentities
+        // by default, run htmlentities() on the response body
         $this->_htmlentities = $htmlentities;
 
     }
@@ -349,7 +354,7 @@ class Zebra_cURL {
             $this->cache = array(
                 'path'      =>  $path,
                 'lifetime'  =>  $lifetime,
-                'chmod'     =>  $chomd,
+                'chmod'     =>  $chmod,
                 'compress'  =>  $compress,
             );
 
@@ -504,13 +509,17 @@ class Zebra_cURL {
      *                                                              value</i>
      *
      *                                      -   <b>body</b>     -   the response of the request (the content of the page
-     *                                                               at the URL) with all applicable characters converted
-     *                                                               to HTML entities via PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
+     *                                                              at the URL).
+     *
+     *                                                              Unless disabled via the {@link __construct() constructor},
+     *                                                              all applicable characters will be converted to HTML
+     *                                                              entities via PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                                              function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
-     *                                                              function to do reverse this, if it's the case; if
-     *                                                              explicitly disabled via the {@link option()} method
-     *                                                              by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
-     *                                                              will be an empty string;
+     *                                                              function to do reverse this, if it's the case;
+     *
+     *                                                              If "body" is explicitly disabled via the {@link option()}
+     *                                                              method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE,
+     *                                                              this will be an empty string;
      *
      *                                      -   <b>response</b> -   the response given by the cURL library as an array
      *                                                              with 2 entries: the first entry represents the result's
@@ -642,13 +651,17 @@ class Zebra_cURL {
      *                                                              value</i>
      *
      *                                      -   <b>body</b>     -   the response of the request (the content of the page
-     *                                                               at the URL) with all applicable characters converted
-     *                                                               to HTML entities via PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
+     *                                                              at the URL).
+     *
+     *                                                              Unless disabled via the {@link __construct() constructor},
+     *                                                              all applicable characters will be converted to HTML
+     *                                                              entities via PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                                              function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
-     *                                                              function to do reverse this, if it's the case; if
-     *                                                              explicitly disabled via the {@link option()} method
-     *                                                              by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
-     *                                                              will be an empty string;
+     *                                                              function to do reverse this, if it's the case;
+     *
+     *                                                              If "body" is explicitly disabled via the {@link option()}
+     *                                                              method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE,
+     *                                                              this will be an empty string;
      *
      *                                      -   <b>response</b> -   the response given by the cURL library as an array
      *                                                              with 2 entries: the first entry represents the result's
@@ -755,14 +768,18 @@ class Zebra_cURL {
      *                                                      <i>Unless disabled, each entry in the headers' array is an
      *                                                      associative array in the form of property => value</i>
      *
-     *                              -   <b>body</b>     -   the response of the request (the content of the page at the URL)
-     *                                                      with all applicable characters converted to HTML entities via
+     *                              -   <b>body</b> -       the response of the request (the content of the page at the
+     *                                                      URL).
+     *
+     *                                                      Unless disabled via the {@link __construct() constructor}, all
+     *                                                      applicable characters will be converted to HTML entities via
      *                                                      PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                                      function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
-     *                                                      function to do reverse this, if it's the case. if explicitly
-     *                                                      disabled via the {@link option()} method by setting
-     *                                                      <b>CURLOPT_NOBODY</b> to 0 or FALSE, this will be an empty
-     *                                                      string;
+     *                                                      function to do reverse this, if it's the case;
+     *
+     *                                                      If "body" is explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
+     *                                                      will be an empty string;
      *
      *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
      *                                                      entries: the first entry represents the result's code, while
@@ -1080,7 +1097,7 @@ class Zebra_cURL {
      *  @param  array   $values     An associative array in the form of <i>element => value</i> representing the data to
      *                              post in the HTTP "POST" operation.
      *
-     *                              To post a file, prepend the filename with @ and use the full path. The filetype can
+     *                              To post a file, prepend the filename with @ and use the full path. The file type can
      *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
      *                              You should always specify the mime type as most of the times cURL will send the wrong
      *                              mime type...
@@ -1120,14 +1137,18 @@ class Zebra_cURL {
      *                                                      <i>Unless disabled, each entry in the headers' array is an
      *                                                      associative array in the form of property => value</i>
      *
-     *                              -   <b>body</b>     -   the response of the request (the content of the page at the URL)
-     *                                                      with all applicable characters converted to HTML entities via
+     *                              -   <b>body</b> -       the response of the request (the content of the page at the
+     *                                                      URL).
+     *
+     *                                                      Unless disabled via the {@link __construct() constructor}, all
+     *                                                      applicable characters will be converted to HTML entities via
      *                                                      PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                                      function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
-     *                                                      function to do reverse this, if it's the case. if explicitly
-     *                                                      disabled via the {@link option()} method by setting
-     *                                                      <b>CURLOPT_NOBODY</b> to 0 or FALSE, this will be an empty
-     *                                                      string;
+     *                                                      function to do reverse this, if it's the case;
+     *
+     *                                                      If "body" is explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
+     *                                                      will be an empty string;
      *
      *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
      *                                                      entries: the first entry represents the result's code, while
@@ -1554,8 +1575,8 @@ class Zebra_cURL {
 
                         '';
 
-                    // run htmlentities if it is set and body is set
-                    if ($this->_htmlentities && !empty($result->body)) htmlentities($result->body);
+                    // if we have a body, we're not doing a binary transfer, and _htmlentities is set to TRUE, run htmlentities() on it
+                    if (!empty($result->body) && !isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->_htmlentities) htmlentities($result->body);
 
                     // get CURLs response code and associated message
                     $result->response = array($this->_response_messages[$info['result']], $info['result']);
@@ -1623,7 +1644,7 @@ class Zebra_cURL {
     private function _queue_requests()
     {
 
-        // get the queue's length
+        // get the length of the queue
         $queue_length = count($this->_queue);
 
         // iterate through the items in the queue
