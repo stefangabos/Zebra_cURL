@@ -511,12 +511,6 @@ class Zebra_cURL {
      *                                      -   <b>body</b>     -   the response of the request (the content of the page
      *                                                              at the URL).
      *
-     *                                                              Unless disabled via the {@link __construct() constructor},
-     *                                                              all applicable characters will be converted to HTML
-     *                                                              entities via PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
-     *                                                              function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
-     *                                                              function to do reverse this, if it's the case;
-     *
      *                                                              If "body" is explicitly disabled via the {@link option()}
      *                                                              method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE,
      *                                                              this will be an empty string;
