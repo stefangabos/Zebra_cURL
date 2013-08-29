@@ -231,9 +231,9 @@ class Zebra_cURL {
      *                                          Vista, 7 or 8, with other extra strings). Some web services will not
      *                                          respond unless a valid user-agent string is provided
      *
-     *  @param  boolean $htmlentities           Instructs the strict whether the response body returned by the {@link get()},
-     *                                          {@link download()}, {@link ftp_download()} and {@link post()} methods should
-     *                                          be run through PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
+     *  @param  boolean $htmlentities           Instructs the strict whether the response body returned by the {@link get()}
+     *                                          and {@link post()} methods should be run through PHP's
+     *                                          {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                          function.
      *
      *  @return void
@@ -646,12 +646,6 @@ class Zebra_cURL {
      *
      *                                      -   <b>body</b>     -   the response of the request (the content of the page
      *                                                              at the URL).
-     *
-     *                                                              Unless disabled via the {@link __construct() constructor},
-     *                                                              all applicable characters will be converted to HTML
-     *                                                              entities via PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
-     *                                                              function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
-     *                                                              function to do reverse this, if it's the case;
      *
      *                                                              If "body" is explicitly disabled via the {@link option()}
      *                                                              method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE,
