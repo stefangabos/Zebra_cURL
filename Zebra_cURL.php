@@ -349,7 +349,7 @@ class Zebra_cURL {
             $this->cache = array(
                 'path'      =>  $path,
                 'lifetime'  =>  $lifetime,
-                'chmod'     =>  0755,
+                'chmod'     =>  $chomd,
                 'compress'  =>  $compress,
             );
 
@@ -953,7 +953,7 @@ class Zebra_cURL {
 
         // set the required options
 		$this->option(array(
-            CURLOPT_HTTPAUTH    =>  CURLAUTH_ANY,
+            CURLOPT_HTTPAUTH    =>  $type,
             CURLOPT_USERPWD     =>  $username . ':' . $password,
         ));
 
