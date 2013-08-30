@@ -1564,7 +1564,7 @@ class Zebra_cURL {
                         '';
 
                     // if we have a body, we're not doing a binary transfer, and _htmlentities is set to TRUE, run htmlentities() on it
-                    if (!empty($result->body) && !isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->_htmlentities) htmlentities($result->body);
+                    if (!empty($result->body) && !isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->_htmlentities) $result->body = htmlentities($result->body);
 
                     // get CURLs response code and associated message
                     $result->response = array($this->_response_messages[$info['result']], $info['result']);
