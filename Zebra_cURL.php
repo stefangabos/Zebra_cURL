@@ -231,7 +231,7 @@ class Zebra_cURL {
      *                                          Vista, 7 or 8, with other extra strings). Some web services will not
      *                                          respond unless a valid user-agent string is provided
      *
-     *  @param  boolean $htmlentities           Instructs the strict whether the response body returned by the {@link get()}
+     *  @param  boolean $htmlentities           Instructs the script whether the response body returned by the {@link get()}
      *                                          and {@link post()} methods should be run through PHP's
      *                                          {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                          function.
