@@ -1494,6 +1494,9 @@ class Zebra_cURL {
 
             $running = null;
 
+            // The first curl_multi_select often times out no matter what, but is usually required for fast transfers
+            $selectTimeout = 0.001;
+
             // loop
             do {
 
@@ -1608,7 +1611,9 @@ class Zebra_cURL {
                 }
 
                 // waits until curl_multi_exec() returns CURLM_CALL_MULTI_PERFORM or until the timeout, whatever happens first
-                if ($running) curl_multi_select($this->_multi_handle, 1);
+                // Perform a usleep if a select returns -1. Workaround for PHP Bug: https://bugs.php.net/bug.php?id=61141
+                if ($running && curl_multi_select($this->_multi_handle, $selectTimeout) === -1) usleep(150);
+                $selectTimeout = 1;
 
             // as long as there are threads running
             } while ($running);
