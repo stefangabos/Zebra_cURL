@@ -28,8 +28,8 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.0.2 (last revision: August 29, 2013)
- *  @copyright  (c) 2013 Stefan Gabos
+ *  @version    1.1.0 (last revision: March 17, 2014)
+ *  @copyright  (c) 2014 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -476,7 +476,9 @@ class Zebra_cURL {
      *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
      *                                      closure}.
      *
-     *                                      The callback function receives <b>an object</b> as argument with <b>4 properties</b>:
+     *                                      The callback function receives as first argument <b>an object</b> with <b>4
+     *                                      properties</b> as described below, while any further arguments passed to the
+     *                                      {@link download} method will be passed as arguments to the callback function:
      *
      *                                      -   <b>info</b>     -   an associative array containing information about the
      *                                                              request that just finished, as returned by PHP's
@@ -537,8 +539,15 @@ class Zebra_cURL {
         // instruct the cURL library that it has to do a binary transfer
         $this->option(CURLOPT_BINARYTRANSFER, 1);
 
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
+        $arguments = func_get_args();
+
+        // prepare the arguments to be passed to the callback function
+        // (consisting from the first 3, plus any additional arguments passed to the "download" method)
+        $arguments = array_merge(array($url, $callback), array_slice($arguments, 3));
+
         // process request(s)
-        $this->_process($url, $callback);
+        call_user_func_array(array($this, '_process'), $arguments);
 
     }
 
@@ -615,7 +624,9 @@ class Zebra_cURL {
      *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
      *                                      closure}.
      *
-     *                                      The callback function receives <b>an object</b> as argument with <b>4 properties</b>:
+     *                                      The callback function receives as first argument <b>an object</b> with <b>4
+     *                                      properties</b> as described below, while any further arguments passed to the
+     *                                      {@link ftp_download} method will be passed as arguments to the callback function:
      *
      *                                      -   <b>info</b>     -   an associative array containing information about the
      *                                                              request that just finished, as returned by PHP's
@@ -667,8 +678,16 @@ class Zebra_cURL {
         // if he have at least an username, set username/password
         if ($username != '') $this->option(CURLOPT_USERPWD, $username . ':' . $password);
 
-        // call the download method
-        $this->download($url, $destination_path, $callback);
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
+        // so we need this intermediary step
+        $arguments = func_get_args();
+
+        // prepare the arguments to be passed to the "download" method
+        // (consisting from the first 3, plus any additional arguments passed to the "ftp_download" method)
+        $arguments = array_merge(array($url, $destination_path, $callback), array_slice($arguments, 5));
+
+        // call the "download" method
+        call_user_func_array(array($this, 'download'), $arguments);
 
     }
 
@@ -730,7 +749,9 @@ class Zebra_cURL {
      *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
      *                              closure}.
      *
-     *                              The callback function receives <b>an object</b> as argument with <b>4 properties</b>:
+     *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
+     *                              as described below, while any further arguments passed to the {@link get} method will
+     *                              be passed as arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
      *                                                      that just finished, as returned by PHP's
@@ -784,8 +805,12 @@ class Zebra_cURL {
         // make sure we perform a GET request
 		$this->option(CURLOPT_HTTPGET, 1);
 
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
+        // so we need this intermediary step
+        $arguments = func_get_args();
+
         // process request(s)
-        return $this->_process($url, $callback);
+        call_user_func_array(array($this, '_process'), $arguments);
 
     }
 
@@ -841,7 +866,9 @@ class Zebra_cURL {
      *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
      *                              closure}.
      *
-     *                              The callback function receives <b>an object</b> as argument with <b>4 properties</b>:
+     *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
+     *                              as described below, while any further arguments passed to the {@link header} method
+     *                              will be passed as arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
      *                                                      that just finished, as returned by PHP's
@@ -885,8 +912,12 @@ class Zebra_cURL {
             CURLOPT_NOBODY          =>  1,
         ));
 
-        // execute request(s)
-        $this->_process($url, $callback);
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
+        // so we need this intermediary step
+        $arguments = func_get_args();
+
+        // process request(s)
+        call_user_func_array(array($this, '_process'), $arguments);
 
     }
 
@@ -1099,7 +1130,9 @@ class Zebra_cURL {
      *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
      *                              closure}.
      *
-     *                              The callback function receives <b>an object</b> as argument with <b>4 properties</b>:
+     *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
+     *                              as described below, while any further arguments passed to the {@link post} method
+     *                              will be passed as arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
      *                                                      that just finished, as returned by PHP's
@@ -1159,8 +1192,12 @@ class Zebra_cURL {
             CURLOPT_POSTFIELDS  =>  http_build_query($values, NULL, '&'),
         ));
 
-        // execute request(s)
-        $this->_process($url, $callback);
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
+        // so we need this intermediary step
+        $arguments = func_get_args();
+
+        // process request(s)
+        call_user_func_array(array($this, '_process'), $arguments);
 
     }
 
@@ -1470,8 +1507,27 @@ class Zebra_cURL {
                 // if cache file exists and is not expired
                 if (file_exists($cache_path) && filemtime($cache_path) + $this->cache['lifetime'] > time()) {
 
-                    // if we have a callback, return the result from the cache file, and feed it as argument to the callback function
-                    if ($callback != '') call_user_func($callback, unserialize($this->cache['compress'] ? gzuncompress(file_get_contents($cache_path)) : file_get_contents($cache_path)));
+                    // if we have a callback
+                    if ($callback != '') {
+
+                        // the arguments passed to the "_process" method
+                        $arguments = func_get_args();
+
+                        // prepare the arguments to pass to the callback function
+                        $arguments = array_merge(
+
+                            // made of the result from the cache file...
+                            array(unserialize($this->cache['compress'] ? gzuncompress(file_get_contents($cache_path)) : file_get_contents($cache_path))),
+
+                            // ...and any additional arguments (minus the first 2)
+                            array_slice($arguments, 2)
+
+                        );
+
+                        // feed them as arguments to the callback function
+                        call_user_func_array($callback, $arguments);
+
+                    }
 
                 // if no cache file, or cache file is expired
                 } else $this->_queue[] = $url;
@@ -1493,9 +1549,6 @@ class Zebra_cURL {
             $this->_queue_requests();
 
             $running = null;
-
-            // The first curl_multi_select often times out no matter what, but is usually required for fast transfers
-            $selectTimeout = 0.001;
 
             // loop
             do {
@@ -1586,8 +1639,27 @@ class Zebra_cURL {
 
                     }
 
-                    // call the attached callback function sending our object as argument
-                    if ($callback != '') call_user_func($callback, $result);
+                    // if we have a callback
+                    if ($callback != '') {
+
+                        // the arguments passed to the "_process" method
+                        $arguments = func_get_args();
+
+                        // prepare the arguments to pass to the callback function
+                        $arguments = array_merge(
+
+                            // made of the "result" object...
+                            array($result),
+
+                            // ...and any additional arguments (minus the first 2)
+                            array_slice($arguments, 2)
+
+                        );
+
+                        // feed them as arguments to the callback function
+                        call_user_func_array($callback, $arguments);
+
+                    }
 
                     // if there are more URLs to process, queue the next one
                     if (!empty($this->_queue)) $this->_queue_requests();
@@ -1611,9 +1683,8 @@ class Zebra_cURL {
                 }
 
                 // waits until curl_multi_exec() returns CURLM_CALL_MULTI_PERFORM or until the timeout, whatever happens first
-                // Perform a usleep if a select returns -1. Workaround for PHP Bug: https://bugs.php.net/bug.php?id=61141
-                if ($running && curl_multi_select($this->_multi_handle, $selectTimeout) === -1) usleep(150);
-                $selectTimeout = 1;
+                // perform a usleep if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
+                if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(100);
 
             // as long as there are threads running
             } while ($running);
