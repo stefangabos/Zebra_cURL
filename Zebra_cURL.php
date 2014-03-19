@@ -12,8 +12,8 @@
  *  way of processing large quantities of cURL requests (like fetching thousands of RSS feeds at once), drastically reducing
  *  processing time.
  *
- *  This script supports GET and POST request, basic downloads as well as downloads from FTP servers, HTTP Authentication,
- *  and requests through proxy servers.
+ *  This script supports GET and POST request, basic downloads, downloads from FTP servers, HTTP Authentication, and
+ *  requests through proxy servers.
  *
  *  For maximum efficiency downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary
  *  strain from the server of having to read files into memory first, and then writing them to disk.
