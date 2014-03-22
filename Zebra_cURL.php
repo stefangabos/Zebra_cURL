@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.1.0 (last revision: March 17, 2014)
+ *  @version    1.1.0 (last revision: March 22, 2014)
  *  @copyright  (c) 2014 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -478,7 +478,7 @@ class Zebra_cURL {
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
      *                                      properties</b> as described below, while any further arguments passed to the
-     *                                      {@link download} method will be passed as arguments to the callback function:
+     *                                      {@link download} method will be passed as extra arguments to the callback function:
      *
      *                                      -   <b>info</b>     -   an associative array containing information about the
      *                                                              request that just finished, as returned by PHP's
@@ -524,6 +524,9 @@ class Zebra_cURL {
      *                                                              values will be <i>array(0, CURLE_OK);</i> consult
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                              this list} to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -626,7 +629,7 @@ class Zebra_cURL {
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
      *                                      properties</b> as described below, while any further arguments passed to the
-     *                                      {@link ftp_download} method will be passed as arguments to the callback function:
+     *                                      {@link ftp_download} method will be passed as extra arguments to the callback function:
      *
      *                                      -   <b>info</b>     -   an associative array containing information about the
      *                                                              request that just finished, as returned by PHP's
@@ -669,6 +672,9 @@ class Zebra_cURL {
      *                                                              values will be <i>array(0, CURLE_OK);</i> consult
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                              this list} to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -751,7 +757,7 @@ class Zebra_cURL {
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
      *                              as described below, while any further arguments passed to the {@link get} method will
-     *                              be passed as arguments to the callback function:
+     *                              be passed as extra arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
      *                                                      that just finished, as returned by PHP's
@@ -796,6 +802,9 @@ class Zebra_cURL {
      *                                                      request was successful, these values will be <i>array(0,
      *                                                      CURLE_OK);</i> consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                      this list} to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -868,7 +877,7 @@ class Zebra_cURL {
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
      *                              as described below, while any further arguments passed to the {@link header} method
-     *                              will be passed as arguments to the callback function:
+     *                              will be passed as extra arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
      *                                                      that just finished, as returned by PHP's
@@ -898,6 +907,9 @@ class Zebra_cURL {
      *                                                      request was successful, these values will be <i>array(0,
      *                                                      CURLE_OK);</i> consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                      this list} to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -1132,7 +1144,7 @@ class Zebra_cURL {
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
      *                              as described below, while any further arguments passed to the {@link post} method
-     *                              will be passed as arguments to the callback function:
+     *                              will be passed as extra arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
      *                                                      that just finished, as returned by PHP's
@@ -1177,6 +1189,9 @@ class Zebra_cURL {
      *                                                      request was successful, these values will be <i>array(0,
      *                                                      CURLE_OK);</i> consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                      this list} to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -1625,20 +1640,6 @@ class Zebra_cURL {
                     // get CURLs response code and associated message
                     $result->response = array($this->_response_messages[$info['result']], $info['result']);
 
-                    // if caching is enabled and we're making a GET request
-                    if ($this->cache !== false && isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1) {
-
-                        // get the path to the cache file associated with the URL
-                        $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($result->info['original_url']);
-
-                        // cache the result
-                        file_put_contents($cache_path, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result));
-
-                        // set rights on the file
-                        chmod($cache_path, intval($this->cache['chmod'], 8));
-
-                    }
-
                     // if we have a callback
                     if ($callback != '') {
 
@@ -1657,7 +1658,23 @@ class Zebra_cURL {
                         );
 
                         // feed them as arguments to the callback function
-                        call_user_func_array($callback, $arguments);
+                        // and save the callback's response, if any
+                        $callback_response = call_user_func_array($callback, $arguments);
+
+                    // if no callback function, we assume the response is TRUE
+                    } else $callback_response = true;
+
+                    // if caching is enabled and we're making a GET request *and* the callback function did not return FALSE
+                    if ($this->cache !== false && isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1 && $callback_response !== false) {
+
+                        // get the path to the cache file associated with the URL
+                        $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($result->info['original_url']);
+
+                        // cache the result
+                        file_put_contents($cache_path, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result));
+
+                        // set rights on the file
+                        chmod($cache_path, intval($this->cache['chmod'], 8));
 
                     }
 
