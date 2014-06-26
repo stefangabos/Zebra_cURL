@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.1.0 (last revision: March 22, 2014)
+ *  @version    1.1.0 (last revision: June 26, 2014)
  *  @copyright  (c) 2014 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1210,6 +1210,9 @@ class Zebra_cURL {
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
         // so we need this intermediary step
         $arguments = func_get_args();
+
+        // remove the $_POST values from the arguments
+        unset($arguments[1]);
 
         // process request(s)
         call_user_func_array(array($this, '_process'), $arguments);
