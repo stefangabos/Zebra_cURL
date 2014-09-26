@@ -348,8 +348,11 @@ class Zebra_cURL {
     {
 
         // if we have to enable caching
-        if ($path != false)
-
+        if ($path != false) {
+            // if path not exists, create it
+            if (!file_exists($path) && !is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
             // store cache-related properties
             $this->cache = array(
                 'path'      =>  $path,
@@ -357,7 +360,7 @@ class Zebra_cURL {
                 'chmod'     =>  $chmod,
                 'compress'  =>  $compress,
             );
-
+        }
         // if we have to disable caching, disable it
         else $this->cache = false;
 
