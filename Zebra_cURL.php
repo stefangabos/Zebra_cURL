@@ -37,6 +37,11 @@
 class Zebra_cURL {
 
     /**
+     * Content for getSimple
+     *
+     */
+    private $getSimpleData;
+    /**
      *  The number of parallel, asynchronous, requests to be processed by the library at once.
      *
      *  <code>
@@ -826,6 +831,22 @@ class Zebra_cURL {
 
     }
 
+
+    /**
+     * callback for function getSimple
+     */
+    private function  getSimpleCallback($result){
+        $this->getSimpleData = $result;
+    }
+    /**
+     * @param $url - A single of URLs to process.
+     * @return string - content
+     */
+    public function getSimple($url, $onlyContent=true){
+        $this->get($url, array($this, "getSimpleCallback"));
+        return  ($onlyContent)?$this->getSimpleData->body:$this->getSimpleData;
+    }
+
     /**
      *  Works exactly like the {@link get()} method, the only difference being that this method will automatically set
      *  the <b>CURLOPT_NOBODY</b> option to FALSE and thus the <i>body</i> property of the result will be an empty string.
@@ -1545,6 +1566,8 @@ class Zebra_cURL {
 
                         );
 
+                        // if doc reading from cache, add parametr into $result->info
+                        $arguments[0]->info['cached'] = true;
                         // feed them as arguments to the callback function
                         call_user_func_array($callback, $arguments);
 
