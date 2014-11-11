@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.1.0 (last revision: June 26, 2014)
+ *  @version    1.2.0 (last revision: November 11, 2014)
  *  @copyright  (c) 2014 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1626,9 +1626,9 @@ class Zebra_cURL {
                         '';
 
                     // get output (unless we were explicitly told not to)
-                    $result->body = (!isset($this->options[CURLOPT_NOBODY]) || (isset($this->options[CURLOPT_NOBODY]) && $this->options[CURLOPT_NOBODY] == 0)) ?
+                    $result->body = !isset($this->options[CURLOPT_NOBODY]) || $this->options[CURLOPT_NOBODY] == 0 ?
 
-                        ((isset($this->options[CURLOPT_HEADER]) && $this->options[CURLOPT_HEADER] == 1) ?
+                        (isset($this->options[CURLOPT_HEADER]) && $this->options[CURLOPT_HEADER] == 1 ?
 
                         substr($content, $result->info['header_size']) :
 
@@ -1637,7 +1637,17 @@ class Zebra_cURL {
                         '';
 
                     // if we have a body, we're not doing a binary transfer, and _htmlentities is set to TRUE, run htmlentities() on it
-                    if (!empty($result->body) && !isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->_htmlentities) $result->body = htmlentities($result->body);
+                    if ($result->body != '' && !isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->_htmlentities) {
+
+                        // since PHP 5.3.0, htmlentities will return an empty string if the input string contains an
+                        // invalid code unit sequence within the given encoding (utf-8 in our case)
+                        // so take care of that
+                        if (defined(ENT_IGNORE)) $result->body = htmlentities($result->body, ENT_IGNORE, 'utf-8');
+
+                        // for PHP versions lower than 5.3.0
+                        else htmlentities($result->body);
+
+                    }
 
                     // get CURLs response code and associated message
                     $result->response = array($this->_response_messages[$info['result']], $info['result']);
