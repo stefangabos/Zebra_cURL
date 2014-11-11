@@ -1,1 +1,0 @@
-See http://stefangabos.ro/php-libraries/zebra-curl/
