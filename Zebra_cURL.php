@@ -517,11 +517,10 @@ class Zebra_cURL {
      *                                                              this will be an empty string;
      *
      *                                      -   <b>response</b> -   the response given by the cURL library as an array
-     *                                                              with 2 entries: the first entry represents the result's
-     *                                                              code, while the second is the textual representation
-     *                                                              of the code; if the request was successful, these
-     *                                                              values will be <i>array(0, CURLE_OK);</i> consult
-     *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128
+     *                                                              with 2 entries: the first entry is the textual representation
+     *                                                              of the result's code, while second is the result's code itself;
+     *                                                              if the request was successful, these values will be <i>array('CURLE_OK', 0);</i>;
+     *                                                              consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                              this list} to see the possible values of this property;
      *
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
@@ -665,11 +664,10 @@ class Zebra_cURL {
      *                                                              this will be an empty string;
      *
      *                                      -   <b>response</b> -   the response given by the cURL library as an array
-     *                                                              with 2 entries: the first entry represents the result's
-     *                                                              code, while the second is the textual representation
-     *                                                              of the code; if the request was successful, these
-     *                                                              values will be <i>array(0, CURLE_OK);</i> consult
-     *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128
+     *                                                              with 2 entries: the first entry is the textual representation
+     *                                                              of the result's code, while second is the result's code itself;
+     *                                                              if the request was successful, these values will be <i>array('CURLE_OK', 0);</i>;
+     *                                                              consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                              this list} to see the possible values of this property;
      *
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
@@ -795,11 +793,11 @@ class Zebra_cURL {
      *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
      *                                                      will be an empty string;
      *
-     *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
-     *                                                      entries: the first entry represents the result's code, while
-     *                                                      the second is the textual representation of the code; if the
-     *                                                      request was successful, these values will be <i>array(0,
-     *                                                      CURLE_OK);</i> consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
+     *                              -   <b>response</b> -   the response given by the cURL library as an array
+     *                                                      with 2 entries: the first entry is the textual representation
+     *                                                      of the result's code, while second is the result's code itself;
+     *                                                      if the request was successful, these values will be <i>array('CURLE_OK', 0);</i>;
+     *                                                      consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                      this list} to see the possible values of this property;
      *
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
@@ -900,11 +898,11 @@ class Zebra_cURL {
      *
      *                              -   <b>body</b>     -   an empty string
      *
-     *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
-     *                                                      entries: the first entry represents the result's code, while
-     *                                                      the second is the textual representation of the code; if the
-     *                                                      request was successful, these values will be <i>array(0,
-     *                                                      CURLE_OK);</i> consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
+     *                              -   <b>response</b> -   the response given by the cURL library as an array
+     *                                                      with 2 entries: the first entry is the textual representation
+     *                                                      of the result's code, while second is the result's code itself;
+     *                                                      if the request was successful, these values will be <i>array('CURLE_OK', 0);</i>;
+     *                                                      consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                      this list} to see the possible values of this property;
      *
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
@@ -1182,11 +1180,11 @@ class Zebra_cURL {
      *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
      *                                                      will be an empty string;
      *
-     *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
-     *                                                      entries: the first entry represents the result's code, while
-     *                                                      the second is the textual representation of the code; if the
-     *                                                      request was successful, these values will be <i>array(0,
-     *                                                      CURLE_OK);</i> consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
+     *                              -   <b>response</b> -   the response given by the cURL library as an array
+     *                                                      with 2 entries: the first entry is the textual representation
+     *                                                      of the result's code, while second is the result's code itself;
+     *                                                      if the request was successful, these values will be <i>array('CURLE_OK', 0);</i>;
+     *                                                      consult {@link http://www.php.net/manual/en/function.curl-errno.php#103128
      *                                                      this list} to see the possible values of this property;
      *
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
