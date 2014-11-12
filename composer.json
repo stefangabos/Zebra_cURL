@@ -14,10 +14,13 @@
         }
     ],
     "require": {
-        "php": ">=5.0.2"
+        "php": ">=5.0.2",
+        "lib-curl": "*"
     },
-    "version": "1.2.0",
+    "version": "1.2.1",
     "autoload": {
-        "psr-0": { "Zebra_cURL": "" }
+        "classmap": [
+            "Zebra_cURL.php"
+        ]
     }
 }
