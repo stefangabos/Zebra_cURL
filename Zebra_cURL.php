@@ -1810,6 +1810,10 @@ class Zebra_cURL {
         // (the number of seconds to wait while trying to connect)
         if (!isset($this->options[CURLOPT_CONNECTTIMEOUT])) $this->option(CURLOPT_CONNECTTIMEOUT, 10);
 
+        // if "CURLOPT_ENCODING" has not been explicitly set, set it to the default value
+        // (the contents of the "Accept-Encoding:" header; it enables decoding of the response)
+        if (!isset($this->options[CURLOPT_ENCODING])) $this->option(CURLOPT_ENCODING, 'gzip,deflate');
+
         // if "CURLOPT_FOLLOWLOCATION" has not been explicitly set, make it TRUE
         // (follow any "Location:" header that the server sends as part of the HTTP header - note this is recursive
         // and that PHP will follow as many "Location:" headers as specified by CURLOPT_MAXREDIRS)
@@ -1836,7 +1840,7 @@ class Zebra_cURL {
         // note that the user agent will change whenever you run the script!
         if (!isset($this->options[CURLOPT_USERAGENT])) $this->option(CURLOPT_USERAGENT, $this->_user_agent());
 
-        // if "CURLOPT_RETURNTRANSFER" is always TRUE
+        // "CURLOPT_RETURNTRANSFER" is always TRUE
         // (return the transfer as a string of instead of outputting it out directly)
         $this->option(CURLOPT_RETURNTRANSFER, 1);
 
