@@ -443,7 +443,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('An error occurred: ' . $result->response[1]);
      *
      *  }
      *
@@ -1715,7 +1715,7 @@ class Zebra_cURL {
                 }
 
                 // waits until curl_multi_exec() returns CURLM_CALL_MULTI_PERFORM or until the timeout, whatever happens first
-                // perform a usleep if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
+                // call usleep() if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
                 if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(100);
 
             // as long as there are threads running
