@@ -539,7 +539,10 @@ class Zebra_cURL {
         $this->download_path = rtrim($destination_path, '/\\') . '/';
 
         // instruct the cURL library that it has to do a binary transfer
-        $this->option(CURLOPT_BINARYTRANSFER, 1);
+        $this->option(array(
+            CURLOPT_BINARYTRANSFER  =>  1,
+            CURLOPT_USERPWD         =>  null,
+        ));
 
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
         $arguments = func_get_args();
@@ -683,6 +686,8 @@ class Zebra_cURL {
         // if he have at least an username, set username/password
         if ($username != '') $this->option(CURLOPT_USERPWD, $username . ':' . $password);
 
+        $this->option(CURLOPT_BINARYTRANSFER, 1);
+
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
         // so we need this intermediary step
         $arguments = func_get_args();
@@ -812,7 +817,16 @@ class Zebra_cURL {
     {
 
         // make sure we perform a GET request
-		$this->option(CURLOPT_HTTPGET, 1);
+		$this->option(array(
+            CURLOPT_HTTPGET         =>  1,
+            CURLOPT_HEADER          =>  1,
+            CURLOPT_POST            =>  null,
+            CURLOPT_POSTFIELDS      =>  null,
+            CURLOPT_NOBODY          =>  0,
+            CURLOPT_BINARYTRANSFER  =>  null,
+            CURLOPT_FILE            =>  null,
+            CURLOPT_USERPWD         =>  null,
+        ));
 
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
         // so we need this intermediary step
@@ -923,6 +937,11 @@ class Zebra_cURL {
             CURLOPT_HEADER          =>  1,
             CURLOPT_HTTPGET         =>  1,
             CURLOPT_NOBODY          =>  1,
+            CURLOPT_POST            =>  null,
+            CURLOPT_POSTFIELDS      =>  null,
+            CURLOPT_BINARYTRANSFER  =>  null,
+            CURLOPT_FILE            =>  null,
+            CURLOPT_USERPWD         =>  null,
         ));
 
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
@@ -1205,8 +1224,14 @@ class Zebra_cURL {
 
         // prepare cURL for making a POST
         $this->option(array(
-            CURLOPT_POST        =>  1,
-            CURLOPT_POSTFIELDS  =>  http_build_query($values, NULL, '&'),
+            CURLOPT_POST            =>  1,
+            CURLOPT_POSTFIELDS      =>  http_build_query($values, NULL, '&'),
+            CURLOPT_HEADER          =>  1,
+            CURLOPT_HTTPGET         =>  null,
+            CURLOPT_NOBODY          =>  0,
+            CURLOPT_BINARYTRANSFER  =>  null,
+            CURLOPT_FILE            =>  null,
+            CURLOPT_USERPWD         =>  null,
         ));
 
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
