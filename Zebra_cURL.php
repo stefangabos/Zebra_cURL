@@ -295,7 +295,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -471,7 +471,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -637,7 +637,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -790,7 +790,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -940,7 +940,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -1054,7 +1054,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -1219,7 +1219,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -1375,7 +1375,7 @@ class Zebra_cURL {
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('cURL responded with: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
