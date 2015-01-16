@@ -265,10 +265,10 @@ class Zebra_cURL {
     }
 
     /**
-     *  Use this method to enable caching for {@link get() get} and {@link header() header} requests.
+     *  Use this method to enable caching for {@link get() get}, {@link post() post} and {@link header() header} requests.
      *
-     *  <i>Caching is only used for {@link get() get} and {@link header() header} requests, and will be ignored for other
-     *  request types even if it is enabled!</i>
+     *  <i>Caching is only used for {@link get() get}, {@link post() post} and {@link header() header} requests, and will
+     *  be ignored for other request types even if it is enabled!</i>
      *
      *  <i>Caching is disabled by default!</i>
      *
@@ -1652,8 +1652,19 @@ class Zebra_cURL {
 
         $urls = !is_array($urls) ? (array)$urls : $urls;
 
-        // only if we're making a GET request, and caching is enabled
-        if (isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1 && $this->cache !== false) {
+        // if 
+        if (
+
+            // caching is enabled
+            $this->cache !== false &&
+
+                // we're making a GET request (including calls to header() method)
+                ((isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1) ||
+
+                // or we're making a POST request
+                (isset($this->options[CURLOPT_POST]) && $this->options[CURLOPT_POST] == 1))
+
+        ) {
 
             // iterate through the URLs
             foreach ($urls as $url) {
@@ -1816,8 +1827,22 @@ class Zebra_cURL {
                     // if no callback function, we assume the response is TRUE
                     } else $callback_response = true;
 
-                    // if caching is enabled and we're making a GET request *and* the callback function did not return FALSE
-                    if ($this->cache !== false && isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1 && $callback_response !== false) {
+                    // if
+                    if (
+
+                        // caching is enabled
+                        $this->cache !== false &&
+
+                        // the callback function did not return FALSE
+                        $callback_response !== false &&
+
+                            // we're making a GET request (including calls to header() method)
+                            ((isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1) ||
+
+                            // or we're making a POST request
+                            (isset($this->options[CURLOPT_POST]) && $this->options[CURLOPT_POST] == 1))
+
+                    ) {
 
                         // get the path to the cache file associated with the URL
                         $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($result->info['original_url']);
