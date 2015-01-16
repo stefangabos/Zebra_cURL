@@ -198,6 +198,9 @@ class Zebra_cURL {
      *  -   <b>CURLOPT_CONNECTTIMEOUT</b>   -   <b>10</b>; the number of seconds to wait while trying to connect. use 0
      *                                          to wait indefinitely;
      *
+     *  -   <b>CURLOPT_ENCODING</b>         -   <b>gzip,deflate</b>; the contents of the "Accept-Encoding:" header; it
+     *                                          enables decoding of the response
+     *
      *  -   <b>CURLOPT_FOLLOWLOCATION</b>   -   <b>TRUE</b>; automatically follow any <i>Location:</i> header that the
      *                                          server sends as part of the HTTP header (note this is recursive, PHP will
      *                                          follow as many <i>Location:</i> headers as specified by the value of
@@ -276,16 +279,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occurred: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -414,16 +424,27 @@ class Zebra_cURL {
      *  Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your
      *  server of reading files into memory first, and then writing them to disk.
      *
-     *  This method will automatically set the <b>CURLOPT_BINARYTRANSFER</b> option to TRUE, so you might want to change
-     *  this back to FALSE/0 or "unset" it using the {@link option()} method, before making a {@link get()}, {@link header()}
-     *  or {@link post()} request.
+     *  This method will automatically set the following cURL options:
      *
-     *  <i>Files are downloaded preserving their name so you may run into trouble when trying to download more images
-     *  having the same name (either from the same, or different servers)!</i>
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_BINARYTRANSFER</b> - TRUE
+     *  - <b>CURLOPT_HEADER</b> - TRUE
      *
-     *  <i>Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
+     *  ...and will set the following options to their default values, as set by the system the library is running on:
+     *
+     *  - <b>CURLOPT_FILE</b>
+     *  - <b>CURLOPT_HTTPGET</b>
+     *  - <b>CURLOPT_NOBODY</b>
+     *  - <b>CURLOPT_POST</b>
+     *  - <b>CURLOPT_POSTFIELDS</b>
+     *  - <b>CURLOPT_USERPWD</b>
+     *
+     *  Files are downloaded preserving their name so you may want to check that, if you are downloading more images
+     *  having the same name (either from the same, or from different servers)!
+     *
+     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.</i>
+     *  the {@link threads} property.
      *
      *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
      *
@@ -434,16 +455,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occurred: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -498,23 +526,14 @@ class Zebra_cURL {
      *                                                              by setting <b>CURLINFO_HEADER_OUT</b> to 0 or FALSE,
      *                                                              this will be an empty string;
      *
-     *                                                              <b>- responses</b> an array with one or more entries
-     *                                                              (if there are redirects involved) with the response
-     *                                                              headers of all the requests made; if explicitly disabled
-     *                                                              via the {@link option()} method by setting
-     *                                                              <b>CURLOPT_HEADER</b> to 0 or FALSE, this will be an
-     *                                                              empty string;
+     *                                                              <b>- responses</b> an empty string as it is not
+     *                                                              available for this method;
      *
      *                                                              <i>Unless disabled, each entry in the headers' array
      *                                                              is an associative array in the form of property =>
      *                                                              value</i>
      *
-     *                                      -   <b>body</b>     -   the response of the request (the content of the page
-     *                                                              at the URL).
-     *
-     *                                                              If "body" is explicitly disabled via the {@link option()}
-     *                                                              method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE,
-     *                                                              this will be an empty string;
+     *                                      -   <b>body</b>     -   an empty string as it is not available for this method;
      *
      *                                      -   <b>response</b> -   the response given by the cURL library as an array with
      *                                                              2 entries: the first entry is the textual representation
@@ -523,9 +542,6 @@ class Zebra_cURL {
      *                                                              be <i>array(CURLE_OK, 0);</i> consult
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                              to see the possible values of this property;
-     *
-     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
-     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -574,16 +590,27 @@ class Zebra_cURL {
      *  Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your
      *  server of reading files into memory first, and then writing them to disk.
      *
-     *  This method will automatically set the <b>CURLOPT_BINARYTRANSFER</b> option to TRUE, so you might want to change
-     *  this back to FALSE/0 or "unset" it using the {@link option()} method, before making a {@link get()}, {@link header()}
-     *  or {@link post()} request.
+     *  This method will automatically set the following cURL options:
      *
-     *  <i>Files are downloaded preserving their name so you may run into trouble when trying to download more images
-     *  having the same name (either from the same, or different servers)!</i>
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_BINARYTRANSFER</b> - TRUE
+     *  - <b>CURLOPT_HEADER</b> - TRUE
      *
-     *  <i>Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
+     *  ...and will set the following options to their default values, as set by the system the library is running on:
+     *
+     *  - <b>CURLOPT_HTTPGET</b>
+     *  - <b>CURLOPT_FILE</b>
+     *  - <b>CURLOPT_NOBODY</b>
+     *  - <b>CURLOPT_POST</b>
+     *  - <b>CURLOPT_POSTFIELDS</b>
+     *  - <b>CURLOPT_USERPWD</b>
+     *
+     *  Files are downloaded preserving their name so you may want to check that, if you are downloading more images
+     *  having the same name (either from the same, or from different servers)!
+     *
+     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.</i>
+     *  the {@link threads} property.
      *
      *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
      *
@@ -594,16 +621,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -615,7 +649,7 @@ class Zebra_cURL {
      *
      *  // connect to the FTP server using the given credential, download a file to a given location and
      *  // execute the "mycallback" function for each request, as soon as it finishes
-     *  $curl->download('ftp://somefile.ext', 'destination/path/', 'username', 'password', 'mycallback');
+     *  $curl->ftp_download('ftp://somefile.ext', 'destination/path/', 'username', 'password', 'mycallback');
      *  </code>
      *
      *  @param  mixed   $url                A single or an array of URLs to process.
@@ -656,23 +690,14 @@ class Zebra_cURL {
      *                                                              by setting <b>CURLINFO_HEADER_OUT</b> to 0 or FALSE,
      *                                                              this will be an empty string;
      *
-     *                                                              <b>- responses</b> an array with one or more entries
-     *                                                              (if there are redirects involved) with the response
-     *                                                              headers of all the requests made; if explicitly disabled
-     *                                                              via the {@link option()} method by setting
-     *                                                              <b>CURLOPT_HEADER</b> to 0 or FALSE, this will be an
-     *                                                              empty string;
+     *                                                              <b>- responses</b> an empty string as it is not
+     *                                                              available for this method;
      *
      *                                                              <i>Unless disabled, each entry in the headers' array
      *                                                              is an associative array in the form of property =>
      *                                                              value</i>
      *
-     *                                      -   <b>body</b>     -   the response of the request (the content of the page
-     *                                                              at the URL).
-     *
-     *                                                              If "body" is explicitly disabled via the {@link option()}
-     *                                                              method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE,
-     *                                                              this will be an empty string;
+     *                                      -   <b>body</b>     -   an empty string as it is not available for this method;
      *
      *                                      -   <b>response</b> -   the response given by the cURL library as an array with
      *                                                              2 entries: the first entry is the textual representation
@@ -681,9 +706,6 @@ class Zebra_cURL {
      *                                                              be <i>array(CURLE_OK, 0);</i> consult
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                              to see the possible values of this property;
-     *
-     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
-     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return null
      */
@@ -724,9 +746,24 @@ class Zebra_cURL {
      *  callback function specified by the <i>$callback</i> argument for each and every request, as soon as each request
      *  finishes.
      *
-     *  <i>Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
+     *  This method will automatically set the following cURL options:
+     *
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_HEADER</b> - TRUE
+     *  - <b>CURLOPT_HTTPGET</b> - TRUE
+     *  - <b>CURLOPT_NOBODY</b> - FALSE
+     *
+     *  ...and will set the following options to their default values, as set by your system
+     *
+     *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_FILE</b>
+     *  - <b>CURLOPT_POST</b>
+     *  - <b>CURLOPT_POSTFIELDS</b>
+     *  - <b>CURLOPT_USERPWD</b>
+     *
+     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.</i>
+     *  the {@link threads} property.
      *
      *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
      *
@@ -737,16 +774,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -792,18 +836,14 @@ class Zebra_cURL {
      *                                                      the request headers generated by <i>the last request</i>; so,
      *                                                      remember, if there are redirects involved, there will be more
      *                                                      requests made, but only information from the last one will be
-     *                                                      available; if explicitly disabled via the {@link option()}
-     *                                                      method by setting <b>CURLINFO_HEADER_OUT</b> to 0 or FALSE,
-     *                                                      this will be an empty string;
+     *                                                      available;
      *
      *                                                      <b>- responses</b> an array with one or more entries (if there
      *                                                      are redirects involved) with the response headers of all the
-     *                                                      requests made; if explicitly disabled via the {@link option()}
-     *                                                      method by setting <b>CURLOPT_HEADER</b> to 0 or FALSE, this
-     *                                                      will be an empty string;
+     *                                                      requests made;
      *
-     *                                                      <i>Unless disabled, each entry in the headers' array is an
-     *                                                      associative array in the form of property => value</i>
+     *                                                      <i>Each entry in the headers' array is an associative array
+     *                                                      in the form of property => value</i>
      *
      *                              -   <b>body</b> -       the response of the request (the content of the page at the
      *                                                      URL).
@@ -813,10 +853,6 @@ class Zebra_cURL {
      *                                                      PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
      *                                                      function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
      *                                                      function to do reverse this, if it's the case;
-     *
-     *                                                      If "body" is explicitly disabled via the {@link option()}
-     *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
-     *                                                      will be an empty string;
      *
      *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
      *                                                      entries: the first entry is the textual representation of the
@@ -857,14 +893,27 @@ class Zebra_cURL {
     }
 
     /**
-     *  Works exactly like the {@link get()} method, the only difference being that this method will automatically set
-     *  the <b>CURLOPT_NOBODY</b> option to FALSE and thus the <i>body</i> property of the result will be an empty string.
-     *  Also, <b>CURLINFO_HEADER_OUT</b> and <b>CURLOPT_HEADER</b> will be set to TRUE and therefore header information
-     *  will be available.
+     *  Works exactly like the {@link get()} method, the only difference being that this method will only return the
+     *  headers, and no body.
      *
-     *  <i>Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
+     *  This method will automatically set the following cURL options:
+     *
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_HEADER</b> - TRUE
+     *  - <b>CURLOPT_HTTPGET</b> - TRUE
+     *  - <b>CURLOPT_NOBODY</b> - TRUE
+     *
+     *  ...and will set the following options to their default values, as set by your system
+     *
+     *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_FILE</b>
+     *  - <b>CURLOPT_POST</b>
+     *  - <b>CURLOPT_POSTFIELDS</b>
+     *  - <b>CURLOPT_USERPWD</b>
+     *
+     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.</i>
+     *  the {@link threads} property.
      *
      *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
      *
@@ -875,16 +924,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -982,16 +1038,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -1112,9 +1175,24 @@ class Zebra_cURL {
      *  by the <i>$values</i> argument, and executes the callback function specified by the <i>$callback</i> argument for
      *  each and every request, as soon as each request finishes.
      *
-     *  <i>Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
+     *  This method will automatically set the following cURL options:
+     *
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_HEADER</b> - TRUE
+     *  - <b>CURLOPT_NOBODY</b> - FALSE
+     *  - <b>CURLOPT_POST</b> - TRUE
+     *  - <b>CURLOPT_POSTFIELDS</b> - the POST data
+     *
+     *  ...and will set the following options to their default values, as set by your system
+     *
+     *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_HTTPGET</b> - TRUE
+     *  - <b>CURLOPT_FILE</b>
+     *  - <b>CURLOPT_USERPWD</b>
+     *
+     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.</i>
+     *  the {@link threads} property.
      *
      *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
      *
@@ -1125,16 +1203,23 @@ class Zebra_cURL {
      *  // (info, header, body and response)
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -1274,16 +1359,23 @@ class Zebra_cURL {
      *  // request, as soon as a request finishes
      *  function mycallback($result) {
      *
-     *      // everything went well
+     *      // everything went well at cURL level
      *      if ($result->response[1] == CURLE_OK) {
      *
-     *          // see all the returned data
-     *          print_r('<pre>');
-     *          print_r($result);
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else die('An error occured: ' . $result->response[1]);
+     *      } else die('cURL responded with: ' . $result->response[1]);
      *
      *  }
      *
@@ -1842,6 +1934,10 @@ class Zebra_cURL {
     private function _set_defaults()
     {
 
+        // if "CURLINFO_HEADER_OUT" has not been explicitly set, make it TRUE
+        // (include the last request headers as a property of the object given as argument to the callback)
+        if (!isset($this->options[CURLINFO_HEADER_OUT])) $this->option(CURLINFO_HEADER_OUT, 1);
+
         // if "CURLOPT_AUTOREFERER" has not been explicitly set, make it TRUE
         // (automatically set the "Referer:" field where it follows a "Location:" redirect)
         if (!isset($this->options[CURLOPT_AUTOREFERER])) $this->option(CURLOPT_AUTOREFERER, 1);
@@ -1867,10 +1963,6 @@ class Zebra_cURL {
         // if "CURLOPT_HEADER" has not been explicitly set, make it TRUE
         // (include the response header(s) as a property of the object given as argument to the callback)
         if (!isset($this->options[CURLOPT_HEADER])) $this->option(CURLOPT_HEADER, 1);
-
-        // if "CURLINFO_HEADER_OUT" has not been explicitly set, make it TRUE
-        // (include the last request headers as a property of the object given as argument to the callback)
-        if (!isset($this->options[CURLINFO_HEADER_OUT])) $this->option(CURLINFO_HEADER_OUT, 1);
 
         // if "CURLOPT_MAXREDIRS" has not been explicitly set, set it to the default value
         // (the maximum amount of HTTP redirections to follow; used together with CURLOPT_FOLLOWLOCATION)
