@@ -1670,7 +1670,7 @@ class Zebra_cURL {
             foreach ($urls as $url) {
 
                 // get the path to the cache file associated with the URL
-                $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($url);
+                $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($url . (isset($this->options[CURLOPT_POSTFIELDS]) ? serialize($this->options[CURLOPT_POSTFIELDS]) : ''));
 
                 // if cache file exists and is not expired
                 if (file_exists($cache_path) && filemtime($cache_path) + $this->cache['lifetime'] > time()) {
@@ -1845,7 +1845,7 @@ class Zebra_cURL {
                     ) {
 
                         // get the path to the cache file associated with the URL
-                        $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($result->info['original_url']);
+                        $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($result->info['original_url'] . (isset($this->options[CURLOPT_POSTFIELDS]) ? serialize($this->options[CURLOPT_POSTFIELDS]) : ''));
 
                         // cache the result
                         file_put_contents($cache_path, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result));
