@@ -37,6 +37,17 @@
 class Zebra_cURL {
 
     /**
+     *  If the value of this property is greater than 0, the library will process as many URLs as set by the
+     *  {@link $threads} property and then will wait for {@link $pause_interval} seconds before processing the next batch.
+     *
+     *  Default is 0 (the library will keep this number of parallel threads running at all times untill there are no more
+     *  URLs to process).
+     *
+     *  @var integer
+     */
+    public $pause_interval;
+
+    /**
      *  The number of parallel, asynchronous, requests to be processed by the library at once.
      *
      *  <code>
@@ -44,10 +55,13 @@ class Zebra_cURL {
      *  $curl->threads = 30;
      *  </code>
      *
-     *  Note that the library will keep this number of parallel threads running at all times (unless, of course, there
-     *  are less remaining URLs to process); it's doing this by starting a new thread as soon as another one finishes,
-     *  instead of waiting for each batch to finish, and so on, until there are no more URLs to process, and thus
-     *  greatly decreasing execution time.
+     *  Note that, unless {@link $pause_interval} is set to a value greater than 0, the library will keep this number of
+     *  parallel threads running at all times (unless, of course, there are less remaining URLs to process); it's doing
+     *  this by starting a new thread as soon as another one finishes, instead of waiting for each batch to finish, and
+     *  so on, until there are no more URLs to process, and thus greatly decreasing execution time.
+     *
+     *  If {@link $pause_interval} is set to a value greater than 0, the library will process as many URLs as set by the
+     *  {@link $threads} property and then will wait for {@link $pause_interval} seconds before processing the next batch.
      *
      *  Default is 10.
      *
@@ -255,6 +269,9 @@ class Zebra_cURL {
 
         // caching is disabled by default
         $this->cache(false);
+
+        // the default number of seconds to wait between batches of URLs
+        $this->pause_interval = 0;
 
         // the default number of parallel, asynchronous, requests to be processed by the library at once.
         $this->threads = 10;
@@ -574,8 +591,8 @@ class Zebra_cURL {
         // (consisting from the first 3, plus any additional arguments passed to the "download" method)
         $arguments = array_merge(array($url, $callback), array_slice($arguments, 3));
 
-        // process request(s)
-        call_user_func_array(array($this, '_process'), $arguments);
+        // process requests, all at once or with pause between batches of URLs
+        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
 
     }
 
@@ -887,8 +904,8 @@ class Zebra_cURL {
         // so we need this intermediary step
         $arguments = func_get_args();
 
-        // process request(s)
-        call_user_func_array(array($this, '_process'), $arguments);
+        // process requests, all at once or with pause between batches of URLs
+        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
 
     }
 
@@ -1023,8 +1040,8 @@ class Zebra_cURL {
         // so we need this intermediary step
         $arguments = func_get_args();
 
-        // process request(s)
-        call_user_func_array(array($this, '_process'), $arguments);
+        // process requests, all at once or with pause between batches of URLs
+        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
 
     }
 
@@ -1346,8 +1363,8 @@ class Zebra_cURL {
         // remove the $_POST values from the arguments
         unset($arguments[1]);
 
-        // process request(s)
-        call_user_func_array(array($this, '_process'), $arguments);
+        // process requests, all at once or with pause between batches of URLs
+        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
 
     }
 
@@ -1652,7 +1669,7 @@ class Zebra_cURL {
 
         $urls = !is_array($urls) ? (array)$urls : $urls;
 
-        // if 
+        // if
         if (
 
             // caching is enabled
@@ -1885,6 +1902,31 @@ class Zebra_cURL {
 
             // close the multi curl handle
             curl_multi_close($this->_multi_handle);
+
+        }
+
+    }
+
+    /**
+     *  A wrapper for the _process method used when we need to pause between batches of URLs to process.
+     *
+     *  @return null
+     *
+     *  @access private
+     */
+    private function _process_paused($urls, $callback = '') {
+
+        // while there are URLs to process
+        while (!empty($urls)) {
+
+            // get from the entire list of URLs as many as specified by the "threads" property
+            $urls_to_process = array_splice($urls, 0, $this->threads, array());
+
+            // process those URLs
+            $this->_process($urls_to_process, $callback);
+
+            // wait for as many seconds as specified by the "pause_interval" property
+            sleep($this->pause_interval);
 
         }
 
