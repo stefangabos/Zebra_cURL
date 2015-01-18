@@ -38,10 +38,13 @@ class Zebra_cURL {
 
     /**
      *  If the value of this property is greater than 0, the library will process as many URLs as set by the
-     *  {@link $threads} property and then will wait for {@link $pause_interval} seconds before processing the next batch.
+     *  {@link $threads threads} property and then will wait for {@link $pause_interval pause_interval} seconds before
+     *  processing the next batch.
      *
      *  Default is 0 (the library will keep this number of parallel threads running at all times untill there are no more
      *  URLs to process).
+     *
+     *  @since 1.3.0
      *
      *  @var integer
      */
@@ -55,13 +58,14 @@ class Zebra_cURL {
      *  $curl->threads = 30;
      *  </code>
      *
-     *  Note that, unless {@link $pause_interval} is set to a value greater than 0, the library will keep this number of
-     *  parallel threads running at all times (unless, of course, there are less remaining URLs to process); it's doing
-     *  this by starting a new thread as soon as another one finishes, instead of waiting for each batch to finish, and
-     *  so on, until there are no more URLs to process, and thus greatly decreasing execution time.
+     *  Note that, unless {@link $pause_interval pause_interval} is set to a value greater than 0, the library will keep
+     *  this number of parallel threads running at all times (unless, of course, there are less remaining URLs to process);
+     *  it's doing this by starting a new thread as soon as another one finishes, instead of waiting for each batch to finish,
+     *  and so on, until there are no more URLs to process, and thus greatly decreasing execution time.
      *
-     *  If {@link $pause_interval} is set to a value greater than 0, the library will process as many URLs as set by the
-     *  {@link $threads} property and then will wait for {@link $pause_interval} seconds before processing the next batch.
+     *  If {@link $pause_interval pause_interval} is set to a value greater than 0, the library will process as many URLs
+     *  as set by the {@link $threads threads} property and then will wait for {@link $pause_interval pause_interval}
+     *  seconds before processing the next batch.
      *
      *  Default is 10.
      *
