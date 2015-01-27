@@ -1688,7 +1688,7 @@ class Zebra_cURL {
         ) {
 
             // iterate through the URLs
-            foreach ($urls as $url) {
+            foreach ($urls as $url_key=>$url) {
 
                 // get the path to the cache file associated with the URL
                 $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($url . (isset($this->options[CURLOPT_POSTFIELDS]) ? serialize($this->options[CURLOPT_POSTFIELDS]) : ''));
@@ -1719,7 +1719,7 @@ class Zebra_cURL {
                     }
 
                 // if no cache file, or cache file is expired
-                } else $this->_queue[] = $url;
+                } else $this->_queue[$url_key] = $url;
 
             }
 
@@ -1764,6 +1764,10 @@ class Zebra_cURL {
                     // as properties of this object
                     $result = new stdClass();
 
+                    // set url info
+                    $result->key = $this->_info['fh' . $resource_number]['url_key'];
+                    $result->url = $this->_info['fh' . $resource_number]['original_url'];
+					
                     // get information about the request
                     $result->info = curl_getinfo($handle);
 
@@ -1954,6 +1958,9 @@ class Zebra_cURL {
         // iterate through the items in the queue
         for ($i = 0; $i < ($queue_length < $this->threads ? $queue_length : $this->threads); $i++) {
 
+            // find url key before remove it
+            $url_Key = key($this->_queue);
+            
             // remove first URL from the queue
             $url = array_shift($this->_queue);
 
@@ -1970,6 +1977,7 @@ class Zebra_cURL {
             // (because there may be redirects, and because "curl_getinfo" returns information only about the last
             // request, this can be lost otherwise)
             $this->_info['fh' . $resource_number]['original_url'] = $url;
+            $this->_info['fh' . $resource_number]['url_key'] = $url_Key;
 
             // if we're downloading something
             if (isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->options[CURLOPT_BINARYTRANSFER]) {
