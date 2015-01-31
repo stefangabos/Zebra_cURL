@@ -32,17 +32,28 @@ PHP 5.0.2+ with the cURL extension installed
 **Fetch RSS feeds**
 
 ```php
+function mycallback($result) {
 
-<?php
+    // everything went well at cURL level
+    if ($result->response[1] == CURLE_OK) {
 
-function callback($result) {
+        // if server responded with code 200 (meaning that everything went well)
+        // see http://httpstatus.es/ for a list of possible response codes
+        if ($result->info['http_code'] == 200) {
 
-    // remember, the "body" property of $result is run through
-    // "htmlentities()", so you may need to "html_entity_decode" it
+            // see all the returned data
+            // remember, the "body" property of $result is run through
+            // "htmlentities()", so you may need to "html_entity_decode" it
+            // (unless you call the constructor with the FALSE argument)
+            print_r('<pre>');
+            print_r($result);
 
-    // show everything
-    print_r('<pre>');
-    print_r($result->info);
+        // show the server's response code
+        } else die('Server responded with code ' . $result->info['http_code']);
+
+    // something went wrong
+    // ($result still contains all data that could be gathered)
+    } else die('cURL responded with: ' . $result->response[0]);
 
 }
 
@@ -62,41 +73,6 @@ $curl->get(array(
     'http://www.webmonkey.com/feed/',
     'http://feeds.feedburner.com/alistapart/main',
 ), 'callback');
-
-?>
-
-```
-
-**Twitter search**
-
-```php
-
-<?php
-
-function callback($result) {
-
-    // results from twitter is json-encoded;
-    // remember, the "body" property of $result is run through
-    // "htmlentities()" so we need to "html_entity_decode" it
-    $result->body = json_decode(html_entity_decode($result->body));
-
-    // show everything
-    print_r('<pre>');
-    print_r($result);
-
-}
-
-// include the library
-require 'path/to/Zebra_cURL.php';
-
-// instantiate the Zebra_cURL class
-$curl = new Zebra_cURL();
-
-// cache results 60 seconds
-$curl->cache('cache', 60);
-
-// search twitter for the "jquery" hashtag
-$curl->get('http://search.twitter.com/search.json?q=' . urlencode('#jquery'), 'callback');
 
 ?>
 
