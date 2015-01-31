@@ -28,8 +28,8 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.2.1 (last revision: November 12, 2014)
- *  @copyright  (c) 2014 Stefan Gabos
+ *  @version    1.3.0 (last revision: January 31, 2015)
+ *  @copyright  (c) 2014 - 2015 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -37,12 +37,14 @@
 class Zebra_cURL {
 
     /**
-     *  If the value of this property is greater than 0, the library will process as many URLs as set by the
-     *  {@link $threads threads} property and then will wait for {@link $pause_interval pause_interval} seconds before
-     *  processing the next batch.
+     *  The number of seconds to wait between processing batches of requests.
      *
-     *  Default is 0 (the library will keep this number of parallel threads running at all times untill there are no more
-     *  URLs to process).
+     *  If the value of this property is greater than 0, the library will process as many requests as defined by the
+     *  {@link $threads threads} property, and then wait for {@link $pause_interval pause_interval} seconds before
+     *  processing the next batch of requests.
+     *
+     *  Default is 0 (the library will keep as many parallel threads as defined by {@link $threads threads} <b>running
+     *  at all times</b>, until there are no more requests to process).
      *
      *  @since 1.3.0
      *
@@ -51,21 +53,21 @@ class Zebra_cURL {
     public $pause_interval;
 
     /**
-     *  The number of parallel, asynchronous, requests to be processed by the library at once.
+     *  The number of parallel, asynchronous, requests to be processed by the library, at all times.
      *
      *  <code>
-     *  // allow execution of 30 simultaneous threads
+     *  // process 30 simultaneous requests, at all times
      *  $curl->threads = 30;
      *  </code>
      *
-     *  Note that, unless {@link $pause_interval pause_interval} is set to a value greater than 0, the library will keep
-     *  this number of parallel threads running at all times (unless, of course, there are less remaining URLs to process);
-     *  it's doing this by starting a new thread as soon as another one finishes, instead of waiting for each batch to finish,
-     *  and so on, until there are no more URLs to process, and thus greatly decreasing execution time.
+     *  Note that, unless {@link $pause_interval pause_interval} is set to a value greater than 0, the library will process
+     *  a constant number of requests, <b>at all times</b>; it's doing this by processing a new request as soon as another
+     *  one finishes, instead of waiting for each batch to finish, and so on, until there are no more requests to process,
+     *  and thus greatly decreasing execution time.
      *
-     *  If {@link $pause_interval pause_interval} is set to a value greater than 0, the library will process as many URLs
-     *  as set by the {@link $threads threads} property and then will wait for {@link $pause_interval pause_interval}
-     *  seconds before processing the next batch.
+     *  If {@link $pause_interval pause_interval} is set to a value greater than 0, the library will process as many
+     *  requests as set by the {@link $threads threads} property and then will wait for {@link $pause_interval pause_interval}
+     *  seconds before processing the next batch of requests.
      *
      *  Default is 10.
      *
@@ -74,9 +76,10 @@ class Zebra_cURL {
     public $threads;
 
     /**
-     * Default value is TRUE, can be changed by giving the constructor parameter value false.
+     * Used by the {@link _process()} method to determine whether to run processed requests' bodies through PHP's
+     * htmlentities function.
      *
-     * Used by the {@link _process()} method to determine if we run response body through PHP's htmlentities function.
+     * Default is TRUE. Can be changed by instantiating the library with the FALSE argument.
      *
      * @access private
      *
@@ -84,17 +87,9 @@ class Zebra_cURL {
     private $_htmlentities;
 
     /**
-     *  An associative array linked with all the resources, used to store original URL and file pointer resources, used
-     *  for streaming downloads.
+     *  Used to tell the library whether to queue requests or to process them right away
      *
-     *  @var array
-     *
-     *  @access private
-     */
-    private $_info;
-
-    /**
-     *  Used by the {@link _process()} method to keep track of URLs that need to be processed.
+     *  @var resource
      *
      *  @access private
      */
@@ -108,6 +103,23 @@ class Zebra_cURL {
      *  @access private
      */
     private $_multi_handle;
+
+    /**
+     *  Used to keep track of all the requests that need to be processed.
+     *
+     *  @access private
+     */
+    private $_requests;
+
+    /**
+     *  An associative array linked with all the resources, used to store original URL and file pointer resources, used
+     *  for streaming downloads.
+     *
+     *  @var array
+     *
+     *  @access private
+     */
+    private $_running;
 
     /**
      *  Possible values of the "result" attribute in the object passed to the callback function.
@@ -199,13 +211,11 @@ class Zebra_cURL {
     /**
      *  Constructor of the class.
      *
-     *  Below is the list of default options set for each request, unless these options are specifically changed by one
-     *  of the methods or via the {@link option()} method:
+     *  Below is the list of default options set by the library when instantiated:
      *
      *  -   <b>CURLINFO_HEADER_OUT</b>      -   <b>TRUE</b>; get the last request header; if set to FALSE the "last_request"
      *                                          entry of the "headers" attribute of the object given as argument to the
-     *                                          callback function, will be an empty string; <i>you should leave this
-     *                                          unaltered!</i>;
+     *                                          callback function, will be an empty string;
      *
      *  -   <b>CURLOPT_AUTOREFERER</b>      -   <b>TRUE</b>; automatically set the <i>Referer:</i> field in requests
      *                                          where it follows a <i>Location:</i> redirect;
@@ -226,16 +236,14 @@ class Zebra_cURL {
      *
      *  -   <b>CURLOPT_HEADER</b>           -   <b>TRUE</b>; get the response header(s); if set to FALSE the "responses"
      *                                          entry of the "headers" attribute of the object given as argument to the
-     *                                          callback function, will be an empty string; <i>you should leave this
-     *                                          unaltered!</i>;
+     *                                          callback function, will be an empty string;
      *
      *  -   <b>CURLOPT_MAXREDIRS</b>        -   <b>50</b>; the maximum amount of HTTP redirections to follow; used
      *                                          together with CURLOPT_FOLLOWLOCATION;
      *
      *  -   <b>CURLOPT_RETURNTRANSFER</b>   -   <b>TRUE</b>; return the transfer's body as a string instead of outputting
      *                                          it directly; if set to FALSE the "body" attribute of the object given as
-     *                                          argument to a callback function will be an empty string; <b>this will
-     *                                          always be TRUE and cannot be changed!</b>;
+     *                                          argument to a callback function will be an empty string;
      *
      *  -   <b>CURLOPT_SSL_VERIFYHOST</b>   -   <b>2</b>; check the existence of a common name in the SSL peer certificate
      *                                          (for when connecting to HTTPS), and that it matches with the provided
@@ -262,34 +270,78 @@ class Zebra_cURL {
     {
 
         // if the cURL extension is not available, trigger an error and stop execution
-        if (!extension_loaded('curl')) trigger_error('php_curl extension is not loaded!', E_USER_ERROR);
+        if (!extension_loaded('curl')) trigger_error('php_curl extension is not loaded', E_USER_ERROR);
+
+        // initialize some private properties
+        $this->_multi_handle = $this->_queue = false;
+        $this->_running = $this->_requests = array();
+
+        // the default number of seconds to wait between processing batches of requests
+        // 0 means no waiting, process all requests at once
+        $this->pause_interval = 0;
+
+        // the default number of parallel, asynchronous, requests to be processed by the library at all times
+        // (unless the "pause_interval" property is greater than 0, case in which it refers to the number of requests
+        // to be processed before pausing)
+        $this->threads = 10;
+
+        // set the user's preference on whether to run htmlentities() on the response body or not
+        $this->_htmlentities = $htmlentities;
+
+        // set defaults for libcurl
+        // set defaults
+        $this->option(array(
+
+            // include the last request headers as a property of the object given as argument to the callback
+            CURLINFO_HEADER_OUT         =>  1,
+
+            // automatically set the "Referer:" field where it follows a "Location:" redirect
+            CURLOPT_AUTOREFERER         =>  1,
+
+            // the name of the file containing the cookie data; if the name is an empty string, no cookies are
+            // loaded, but cookie handling is still enabled
+            CURLOPT_COOKIEFILE          =>  '',
+
+            // the number of seconds to wait while trying to connect
+            CURLOPT_CONNECTTIMEOUT      =>  10,
+
+            // the contents of the "Accept-Encoding:" header; it enables decoding of the response
+            CURLOPT_ENCODING            =>  'gzip,deflate',
+
+            // follow any "Location:" header that the server sends as part of the HTTP header - note this is recursive
+            // and that PHP will follow as many "Location:" headers as specified by CURLOPT_MAXREDIRS
+            CURLOPT_FOLLOWLOCATION      =>  1,
+
+            // include the response header(s) as a property of the object given as argument to the callback
+            CURLOPT_HEADER              =>  1,
+
+            // the maximum amount of HTTP redirections to follow; used together with CURLOPT_FOLLOWLOCATION
+            CURLOPT_MAXREDIRS           =>  50,
+
+            // the maximum number of seconds to allow cURL functions to execute before timing out
+            CURLOPT_TIMEOUT             =>  30,
+
+            // most services/websites will block requests with no/invalid user agents
+            // note that the user agent string is random and will change whenever the library is instantiated!
+            CURLOPT_USERAGENT           =>  $this->_user_agent(),
+
+            // return the transfer as a string of instead of outputting it to the screen
+            CURLOPT_RETURNTRANSFER      =>  1,
+
+        ));
 
         // set defaults for accessing HTTPS servers
         $this->ssl();
 
-        // initialize some internal variables
-        $this->_multi_handle = false;
-        $this->_info = array();
-
         // caching is disabled by default
         $this->cache(false);
-
-        // the default number of seconds to wait between batches of URLs
-        $this->pause_interval = 0;
-
-        // the default number of parallel, asynchronous, requests to be processed by the library at once.
-        $this->threads = 10;
-
-        // by default, run htmlentities() on the response body
-        $this->_htmlentities = $htmlentities;
 
     }
 
     /**
-     *  Use this method to enable caching for {@link get() get}, {@link post() post} and {@link header() header} requests.
+     *  Use this method to enable caching of requests.
      *
-     *  <i>Caching is only used for {@link get() get}, {@link post() post} and {@link header() header} requests, and will
-     *  be ignored for other request types even if it is enabled!</i>
+     *  <i>Note that only the actual request is cached and not associated downloads, if any!</i>
      *
      *  <i>Caching is disabled by default!</i>
      *
@@ -329,7 +381,7 @@ class Zebra_cURL {
      *  // cache results in the "cache" folder and for 86400 seconds (24 hours)
      *  $curl->cache('cache', 86400);
      *
-     *  // let's fetch the RSS feeds of some popular websites
+     *  // let's fetch the RSS feeds of some popular tech-related websites
      *  // execute the "mycallback" function for each request, as soon as it finishes
      *  $curl->get(array(
      *      'http://feeds.feedburner.com/alistapart/main',
@@ -338,16 +390,16 @@ class Zebra_cURL {
      *  ), 'mycallback')
      *  </code>
      *
-     *  @param  string      $path       The path where the cache files to be stored.
+     *  @param  string      $path       Path where cache files to be stored.
      *
      *                                  Setting this to FALSE will disable caching.
      *
-     *                                  <i>Unless set to FALSE this must point to a writable directory or an error will
+     *                                  <i>Unless set to FALSE, this must point to a writable directory or an error will
      *                                  be triggered!</i>
      *
-     *  @param  integer     $lifetime   (Optional) The number of seconds after which cache will be considered as expired.
+     *  @param  integer     $lifetime   (Optional) The number of seconds after which cache will be considered expired.
      *
-     *                                  Default is 3600.
+     *                                  Default is 3600 (one hour).
      *
      *  @param  boolean     $compress   (Optional) If set to TRUE, cache files will be
      *                                  {@link http://php.net/manual/ro/function.gzcompress.php gzcompress}-ed  so that
@@ -377,10 +429,10 @@ class Zebra_cURL {
     public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755)
     {
 
-        // if we have to enable caching
+        // if caching is not explicitly disabled
         if ($path != false)
 
-            // store cache-related properties
+            // save cache-related properties
             $this->cache = array(
                 'path'      =>  $path,
                 'lifetime'  =>  $lifetime,
@@ -388,21 +440,21 @@ class Zebra_cURL {
                 'compress'  =>  $compress,
             );
 
-        // if we have to disable caching, disable it
+        // if caching is explicitly disabled, set this property to FALSE
         else $this->cache = false;
 
     }
 
     /**
-     *  Sets the path and name of the file to save to / retrieve cookies from, for each accessed URL. (cookie name/data
-     *  will be stored in this file on a per-domain basis). Important when cookies need to stored/restored to maintain
-     *  status/session of the request(s) made to the same domain(s).
+     *  Sets the path and name of the file to save to / retrieve cookies from. All cookie data will be stored in this
+     *  file on a per-domain basis. Important when cookies need to stored/restored to maintain status/session of requests
+     *  made to the same domains.
      *
      *  This method will automatically set the <b>CURLOPT_COOKIEJAR</b> and <b>CURLOPT_COOKIEFILE</b> options.
      *
-     *  @param  string      $path   The path to a file to save to / retrieve cookies from, for each accessed URL.
+     *  @param  string      $path   The path to a file to save to / retrieve cookies from.
      *
-     *                              If file does not exist the library will attempt to create it and if it is unable to
+     *                              If file does not exist the library will attempt to create it, and if it is unable to
      *                              create it will trigger an error.
      *
      *  @param  boolean     $keep   (Optional)  By default, the file to save to / retrieve cookies from is deleted when
@@ -422,7 +474,7 @@ class Zebra_cURL {
             if (!($handle = fopen($path, 'a')))
 
                 // if file could not be created, trigger an error
-                trigger_error('File "' . $path . '" for storing cookies could not be found nor could it automatically be created! Make sure either that the path to the file points to a writable directory, or create the file yourself and make it writable.', E_USER_ERROR);
+                trigger_error('File "' . $path . '" for storing cookies could not be found nor could it automatically be created! Make sure either that the path to the file points to a writable directory, or create the file yourself and make it writable', E_USER_ERROR);
 
             // if file could be create, release handle
             fclose($handle);
@@ -438,36 +490,36 @@ class Zebra_cURL {
     }
 
     /**
-     *  Downloads one or more files from one or more URLs specified by the <i>$url</i> argument, saves the downloaded
-     *  files (with their original name) to the path specified by the <i>$destination_path</i>, and executes the callback
-     *  function specified by the <i>$callback</i> argument for each and every request, as soon as each request finishes.
+     *  Downloads one or more files from one or more URLs specified by the <i>$urls</i> argument, saves the downloaded
+     *  files (with their original name) to the path specified by the <i>$path</i> argument, and executes the callback
+     *  function specified by the <i>$callback</i> argument for each and every request, as soon as a request finishes.
      *
      *  Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your
      *  server of reading files into memory first, and then writing them to disk.
      *
-     *  This method will automatically set the following cURL options:
+     *  This method will automatically set the following options:
      *
      *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
      *  - <b>CURLOPT_BINARYTRANSFER</b> - TRUE
      *  - <b>CURLOPT_HEADER</b> - TRUE
-     *
-     *  ...and will set the following options to their default values, as set by the system the library is running on:
-     *
      *  - <b>CURLOPT_FILE</b>
+     *
+     *  ...and will unset the following options:
+     *
      *  - <b>CURLOPT_HTTPGET</b>
      *  - <b>CURLOPT_NOBODY</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
      *  - <b>CURLOPT_USERPWD</b>
      *
-     *  Files are downloaded preserving their name so you may want to check that, if you are downloading more images
-     *  having the same name (either from the same, or from different servers)!
+     *  Files are downloaded preserving their original names, so you may want to check that if you are downloading more
+     *  files having the same name!
      *
-     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
-     *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
      *
-     *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
      *
      *  <code>
      *  // the callback function to be executed for each and every
@@ -510,9 +562,9 @@ class Zebra_cURL {
      *  ), 'destination/path/', 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $url                A single or an array of URLs to process.
+     *  @param  mixed   $urls               A single URL or an array of URLs to process.
      *
-     *  @param  string  $destination_path   The path to where to save the file(s) to.
+     *  @param  string  $path               The path to where to save the file(s) to.
      *
      *                                      If path is not pointing to a directory or is not writable, the library will
      *                                      trigger an error.
@@ -566,37 +618,48 @@ class Zebra_cURL {
      *
      *  @return null
      */
-    public function download($url, $destination_path, $callback = '')
+    public function download($urls, $path, $callback = '')
     {
 
         // if destination path is not a directory or is not writable, trigger an error message
-        if (!is_dir($destination_path) || !is_writable($destination_path)) trigger_error('"' . $destination_path . '" is not a valid path or is not writable!', E_USER_ERROR);
-
-        // set download path
-        $this->download_path = rtrim($destination_path, '/\\') . '/';
-
-        // instruct the cURL library that it has to do a binary transfer
-        $this->option(array(
-            CURLINFO_HEADER_OUT     =>  1,
-            CURLOPT_BINARYTRANSFER  =>  1,
-            CURLOPT_HEADER          =>  1,
-            CURLOPT_FILE            =>  null,
-            CURLOPT_HTTPGET         =>  null,
-            CURLOPT_NOBODY          =>  null,
-            CURLOPT_POST            =>  null,
-            CURLOPT_POSTFIELDS      =>  null,
-            CURLOPT_USERPWD         =>  null,
-        ));
+        if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
         // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
         $arguments = func_get_args();
 
-        // prepare the arguments to be passed to the callback function
-        // (consisting from the first 3, plus any additional arguments passed to the "download" method)
-        $arguments = array_merge(array($url, $callback), array_slice($arguments, 3));
+        // iterate through the list of URLs to process
+        foreach ((array)$urls as $url)
 
-        // process requests, all at once or with pause between batches of URLs
-        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'type'              =>  'download',
+                'url'               =>  $url,
+                'path'              =>  rtrim($path, '/\\') . '/',
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_BINARYTRANSFER  =>  1,
+                    CURLOPT_HEADER          =>  0,
+                    CURLOPT_HTTPGET         =>  null,
+                    CURLOPT_NOBODY          =>  null,
+                    CURLOPT_POST            =>  null,
+                    CURLOPT_POSTFIELDS      =>  null,
+                    CURLOPT_USERPWD         =>  null,
+                ),
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 3),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
@@ -604,23 +667,24 @@ class Zebra_cURL {
      *  Works exactly like the {@link download()} method only that downloads are made from an FTP server.
      *
      *  Downloads from an FTP server to which the connection is made using the given <i>$username</i> and <i>$password</i>
-     *  arguments, one or more files specified by the <i>$url</i> argument, saves the downloaded files (with their original
-     *  name) to the path specified by the <i>$destination_path</i>, and executes the callback function specified by the
-     *  <i>$callback</i> argument for each and every request, as soon as each request finishes.
+     *  arguments, one or more files specified by the <i>$urls</i> argument, saves the downloaded files (with their original
+     *  name) to the path specified by the <i>$path</i> argument, and executes the callback function specified by the
+     *  <i>$callback</i> argument for each and every request, as soon as a request finishes.
      *
      *  Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your
      *  server of reading files into memory first, and then writing them to disk.
      *
-     *  This method will automatically set the following cURL options:
+     *  This method will automatically set the following options:
      *
      *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
      *  - <b>CURLOPT_BINARYTRANSFER</b> - TRUE
      *  - <b>CURLOPT_HEADER</b> - TRUE
+     *  - <b>CURLOPT_FILE</b>
+     *  - <b>CURLOPT_USERPWD</b>
      *
-     *  ...and will set the following options to their default values, as set by the system the library is running on:
+     *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_HTTPGET</b>
-     *  - <b>CURLOPT_FILE</b>
      *  - <b>CURLOPT_NOBODY</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
@@ -629,11 +693,11 @@ class Zebra_cURL {
      *  Files are downloaded preserving their name so you may want to check that, if you are downloading more images
      *  having the same name (either from the same, or from different servers)!
      *
-     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
-     *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
      *
-     *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
      *
      *  <code>
      *  // the callback function to be executed for each and every
@@ -670,12 +734,12 @@ class Zebra_cURL {
      *
      *  // connect to the FTP server using the given credential, download a file to a given location and
      *  // execute the "mycallback" function for each request, as soon as it finishes
-     *  $curl->ftp_download('ftp://somefile.ext', 'destination/path/', 'username', 'password', 'mycallback');
+     *  $curl->ftp_download('ftp://somefile.ext', 'destination/path', 'username', 'password', 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $url                A single or an array of URLs to process.
+     *  @param  mixed   $urls               A single URL or an array of URLs to process.
      *
-     *  @param  string  $destination_path   The path to where to save the file(s) to.
+     *  @param  string  $path               The path to where to save the file(s) to.
      *
      *                                      If path is not pointing to a directory or is not writable, the library will
      *                                      trigger an error.
@@ -730,51 +794,61 @@ class Zebra_cURL {
      *
      *  @return null
      */
-    public function ftp_download($url, $destination_path, $username = '', $password = '', $callback = '')
+    public function ftp_download($urls, $path, $username = '', $password = '', $callback = '')
     {
 
-        // if he have at least an username, set username/password
-        if ($username != '') $this->option(CURLOPT_USERPWD, $username . ':' . $password);
+        // if destination path is not a directory or is not writable, trigger an error message
+        if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
-        // download raw data
-        $this->option(array(
-            CURLINFO_HEADER_OUT     =>  1,
-            CURLOPT_BINARYTRANSFER  =>  1,
-            CURLOPT_HEADER          =>  1,
-            CURLOPT_HTTPGET         =>  null,
-            CURLOPT_FILE            =>  null,
-            CURLOPT_NOBODY          =>  null,
-            CURLOPT_POST            =>  null,
-            CURLOPT_POSTFIELDS      =>  null,
-            CURLOPT_USERPWD         =>  null,
-        ));
+        // iterate through the list of URLs to process
+        foreach ((array)$urls as $url)
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
-        // so we need this intermediary step
-        $arguments = func_get_args();
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'type'              =>  'download',
+                'url'               =>  $url,
+                'path'              =>  rtrim($path, '/\\') . '/',
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_BINARYTRANSFER  =>  1,
+                    CURLOPT_HEADER          =>  0,
+                    CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
+                    CURLOPT_HTTPGET         =>  null,
+                    CURLOPT_NOBODY          =>  null,
+                    CURLOPT_POST            =>  null,
+                    CURLOPT_POSTFIELDS      =>  null,
+                ),
+                'callback'          =>  $callback,
 
-        // prepare the arguments to be passed to the "download" method
-        // (consisting from the first 3, plus any additional arguments passed to the "ftp_download" method)
-        $arguments = array_merge(array($url, $destination_path, $callback), array_slice($arguments, 5));
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 5),
 
-        // call the "download" method
-        call_user_func_array(array($this, 'download'), $arguments);
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
     /**
-     *  Performs an HTTP <b>GET</b> request to one or more URLs specified by the <i>$url</i> argument and executes the
-     *  callback function specified by the <i>$callback</i> argument for each and every request, as soon as each request
+     *  Performs an HTTP <b>GET</b> request to one or more URLs specified by the <i>$urls</i> argument and executes the
+     *  callback function specified by the <i>$callback</i> argument for each and every request, as soon as a request
      *  finishes.
      *
-     *  This method will automatically set the following cURL options:
+     *  This method will automatically set the following options:
      *
      *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
      *  - <b>CURLOPT_HEADER</b> - TRUE
      *  - <b>CURLOPT_HTTPGET</b> - TRUE
      *  - <b>CURLOPT_NOBODY</b> - FALSE
      *
-     *  ...and will set the following options to their default values, as set by your system
+     *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_BINARYTRANSFER</b>
      *  - <b>CURLOPT_FILE</b>
@@ -782,11 +856,11 @@ class Zebra_cURL {
      *  - <b>CURLOPT_POSTFIELDS</b>
      *  - <b>CURLOPT_USERPWD</b>
      *
-     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
-     *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
      *
-     *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
      *
      *  <code>
      *  // the callback function to be executed for each and every
@@ -833,7 +907,7 @@ class Zebra_cURL {
      *  ), 'mycallback')
      *  </code>
      *
-     *  @param  mixed   $url        A single or an array of URLs to process.
+     *  @param  mixed   $urls       A single URL or an array of URLs to process.
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
@@ -888,43 +962,60 @@ class Zebra_cURL {
      *
      *  @return null
      */
-    public function get($url, $callback = '')
+    public function get($urls, $callback = '')
     {
 
-        // make sure we perform a GET request
-		$this->option(array(
-            CURLINFO_HEADER_OUT     =>  1,
-            CURLOPT_HEADER          =>  1,
-            CURLOPT_HTTPGET         =>  1,
-            CURLOPT_NOBODY          =>  0,
-            CURLOPT_BINARYTRANSFER  =>  null,
-            CURLOPT_FILE            =>  null,
-            CURLOPT_POST            =>  null,
-            CURLOPT_POSTFIELDS      =>  null,
-            CURLOPT_USERPWD         =>  null,
-        ));
-
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
-        // so we need this intermediary step
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
         $arguments = func_get_args();
 
-        // process requests, all at once or with pause between batches of URLs
-        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
+        // iterate through the list of URLs to process
+        foreach ((array)$urls as $url)
+
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'type'              =>  'get',
+                'url'               =>  $url,
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_HEADER          =>  1,
+                    CURLOPT_HTTPGET         =>  1,
+                    CURLOPT_NOBODY          =>  0,
+                    CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_FILE            =>  null,
+                    CURLOPT_POST            =>  null,
+                    CURLOPT_POSTFIELDS      =>  null,
+                    CURLOPT_USERPWD         =>  null,
+                ),
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 3),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
     /**
      *  Works exactly like the {@link get()} method, the only difference being that this method will only return the
-     *  headers, and no body.
+     *  headers, without body.
      *
-     *  This method will automatically set the following cURL options:
+     *  This method will automatically set the following options:
      *
      *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
      *  - <b>CURLOPT_HEADER</b> - TRUE
      *  - <b>CURLOPT_HTTPGET</b> - TRUE
      *  - <b>CURLOPT_NOBODY</b> - TRUE
      *
-     *  ...and will set the following options to their default values, as set by your system
+     *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_BINARYTRANSFER</b>
      *  - <b>CURLOPT_FILE</b>
@@ -932,11 +1023,11 @@ class Zebra_cURL {
      *  - <b>CURLOPT_POSTFIELDS</b>
      *  - <b>CURLOPT_USERPWD</b>
      *
-     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
-     *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
      *
-     *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
      *
      *  <code>
      *  // the callback function to be executed for each and every
@@ -976,7 +1067,7 @@ class Zebra_cURL {
      *  $curl->header('http://www.somewebsite.com', 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $url        A single or an array of URLs to process.
+     *  @param  mixed   $urls       A single URL or an array of URLs to process.
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
@@ -1009,7 +1100,7 @@ class Zebra_cURL {
      *                                                      <i>Each entry in the headers' array is an associative array
      *                                                      in the form of property => value</i>
      *
-     *                              -   <b>body</b>     -   an empty string
+     *                              -   <b>body</b>     -   an empty string as it is not available for this method;
      *
      *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
      *                                                      entries: the first entry is the textual representation of the
@@ -1024,33 +1115,50 @@ class Zebra_cURL {
      *
      *  @return null
      */
-    public function header($url, $callback = '')
+    public function header($urls, $callback = '')
     {
 
-        // no "body" for header requests but make sure we have the headers
-        $this->option(array(
-            CURLINFO_HEADER_OUT     =>  1,
-            CURLOPT_HEADER          =>  1,
-            CURLOPT_HTTPGET         =>  1,
-            CURLOPT_NOBODY          =>  1,
-            CURLOPT_BINARYTRANSFER  =>  null,
-            CURLOPT_FILE            =>  null,
-            CURLOPT_POST            =>  null,
-            CURLOPT_POSTFIELDS      =>  null,
-            CURLOPT_USERPWD         =>  null,
-        ));
-
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
-        // so we need this intermediary step
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
         $arguments = func_get_args();
 
-        // process requests, all at once or with pause between batches of URLs
-        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
+        // iterate through the list of URLs to process
+        foreach ($urls as $url)
+
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'type'              =>  'header',
+                'url'               =>  $url,
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_HEADER          =>  1,
+                    CURLOPT_HTTPGET         =>  1,
+                    CURLOPT_NOBODY          =>  1,
+                    CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_FILE            =>  null,
+                    CURLOPT_POST            =>  null,
+                    CURLOPT_POSTFIELDS      =>  null,
+                    CURLOPT_USERPWD         =>  null,
+                ),
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 2),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
     /**
-     *  Use this method to make requests to pages that requires prior HTTP authentication.
+     *  Use this method to make requests to pages that require prior HTTP authentication.
      *
      *  <code>
      *  // the callback function to be executed for each and every
@@ -1192,11 +1300,11 @@ class Zebra_cURL {
     }
 
     /**
-     *  Performs an HTTP <b>POST</b> to one or more URLs specified by the <i>$url</i> argument, using the values specified
-     *  by the <i>$values</i> argument, and executes the callback function specified by the <i>$callback</i> argument for
-     *  each and every request, as soon as each request finishes.
+     *  Performs an HTTP <b>POST</b> request to one or more URLs with the POST data as specified by the <i>$urls</i> argument,
+     *  and executes the callback function specified by the <i>$callback</i> argument for each and every request, as soon
+     *  as a request finishes.
      *
-     *  This method will automatically set the following cURL options:
+     *  This method will automatically set the following options:
      *
      *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
      *  - <b>CURLOPT_HEADER</b> - TRUE
@@ -1204,18 +1312,18 @@ class Zebra_cURL {
      *  - <b>CURLOPT_POST</b> - TRUE
      *  - <b>CURLOPT_POSTFIELDS</b> - the POST data
      *
-     *  ...and will set the following options to their default values, as set by your system
+     *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_BINARYTRANSFER</b>
      *  - <b>CURLOPT_HTTPGET</b> - TRUE
      *  - <b>CURLOPT_FILE</b>
      *  - <b>CURLOPT_USERPWD</b>
      *
-     *  Multiple requests are made asynchronously, in parallel, and the callback function is called for each and every
-     *  request, as soon as each request finishes. The number of parallel requests to be made at once can be set through
-     *  the {@link threads} property.
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
      *
-     *  <i>Note that in case of multiple URLs, requests may not finish in the same order as initiated!</i>
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
      *
      *  <code>
      *  // the callback function to be executed for each and every
@@ -1252,26 +1360,25 @@ class Zebra_cURL {
      *
      *  // do a POST and execute the "mycallback" function for each
      *  // request, as soon as it finishes
-     *  $curl->post('http://www.somewebsite.com', array(
-     *      'field_1'   =>  'value 1',
-     *      'field_2'   =>  'value 2',
+     *  $curl->post(array(
+     *      'http://www.somewebsite.com'  =>  array(
+     *          'data_1'  =>  'value 1',
+     *          'data_2'  =>  'value 2',
+     *      ),
      *  ), 'mycallback');
      *
-     *  // do a POST and execute the "mycallback" function for each
-     *  // request, as soon as it finishes
      *  // note that we're also uploading a file this time
      *  // and note that we're prefixing the file name with @
-     *  $curl->post('http://www.somewebsite.com', array(
-     *      'field_1'   =>  'value 1',
-     *      'field_2'   =>  'value 2',
-     *      'upload'    =>  '@absolute/path/to/file.ext',
+     *  $curl->post(array(
+     *      'http://www.somewebsite.com'  =>  array(
+     *          'data_1'  =>  'value 1',
+     *          'data_2'  =>  'value 2',
+     *          'data_3'  =>  '@absolute/path/to/file.ext',
      *  ), 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $url        A single or an array of URLs to which to POST to.
-     *
-     *  @param  array   $values     An associative array in the form of <i>element => value</i> representing the data to
-     *                              post in the HTTP "POST" operation.
+     *  @param  mixed   $url        An associative array in the form of <i>url => post-data</i>, where "post-data" is an
+     *                              associative array in the form of <i>name => value</i>.
      *
      *                              To post a file, prepend the filename with @ and use the full path. The file type can
      *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
@@ -1341,34 +1448,48 @@ class Zebra_cURL {
      *
      *  @return null
      */
-    public function post($url, $values, $callback = '')
+    public function post($urls, $callback = '')
     {
 
-        // if second argument is not an array, trigger an error
-        if (!is_array($values)) trigger_error('Second argument to method "post" must be an array!', E_USER_ERROR);
+        // if "urls" argument is not an array, trigger an error
+        if (!is_array($urls)) trigger_error('First argument to "post" method must be an array!', E_USER_ERROR);
 
-        // prepare cURL for making a POST
-        $this->option(array(
-            CURLINFO_HEADER_OUT     =>  1,
-            CURLOPT_HEADER          =>  1,
-            CURLOPT_NOBODY          =>  0,
-            CURLOPT_POST            =>  1,
-            CURLOPT_POSTFIELDS      =>  http_build_query($values, NULL, '&'),
-            CURLOPT_BINARYTRANSFER  =>  null,
-            CURLOPT_HTTPGET         =>  null,
-            CURLOPT_FILE            =>  null,
-            CURLOPT_USERPWD         =>  null,
-        ));
-
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter
-        // so we need this intermediary step
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
         $arguments = func_get_args();
 
-        // remove the $_POST values from the arguments
-        unset($arguments[1]);
+        // iterate through the list of URLs to process
+        foreach ((array)$urls as $url => $values)
 
-        // process requests, all at once or with pause between batches of URLs
-        call_user_func_array(array($this, $this->pause_interval > 0 ? '_process_paused' : '_process'), $arguments);
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'type'              =>  'post',
+                'url'               =>  $url,
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_HEADER          =>  1,
+                    CURLOPT_NOBODY          =>  0,
+                    CURLOPT_POST            =>  1,
+                    CURLOPT_POSTFIELDS      =>  http_build_query($values, NULL, '&'),
+                    CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_HTTPGET         =>  null,
+                    CURLOPT_FILE            =>  null,
+                    CURLOPT_USERPWD         =>  null,
+                ),
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 2),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
@@ -1482,6 +1603,87 @@ class Zebra_cURL {
     }
 
     /**
+     *  Instructs the library to queue requests rather than processing them right away. Useful for grouping different
+     *  types of requests and treat them as a single request.
+     *
+     *  Until {@link start() start} method is called, all calls to {@link download() download}, {@link ftp_download ftp_download},
+     *  {@link get() get}, {@link header() header} and {@link post() post} methods will queue up rather than being
+     *  executed right away. Once the {@link start() start} method is called, all queued requests will be processed while
+     *  values of {@link $threads threads} and {@link $pause_interval pause_interval} properties will still apply.
+     *
+     *  <code>
+     *  // the callback function to be executed for each and every
+     *  // request, as soon as a request finishes
+     *  // the callback function receives as argument an object with 4 properties
+     *  // (info, header, body and response)
+     *  function mycallback($result) {
+     *
+     *      // everything went well at cURL level
+     *      if ($result->response[1] == CURLE_OK) {
+     *
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
+     *
+     *      // something went wrong
+     *      // ($result still contains all data that could be gathered)
+     *      } else die('cURL responded with: ' . $result->response[0]);
+     *
+     *  }
+     *
+     *  // include the Zebra_cURL library
+     *  require 'path/to/Zebra_cURL';
+     *
+     *  // instantiate the Zebra_cURL object
+     *  $curl = new Zebra_cURL();
+     *
+     *  // queue requests - useful for grouping different types of requests
+     *  // in this example, when the "start" method is called, we'll execute
+     *  // the "get" and the "post" requests simultaneously as if it was a
+     *  // single request
+     *  $curl->queue();
+     *
+     *  // do a POST and execute the "mycallback" function for each
+     *  // request, as soon as it finishes
+     *  $curl->post(array(
+     *      'http://www.somewebsite.com'  =>  array(
+     *          'data_1'  =>  'value 1',
+     *          'data_2'  =>  'value 2',
+     *      ),
+     *  ), 'mycallback');
+     *
+     *  // let's fetch the RSS feeds of some popular websites
+     *  // execute the "mycallback" function for each request, as soon as it finishes
+     *  $curl->get(array(
+     *      'http://feeds.feedburner.com/alistapart/main',
+     *      'http://feeds.feedburner.com/TechCrunch',
+     *      'http://feeds.mashable.com/mashable',
+     *  ), 'mycallback')
+     *
+     *  // execute queued requests
+     *  $curl->start();
+     *  </code>
+     *
+     *  @since 1.3.0
+     *
+     *  @return null
+     */
+    public function queue()
+    {
+
+        // set a flag indicating the library to queue requests rather than executing them right away
+        $this->_queue = true;
+
+    }
+
+    /**
      *  Requests made to HTTPS servers sometimes require additional configuration, depending on the server. Most of the
      *  times {@link __construct() the defaults} set by the library will get you through, but if defaults are not working,
      *  you can set specific options using this method.
@@ -1560,7 +1762,7 @@ class Zebra_cURL {
             if (is_file($file)) $this->option(CURLOPT_CAINFO, $file);
 
             // if file was not found, trigger an error
-            else trigger_error('File "' . $file . '", holding one or more certificates to verify the peer with, was not found!', E_USER_ERROR);
+            else trigger_error('File "' . $file . '", holding one or more certificates to verify the peer with, was not found', E_USER_ERROR);
 
         // if a directory holding multiple CA certificates was given
         if ($path !== false)
@@ -1569,12 +1771,34 @@ class Zebra_cURL {
             if (is_dir($path)) $this->option(CURLOPT_CAPATH, $path);
 
             // if folder was not found, trigger an error
-            else trigger_error('Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found!', E_USER_ERROR);
+            else trigger_error('Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found', E_USER_ERROR);
 
     }
 
     /**
-     *  Returns the set options in "human-readable" format.
+     *  Executes queued requests.
+     *
+     *  See {@link queue() queue} method for more information.
+     *
+     *  @since 1.3.0
+     *
+     *  @return null
+     */
+    public function start() {
+
+        // indicate the library that it should execute queued requests
+        $this->_queue = false;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
+
+    }
+
+    /**
+     *  Returns the currently set options in "human-readable" format.
      *
      *  @return string  Returns the set options in "human-readable" format.
      *
@@ -1592,7 +1816,7 @@ class Zebra_cURL {
             foreach ($this->options as $index => $value)
 
                 // if this is a curl-related constant and it is one of the options that are set, add it to the result
-                if (substr($name, 0, 7) == 'CURLOPT' && $number == $index) $result .= $name . ' => ' . $value . '<br>';
+                if (substr($name, 0, 7) == 'CURLOPT' && $number == $index) $result .= $name . ' => ' . var_export($value, true) . '<br>';
 
         // return the result
         return $result;
@@ -1600,9 +1824,34 @@ class Zebra_cURL {
     }
 
     /**
-     *  A helper method used by the {@link _process()} method to process request and response headers. It parses a string
-     *  containing one or more HTTP headers and returns an array of headers where each entry also contains an associative
-     *  array of <i>name</i> => <i>value</i> for each row of data in the respective header.
+     *  Returns the cache file name associated with a specific request.
+     *
+     *  @return string  Returns the set options in "human-readable" format.
+     *
+     *  @access private
+     */
+    private function _get_cache_file_name($request) {
+
+        // iterate through the options associated with the request
+        foreach ($request['options'] as $key => $value)
+
+            // ...and remove null or empty values
+            if (is_null($value) || $value == '') unset($request['options'][$key]);
+
+        // remove some entries associated with the request
+        // callback, arguments and the associated file handler (where it is the case) are not needed
+        $request = array_diff_key($request, array('callback' => '', 'arguments' => '', 'file_handler' => ''));
+
+        // return the path and name of the file name associated with the request
+        return rtrim($this->cache['path'], '/') . '/' . md5(serialize($request));
+
+    }
+
+    /**
+     *  Parse response headers.
+     *
+     *  It parses a string containing one or more HTTP headers and returns an array of headers where each entry also
+     *  contains an associative array of <i>name</i> => <i>value</i> for each row of data in the respective header.
      *
      *  @param  string  $headers    A string containing one or more HTTP headers, where multiple headers are separated by
      *                              a blank line.
@@ -1656,87 +1905,73 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _process($urls, $callback = '')
+    private function _process()
     {
 
-        // if caching is enabled but path doesn't exist or is not writable
+        // if caching is enabled but path doesn't exist, or is not writable
         if ($this->cache !== false && (!is_dir($this->cache['path']) || !is_writable($this->cache['path'])))
 
             // trigger an error and stop execution
-            trigger_error('Cache path does not exists or is not writable!', E_USER_ERROR);
+            trigger_error('Cache path does not exists or is not writable', E_USER_ERROR);
 
-        // if callback function doesn't exists
-        if ($callback != '' && !is_callable($callback))
+        // iterate through the requests to process
+        foreach ($this->_requests as $index => $request) {
 
-            // trigger an error and stop execution
-            trigger_error('Callback function "' . $callback . '" does not exist!', E_USER_ERROR);
+            // if callback function is defined but it doesn't exists
+            if ($request['callback'] != '' && !is_callable($request['callback']))
 
-        $urls = !is_array($urls) ? (array)$urls : $urls;
+                // trigger an error and stop execution
+                trigger_error('Callback function "' . $request['callback'] . '" does not exist', E_USER_ERROR);
 
-        // if
-        if (
+            // if caching is enabled
+            if ($this->cache !== false) {
 
-            // caching is enabled
-            $this->cache !== false &&
-
-                // we're making a GET request (including calls to header() method)
-                ((isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1) ||
-
-                // or we're making a POST request
-                (isset($this->options[CURLOPT_POST]) && $this->options[CURLOPT_POST] == 1))
-
-        ) {
-
-            // iterate through the URLs
-            foreach ($urls as $url) {
-
-                // get the path to the cache file associated with the URL
-                $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($url . (isset($this->options[CURLOPT_POSTFIELDS]) ? serialize($this->options[CURLOPT_POSTFIELDS]) : ''));
+                // get the name to be used for the cache file associated with the request
+                $cache_file = $this->_get_cache_file_name($request);
 
                 // if cache file exists and is not expired
-                if (file_exists($cache_path) && filemtime($cache_path) + $this->cache['lifetime'] > time()) {
+                if (file_exists($cache_file) && filemtime($cache_file) + $this->cache['lifetime'] > time()) {
 
                     // if we have a callback
-                    if ($callback != '') {
-
-                        // the arguments passed to the "_process" method
-                        $arguments = func_get_args();
+                    if ($request['callback'] != '') {
 
                         // prepare the arguments to pass to the callback function
                         $arguments = array_merge(
 
                             // made of the result from the cache file...
-                            array(unserialize($this->cache['compress'] ? gzuncompress(file_get_contents($cache_path)) : file_get_contents($cache_path))),
+                            array(unserialize($this->cache['compress'] ? gzuncompress(file_get_contents($cache_file)) : file_get_contents($cache_file))),
 
                             // ...and any additional arguments (minus the first 2)
-                            array_slice($arguments, 2)
+                            (array)$request['arguments']
 
                         );
 
                         // feed them as arguments to the callback function
-                        call_user_func_array($callback, $arguments);
+                        call_user_func_array($request['callback'], $arguments);
+
+                        // remove this request from the list so it doesn't get processed
+                        unset($this->_requests[$index]);
 
                     }
 
-                // if no cache file, or cache file is expired
-                } else $this->_queue[] = $url;
+                }
 
             }
 
-        // if we're not making a GET request or caching is disabled, we don't bother with cache: we need to process all the URLs
-        } else $this->_queue = $urls;
+        }
 
-        // if there are any URLs to process
-        if (!empty($this->_queue)) {
+        // if there are any requests to process
+        if (!empty($this->_requests)) {
 
             // initialize the multi handle
-            // this will allow us to process multiple cURL handles in parallel
+            // this will allow us to process multiple handles in parallel
             $this->_multi_handle = curl_multi_init();
 
-            // queue the first batch of URLs
-            // (as many as defined by the "threads" property or less if there aren't as many URLs)
+            // queue the first batch of requests
+            // (as many as defined by the "threads" property, or less if there aren't as many requests)
             $this->_queue_requests();
 
+            // a flag telling the library if there are any requests currently processing
             $running = null;
 
             // loop
@@ -1760,6 +1995,9 @@ class Zebra_cURL {
                     // get the handle's ID
                     $resource_number = preg_replace('/Resource id #/', '', $handle);
 
+                    // get the information associated with the request
+                    $request = $this->_running['fh' . $resource_number];
+
                     // create a new object in which we will store all the data associated with the handle,
                     // as properties of this object
                     $result = new stdClass();
@@ -1768,7 +2006,7 @@ class Zebra_cURL {
                     $result->info = curl_getinfo($handle);
 
                     // extend the "info" property with the original URL
-                    $result->info = array('original_url' => $this->_info['fh' . $resource_number]['original_url']) + $result->info;
+                    $result->info = array('original_url' => $request['url']) + $result->info;
 
                     // last request headers
                     $result->headers['last_request'] =
@@ -1776,10 +2014,10 @@ class Zebra_cURL {
                         (
 
                             // if CURLINFO_HEADER_OUT is set
-                            isset($this->options[CURLINFO_HEADER_OUT]) &&
+                            isset($request['options'][CURLINFO_HEADER_OUT]) &&
 
                             // if CURLINFO_HEADER_OUT is TRUE
-                            $this->options[CURLINFO_HEADER_OUT] == 1 &&
+                            $request['options'][CURLINFO_HEADER_OUT] == 1 &&
 
                             // if we actually have this information
                             isset($result->info['request_header'])
@@ -1791,16 +2029,16 @@ class Zebra_cURL {
                     unset($result->info['request_header']);
 
                     // get headers (unless we were explicitly told not to)
-                    $result->headers['responses'] = (isset($this->options[CURLOPT_HEADER]) && $this->options[CURLOPT_HEADER] == 1) ?
+                    $result->headers['responses'] = (isset($request['options'][CURLOPT_HEADER]) && $request['options'][CURLOPT_HEADER] == 1) ?
 
                         $this->_parse_headers(substr($content, 0, $result->info['header_size'])) :
 
                         '';
 
                     // get output (unless we were explicitly told not to)
-                    $result->body = !isset($this->options[CURLOPT_NOBODY]) || $this->options[CURLOPT_NOBODY] == 0 ?
+                    $result->body = !isset($request['options'][CURLOPT_NOBODY]) || $request['options'][CURLOPT_NOBODY] == 0 ?
 
-                        (isset($this->options[CURLOPT_HEADER]) && $this->options[CURLOPT_HEADER] == 1 ?
+                        (isset($request['options'][CURLOPT_HEADER]) && $request['options'][CURLOPT_HEADER] == 1 ?
 
                         substr($content, $result->info['header_size']) :
 
@@ -1808,8 +2046,8 @@ class Zebra_cURL {
 
                         '';
 
-                    // if we have a body, we're not doing a binary transfer, and _htmlentities is set to TRUE, run htmlentities() on it
-                    if ($result->body != '' && !isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->_htmlentities) {
+                    // if _htmlentities is set to TRUE, we're not doing a binary transfer and we have a body, run htmlentities() on it
+                    if ($this->_htmlentities && !isset($request['options'][CURLOPT_BINARYTRANSFER]) && $result->body != '') {
 
                         // since PHP 5.3.0, htmlentities will return an empty string if the input string contains an
                         // invalid code unit sequence within the given encoding (utf-8 in our case)
@@ -1825,10 +2063,7 @@ class Zebra_cURL {
                     $result->response = array($this->_response_messages[$info['result']], $info['result']);
 
                     // if we have a callback
-                    if ($callback != '') {
-
-                        // the arguments passed to the "_process" method
-                        $arguments = func_get_args();
+                    if (isset($request['callback']) && $request['callback'] != '') {
 
                         // prepare the arguments to pass to the callback function
                         $arguments = array_merge(
@@ -1836,48 +2071,34 @@ class Zebra_cURL {
                             // made of the "result" object...
                             array($result),
 
-                            // ...and any additional arguments (minus the first 2)
-                            array_slice($arguments, 2)
+                            // ...and any additional arguments
+                            $request['arguments']
 
                         );
 
                         // feed them as arguments to the callback function
                         // and save the callback's response, if any
-                        $callback_response = call_user_func_array($callback, $arguments);
+                        $callback_response = call_user_func_array($request['callback'], $arguments);
 
                     // if no callback function, we assume the response is TRUE
                     } else $callback_response = true;
 
-                    // if
-                    if (
+                    // if caching is enabled and the callback function did not return FALSE
+                    if ($this->cache !== false && $callback_response !== false) {
 
-                        // caching is enabled
-                        $this->cache !== false &&
-
-                        // the callback function did not return FALSE
-                        $callback_response !== false &&
-
-                            // we're making a GET request (including calls to header() method)
-                            ((isset($this->options[CURLOPT_HTTPGET]) && $this->options[CURLOPT_HTTPGET] == 1) ||
-
-                            // or we're making a POST request
-                            (isset($this->options[CURLOPT_POST]) && $this->options[CURLOPT_POST] == 1))
-
-                    ) {
-
-                        // get the path to the cache file associated with the URL
-                        $cache_path = rtrim($this->cache['path'], '/') . '/' . md5($result->info['original_url'] . (isset($this->options[CURLOPT_POSTFIELDS]) ? serialize($this->options[CURLOPT_POSTFIELDS]) : ''));
+                        // get the name of the cache file associated with the request
+                        $cache_file = $this->_get_cache_file_name($request);
 
                         // cache the result
-                        file_put_contents($cache_path, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result));
+                        file_put_contents($cache_file, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result));
 
                         // set rights on the file
-                        chmod($cache_path, intval($this->cache['chmod'], 8));
+                        chmod($cache_file, intval($this->cache['chmod'], 8));
 
                     }
 
                     // if there are more URLs to process, queue the next one
-                    if (!empty($this->_queue)) $this->_queue_requests();
+                    if (!empty($this->_requests)) $this->_queue_requests();
 
                     // remove the handle that we finished processing
                     // this needs to be done *after* we've already queued a new URL for processing
@@ -1886,14 +2107,14 @@ class Zebra_cURL {
                     // make sure the handle gets closed
                     curl_close($handle);
 
-                    // if we're downloading something
-                    if (isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->options[CURLOPT_BINARYTRANSFER])
+                    // if we downloaded a file
+                    if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER])
 
                         // close the associated file pointer
-                        fclose($this->_info['fh' . $resource_number]['file_handler']);
+                        fclose($this->_running['fh' . $resource_number]['file_handler']);
 
-                    // remove information associated with this resource
-                    unset($this->_info['fh' . $resource_number]);
+                    // we don't need the information associated with this request anymore
+                    unset($this->_running['fh' . $resource_number]);
 
                 }
 
@@ -1912,13 +2133,14 @@ class Zebra_cURL {
     }
 
     /**
-     *  A wrapper for the _process method used when we need to pause between batches of URLs to process.
+     *  A wrapper for the {@link _process() _process} method used when we need to pause between batches of requests to
+     *  process.
      *
      *  @return null
      *
      *  @access private
      */
-    private function _process_paused($urls, $callback = '') {
+    private function _process_paused() {
 
         // while there are URLs to process
         while (!empty($urls)) {
@@ -1937,7 +2159,7 @@ class Zebra_cURL {
     }
 
     /**
-     *  A helper method used by the {@link _process()} method, which takes care of keeping a constant number of requests
+     *  A helper method used by the {@link _process()} method, taking care of keeping a constant number of requests
      *  queued, so that as soon as one request finishes another one will instantly take its place, thus making sure that
      *  the maximum allowed number of parallel threads are running all the time.
      *
@@ -1948,42 +2170,34 @@ class Zebra_cURL {
     private function _queue_requests()
     {
 
-        // get the length of the queue
-        $queue_length = count($this->_queue);
+        // get the number of remaining urls
+        $requests_count = count($this->_requests);
 
         // iterate through the items in the queue
-        for ($i = 0; $i < ($queue_length < $this->threads ? $queue_length : $this->threads); $i++) {
+        for ($i = 0; $i < ($requests_count < $this->threads ? $requests_count : $this->threads); $i++) {
 
-            // remove first URL from the queue
-            $url = array_shift($this->_queue);
+            // remove the first request from the queue
+            $request = array_shift($this->_requests);
 
             // initialize individual cURL handle with the URL
-            $handle = curl_init($url);
-
-            // make sure defaults are set
-            $this->_set_defaults();
+            $handle = curl_init($request['url']);
 
             // get the handle's ID
             $resource_number = preg_replace('/Resource id #/', '', $handle);
 
-            // save the original URL
-            // (because there may be redirects, and because "curl_getinfo" returns information only about the last
-            // request, this can be lost otherwise)
-            $this->_info['fh' . $resource_number]['original_url'] = $url;
-
             // if we're downloading something
-            if (isset($this->options[CURLOPT_BINARYTRANSFER]) && $this->options[CURLOPT_BINARYTRANSFER]) {
+            if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER]) {
 
                 // open a file and save the file pointer
-                $this->_info['fh' . $resource_number]['file_handler'] = fopen($this->download_path . basename($url), 'w');
+                $request['file_handler'] = fopen($request['path'] . basename($request['url']), 'w+');
 
-                // no headers
-                $this->option(CURLOPT_HEADER, 0);
-
-                // tell cURL to use the file for streaming the download
-                $this->option(CURLOPT_FILE, $this->_info['fh' . $resource_number]['file_handler']);
+                // tell libcurl to use the file for streaming the download
+                $this->option(CURLOPT_FILE, $request['file_handler']);
 
             }
+
+            // set request's options
+            foreach ($request['options'] as $key => $value) $this->option($key, $value);
 
             // set options for the handle
             curl_setopt_array($handle, $this->options);
@@ -1991,66 +2205,10 @@ class Zebra_cURL {
             // add the normal handle to the multi handle
             curl_multi_add_handle($this->_multi_handle, $handle);
 
+            // add request to the list of running requests
+            $this->_running['fh' . $resource_number] = $request;
+
         }
-
-    }
-
-    /**
-     *  A helper method used by the {@link _process()} method, which sets the default cURL options for each request.
-     *
-     *  @return null
-     *
-     *  @access private
-     */
-    private function _set_defaults()
-    {
-
-        // if "CURLINFO_HEADER_OUT" has not been explicitly set, make it TRUE
-        // (include the last request headers as a property of the object given as argument to the callback)
-        if (!isset($this->options[CURLINFO_HEADER_OUT])) $this->option(CURLINFO_HEADER_OUT, 1);
-
-        // if "CURLOPT_AUTOREFERER" has not been explicitly set, make it TRUE
-        // (automatically set the "Referer:" field where it follows a "Location:" redirect)
-        if (!isset($this->options[CURLOPT_AUTOREFERER])) $this->option(CURLOPT_AUTOREFERER, 1);
-
-        // if "CURLOPT_COOKIEFILE" has not been explicitly set, set it to the default value
-        // (name of the file containing the cookie data; if the name is an empty string, no cookies are
-        // loaded, but cookie handling is still enabled)
-        if (!isset($this->options[CURLOPT_COOKIEFILE])) $this->option(CURLOPT_COOKIEFILE, '');
-
-        // if "CURLOPT_CONNECTTIMEOUT" has not been explicitly set, set it to the default value
-        // (the number of seconds to wait while trying to connect)
-        if (!isset($this->options[CURLOPT_CONNECTTIMEOUT])) $this->option(CURLOPT_CONNECTTIMEOUT, 10);
-
-        // if "CURLOPT_ENCODING" has not been explicitly set, set it to the default value
-        // (the contents of the "Accept-Encoding:" header; it enables decoding of the response)
-        if (!isset($this->options[CURLOPT_ENCODING])) $this->option(CURLOPT_ENCODING, 'gzip,deflate');
-
-        // if "CURLOPT_FOLLOWLOCATION" has not been explicitly set, make it TRUE
-        // (follow any "Location:" header that the server sends as part of the HTTP header - note this is recursive
-        // and that PHP will follow as many "Location:" headers as specified by CURLOPT_MAXREDIRS)
-        if (!isset($this->options[CURLOPT_FOLLOWLOCATION])) $this->option(CURLOPT_FOLLOWLOCATION, 1);
-
-        // if "CURLOPT_HEADER" has not been explicitly set, make it TRUE
-        // (include the response header(s) as a property of the object given as argument to the callback)
-        if (!isset($this->options[CURLOPT_HEADER])) $this->option(CURLOPT_HEADER, 1);
-
-        // if "CURLOPT_MAXREDIRS" has not been explicitly set, set it to the default value
-        // (the maximum amount of HTTP redirections to follow; used together with CURLOPT_FOLLOWLOCATION)
-        if (!isset($this->options[CURLOPT_MAXREDIRS])) $this->option(CURLOPT_MAXREDIRS, 50);
-
-        // if "CURLOPT_TIMEOUT" has not been explicitly set, set it to the default value
-        // (the maximum number of seconds to allow cURL functions to execute)
-        if (!isset($this->options[CURLOPT_TIMEOUT])) $this->option(CURLOPT_TIMEOUT, 30);
-
-        // if "CURLOPT_USERAGENT" has not been explicitly set, use a random user agent
-        // (some services/websites will block the request if there's no/invalid user agent)
-        // note that the user agent will change whenever you run the script!
-        if (!isset($this->options[CURLOPT_USERAGENT])) $this->option(CURLOPT_USERAGENT, $this->_user_agent());
-
-        // "CURLOPT_RETURNTRANSFER" is always TRUE
-        // (return the transfer as a string of instead of outputting it out directly)
-        $this->option(CURLOPT_RETURNTRANSFER, 1);
 
     }
 
