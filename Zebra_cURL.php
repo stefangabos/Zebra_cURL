@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.0 (last revision: January 31, 2015)
+ *  @version    1.3.1 (last revision: February 03, 2015)
  *  @copyright  (c) 2014 - 2015 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2142,14 +2142,17 @@ class Zebra_cURL {
      */
     private function _process_paused() {
 
+        // copy all requests to another variable
+        $urls = $this->_requests;
+
         // while there are URLs to process
         while (!empty($urls)) {
 
-            // get from the entire list of URLs as many as specified by the "threads" property
-            $urls_to_process = array_splice($urls, 0, $this->threads, array());
+            // get from the entire list of requests as many as specified by the "threads" property
+            $this->_requests = array_splice($urls, 0, $this->threads, array());
 
-            // process those URLs
-            $this->_process($urls_to_process, $callback);
+            // process those requests
+            $this->_process();
 
             // wait for as many seconds as specified by the "pause_interval" property
             sleep($this->pause_interval);
