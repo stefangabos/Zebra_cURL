@@ -2009,6 +2009,19 @@ class Zebra_cURL {
                     // extend the "info" property with the original URL
                     $result->info = array('original_url' => $request['url']) + $result->info;
 
+                    // if request was a POST
+                    if (isset($request['options'][CURLOPT_POSTFIELDS]) && $request['options'][CURLOPT_POSTFIELDS]) {
+
+                        // put sent POST parameters in the response
+                        // both as string...
+                        $result->post['string'] = $request['options'][CURLOPT_POSTFIELDS];
+
+                        // ...and as an array
+                        parse_str($request['options'][CURLOPT_POSTFIELDS], $post);
+                        $result->post['array'] = $post;
+
+                    }
+
                     // last request headers
                     $result->headers['last_request'] =
 
