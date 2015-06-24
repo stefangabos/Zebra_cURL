@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.1 (last revision: February 03, 2015)
+ *  @version    1.3.1 (last revision: June 24, 2015)
  *  @copyright  (c) 2014 - 2015 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1921,7 +1921,8 @@ class Zebra_cURL {
             if ($request['callback'] != '' && !is_callable($request['callback']))
 
                 // trigger an error and stop execution
-                trigger_error('Callback function "' . $request['callback'] . '" does not exist', E_USER_ERROR);
+                // the check is for when callback functions are defined as methods of a class
+                trigger_error('Callback function "' . (is_array($request['callback']) ? array_pop($request['callback']) : $request['callback']) . '" does not exist', E_USER_ERROR);
 
             // if caching is enabled
             if ($this->cache !== false) {
