@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.1 (last revision: June 24, 2015)
+ *  @version    1.3.1 (last revision: August 03, 2015)
  *  @copyright  (c) 2014 - 2015 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -989,7 +989,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 3),
+                'arguments'         =>  array_slice($arguments, 2),
 
             );
 
