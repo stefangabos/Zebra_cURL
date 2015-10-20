@@ -510,7 +510,6 @@ class Zebra_cURL {
      *  - <b>CURLOPT_NOBODY</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
-     *  - <b>CURLOPT_USERPWD</b>
      *
      *  Files are downloaded preserving their original names, so you may want to check that if you are downloading more
      *  files having the same name!
@@ -643,7 +642,6 @@ class Zebra_cURL {
                     CURLOPT_NOBODY          =>  null,
                     CURLOPT_POST            =>  null,
                     CURLOPT_POSTFIELDS      =>  null,
-                    CURLOPT_USERPWD         =>  null,
                 ),
                 'callback'          =>  $callback,
 
@@ -680,7 +678,6 @@ class Zebra_cURL {
      *  - <b>CURLOPT_BINARYTRANSFER</b> - TRUE
      *  - <b>CURLOPT_HEADER</b> - TRUE
      *  - <b>CURLOPT_FILE</b>
-     *  - <b>CURLOPT_USERPWD</b>
      *
      *  ...and will unset the following options:
      *
@@ -688,7 +685,6 @@ class Zebra_cURL {
      *  - <b>CURLOPT_NOBODY</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
-     *  - <b>CURLOPT_USERPWD</b>
      *
      *  Files are downloaded preserving their name so you may want to check that, if you are downloading more images
      *  having the same name (either from the same, or from different servers)!
@@ -854,7 +850,6 @@ class Zebra_cURL {
      *  - <b>CURLOPT_FILE</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
-     *  - <b>CURLOPT_USERPWD</b>
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -984,7 +979,6 @@ class Zebra_cURL {
                     CURLOPT_FILE            =>  null,
                     CURLOPT_POST            =>  null,
                     CURLOPT_POSTFIELDS      =>  null,
-                    CURLOPT_USERPWD         =>  null,
                 ),
                 'callback'          =>  $callback,
 
@@ -1021,7 +1015,6 @@ class Zebra_cURL {
      *  - <b>CURLOPT_FILE</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
-     *  - <b>CURLOPT_USERPWD</b>
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1137,7 +1130,6 @@ class Zebra_cURL {
                     CURLOPT_FILE            =>  null,
                     CURLOPT_POST            =>  null,
                     CURLOPT_POSTFIELDS      =>  null,
-                    CURLOPT_USERPWD         =>  null,
                 ),
                 'callback'          =>  $callback,
 
@@ -1317,7 +1309,6 @@ class Zebra_cURL {
      *  - <b>CURLOPT_BINARYTRANSFER</b>
      *  - <b>CURLOPT_HTTPGET</b> - TRUE
      *  - <b>CURLOPT_FILE</b>
-     *  - <b>CURLOPT_USERPWD</b>
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1473,7 +1464,6 @@ class Zebra_cURL {
                     CURLOPT_BINARYTRANSFER  =>  null,
                     CURLOPT_HTTPGET         =>  null,
                     CURLOPT_FILE            =>  null,
-                    CURLOPT_USERPWD         =>  null,
                 ),
                 'callback'          =>  $callback,
 
