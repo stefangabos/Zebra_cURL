@@ -1192,6 +1192,11 @@ class Zebra_cURL {
      *  $curl->get('http://www.some-page-requiring-prior-http-authentication.com', 'mycallback');
      *  </code>
      *
+     *  If you have to unset previously set values use
+     *  <code>
+     *  $curl->http_authentication();
+     *  </code>
+     *
      *  @param  string      $username       User name to be used for authentication.
      *
      *  @param  string      $password       Password to be used for authentication.
@@ -1219,13 +1224,13 @@ class Zebra_cURL {
      *
      *  @return null
      */
-    public function http_authentication($username, $password, $type = CURLAUTH_ANY)
+    public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY)
     {
 
         // set the required options
 		$this->option(array(
-            CURLOPT_HTTPAUTH    =>  $type,
-            CURLOPT_USERPWD     =>  $username . ':' . $password,
+            CURLOPT_HTTPAUTH    =>  ($username == '' && $password == '' ? null : $type),
+            CURLOPT_USERPWD     =>  ($username == '' && $password == '' ? null ? ($username . ':' . $password)),
         ));
 
     }
