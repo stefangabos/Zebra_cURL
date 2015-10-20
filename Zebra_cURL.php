@@ -1806,7 +1806,7 @@ class Zebra_cURL {
             foreach ($this->options as $index => $value)
 
                 // if this is a curl-related constant and it is one of the options that are set, add it to the result
-                if (substr($name, 0, 7) == 'CURLOPT' && $number == $index) $result .= $name . ' => ' . var_export($value, true) . '<br>';
+                if (substr($name, 0, 7) == 'CURLOPT' && $number == $index) $result .= str_pad($index, 5, ' ', STR_PAD_LEFT) . ' ' . $name . ' => ' . var_export($value, true) . '<br>';
 
         // return the result
         return $result;
