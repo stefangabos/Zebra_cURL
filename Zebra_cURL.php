@@ -2206,6 +2206,23 @@ class Zebra_cURL {
             // set request's options
             foreach ($request['options'] as $key => $value) $this->option($key, $value);
 
+            // in some cases, CURLOPT_HTTPAUTH and CURLOPT_USERPWD need to be set as last options in order to work
+            $options_to_be_set_last = array(10005, 107);
+
+            // iterate through all the options
+            foreach ($this->options as $key => $value)
+
+                // if this option is one of those to be set at the end
+                if (in_array($key, $options_to_be_set_last)) {
+
+                    // remove the option from where it is
+                    unset($this->options[$key]);
+
+                    // add option at the end
+                    $this->options[$key] = $value;
+
+                }
+
             // set options for the handle
             curl_setopt_array($handle, $this->options);
 
