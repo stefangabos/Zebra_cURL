@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.1 (last revision: August 03, 2015)
+ *  @version    1.3.2 (last revision: October 20, 2015)
  *  @copyright  (c) 2014 - 2015 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1230,7 +1230,7 @@ class Zebra_cURL {
         // set the required options
 		$this->option(array(
             CURLOPT_HTTPAUTH    =>  ($username == '' && $password == '' ? null : $type),
-            CURLOPT_USERPWD     =>  ($username == '' && $password == '' ? null ? ($username . ':' . $password)),
+            CURLOPT_USERPWD     =>  ($username == '' && $password == '' ? null : ($username . ':' . $password)),
         ));
 
     }
