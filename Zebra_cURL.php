@@ -28,8 +28,8 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.2 (last revision: October 20, 2015)
- *  @copyright  (c) 2014 - 2015 Stefan Gabos
+ *  @version    1.3.2 (last revision: January 12, 2016)
+ *  @copyright  (c) 2014 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -1373,8 +1373,10 @@ class Zebra_cURL {
      *  ), 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $url        An associative array in the form of <i>url => post-data</i>, where "post-data" is an
+     *  @param  mixed   $urls       An associative array in the form of <i>url => post-data</i>, where "post-data" is an
      *                              associative array in the form of <i>name => value</i>.
+     *
+     *                              "post-data" can also be an arbitrary string - useful for POST-ing JSON.
      *
      *                              To post a file, prepend the filename with @ and use the full path. The file type can
      *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
