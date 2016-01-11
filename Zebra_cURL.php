@@ -29,7 +29,7 @@
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
  *  @version    1.3.2 (last revision: January 12, 2016)
- *  @copyright  (c) 2014 - 2016 Stefan Gabos
+ *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
