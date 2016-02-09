@@ -402,7 +402,7 @@ class Zebra_cURL {
      *                                  Default is 3600 (one hour).
      *
      *  @param  boolean     $compress   (Optional) If set to TRUE, cache files will be
-     *                                  {@link http://php.net/manual/ro/function.gzcompress.php gzcompress}-ed  so that
+     *                                  {@link http://php.net/manual/en/function.gzcompress.php gzcompress}-ed  so that
      *                                  they occupy less disk space.
      *
      *                                  Default is TRUE.
@@ -565,8 +565,8 @@ class Zebra_cURL {
      *  @param  mixed   $callback           (Optional) Callback function to be called as soon as a request finishes.
      *
      *                                      May be given as a string representing a name of an existing function, as an
-     *                                      anonymous function created on the fly via {@link http://www.php.net/manual/ro/function.create-function.php
-     *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
+     *                                      anonymous function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
      *                                      closure}.
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
@@ -741,8 +741,8 @@ class Zebra_cURL {
      *  @param  mixed   $callback           (Optional) Callback function to be called as soon as a request finishes.
      *
      *                                      May be given as a string representing a name of an existing function, as an
-     *                                      anonymous function created on the fly via {@link http://www.php.net/manual/ro/function.create-function.php
-     *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
+     *                                      anonymous function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
      *                                      closure}.
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
@@ -901,8 +901,8 @@ class Zebra_cURL {
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
-     *                              function created on the fly via {@link http://www.php.net/manual/ro/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
+     *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1059,8 +1059,8 @@ class Zebra_cURL {
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
-     *                              function created on the fly via {@link http://www.php.net/manual/ro/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
+     *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1382,8 +1382,8 @@ class Zebra_cURL {
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
-     *                              function created on the fly via {@link http://www.php.net/manual/ro/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/ro/function.create-function.php
+     *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
