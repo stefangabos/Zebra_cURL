@@ -459,7 +459,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function cookies($path, $keep = false)
+    public function cookies($path)
     {
         // file does not exist
         if (!is_file($path)) {
