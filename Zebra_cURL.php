@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.2 (last revision: January 12, 2016)
+ *  @version    1.3.3 (last revision: January 12, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -424,7 +424,7 @@ class Zebra_cURL {
      *
      *                                  Default is "0755" (without the quotes).
      *
-     *  @return null
+     *  @return void
      */
     public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755)
     {
@@ -457,13 +457,7 @@ class Zebra_cURL {
      *                              If file does not exist the library will attempt to create it, and if it is unable to
      *                              create it will trigger an error.
      *
-     *  @param  boolean     $keep   (Optional)  By default, the file to save to / retrieve cookies from is deleted when
-     *                              script execution finishes. If you want the file to be preserved, set this argument to
-     *                              TRUE.
-     *
-     *                              Default is FALSE.
-     *
-     *  @return null
+     *  @return void
      */
     public function cookies($path, $keep = false)
     {
@@ -483,8 +477,8 @@ class Zebra_cURL {
 
         // set these options
         $this->option(array(
-            CURLOPT_COOKIEJAR   =>  $path,
-            CURLOPT_COOKIEFILE  =>  $path,
+            CURLOPT_COOKIEJAR   =>  $path,  //  for writing
+            CURLOPT_COOKIEFILE  =>  $path,  //  for reading
         ));
 
     }
@@ -615,7 +609,7 @@ class Zebra_cURL {
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                              to see the possible values of this property;
      *
-     *  @return null
+     *  @return void
      */
     public function download($urls, $path, $callback = '')
     {
@@ -788,7 +782,7 @@ class Zebra_cURL {
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                              to see the possible values of this property;
      *
-     *  @return null
+     *  @return void
      */
     public function ftp_download($urls, $path, $username = '', $password = '', $callback = '')
     {
@@ -955,7 +949,7 @@ class Zebra_cURL {
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
      *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
-     *  @return null
+     *  @return void
      */
     public function get($urls, $callback = '')
     {
@@ -1106,7 +1100,7 @@ class Zebra_cURL {
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
      *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
-     *  @return null
+     *  @return void
      */
     public function header($urls, $callback = '')
     {
@@ -1222,7 +1216,7 @@ class Zebra_cURL {
      *
      *                                      Default is <b>CURLAUTH_ANY</b>.
      *
-     *  @return null
+     *  @return void
      */
     public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY)
     {
@@ -1269,7 +1263,7 @@ class Zebra_cURL {
      *
      *                              <i>Setting a value to</i> <b>null</b> <i>will "unset" that option.</i>
      *
-     *  @return null
+     *  @return void
      *
      */
     public function option($option, $value = '')
@@ -1444,7 +1438,7 @@ class Zebra_cURL {
      *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
      *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
-     *  @return null
+     *  @return void
      */
     public function post($urls, $callback = '')
     {
@@ -1566,7 +1560,7 @@ class Zebra_cURL {
      *                                  and setting </i> <b>CURLOPT_PROXYUSERPWD</b> <i> option to the desired value
      *                                  formatted like </i> <b>[username]:[password]</b>.     .
      *
-     *  @return null
+     *  @return void
      */
     public function proxy($proxy, $port = 80, $username = '', $password = '')
     {
@@ -1670,7 +1664,7 @@ class Zebra_cURL {
      *
      *  @since 1.3.0
      *
-     *  @return null
+     *  @return void
      */
     public function queue()
     {
@@ -1741,7 +1735,7 @@ class Zebra_cURL {
      *                                          <i>This option can also be set using the {@link option()} method and
      *                                          setting </i> <b>CURLOPT_CAPATH</b> <i> option to the desired value</i>.
      *
-     *  @return null
+     *  @return void
      */
     public function ssl($verify_peer = false, $verify_host = 2, $file = false, $path = false)
     {
@@ -1779,7 +1773,7 @@ class Zebra_cURL {
      *
      *  @since 1.3.0
      *
-     *  @return null
+     *  @return void
      */
     public function start() {
 
@@ -1898,7 +1892,7 @@ class Zebra_cURL {
     /**
      *  Does the actual work.
      *
-     *  @return null
+     *  @return void
      *
      *  @access private
      */
@@ -2147,7 +2141,7 @@ class Zebra_cURL {
      *  A wrapper for the {@link _process() _process} method used when we need to pause between batches of requests to
      *  process.
      *
-     *  @return null
+     *  @return void
      *
      *  @access private
      */
@@ -2177,7 +2171,7 @@ class Zebra_cURL {
      *  queued, so that as soon as one request finishes another one will instantly take its place, thus making sure that
      *  the maximum allowed number of parallel threads are running all the time.
      *
-     *  @return null
+     *  @return void
      *
      *  @access private
      */
@@ -2249,7 +2243,7 @@ class Zebra_cURL {
      *
      *  Some web services will not respond unless a valid user-agent string is provided.
      *
-     *  @return null
+     *  @return void
      *
      *  @access private
      */
