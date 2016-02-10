@@ -1,6 +1,12 @@
-##Zebra_cURL
+# Zebra_cURL
 
 ####A high performance PHP cURL library
+
+----
+
+[Packagist](https://packagist.org/) stats
+
+[![Latest Stable Version](https://poser.pugx.org/stefangabos/zebra_curl/v/stable)](https://packagist.org/packages/stefangabos/zebra_curl) [![Total Downloads](https://poser.pugx.org/stefangabos/zebra_curl/downloads)](https://packagist.org/packages/stefangabos/zebra_curl) [![Monthly Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/monthly)](https://packagist.org/packages/stefangabos/zebra_curl) [![Daily Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/daily)](https://packagist.org/packages/stefangabos/zebra_curl) [![License](https://poser.pugx.org/stefangabos/zebra_curl/license)](https://packagist.org/packages/stefangabos/zebra_curl)
 
 **Zebra_cURL** is a high performance PHP library acting as a wrapper to PHP’s <a href="http://www.php.net/manual/en/book.curl.php">libcurl library</a>, which not only allows the running of multiple requests at once asynchronously, in parallel, but also as soon as one thread finishes it can be processed right away without having to wait for the other threads in the queue to finish.
 
