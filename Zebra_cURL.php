@@ -642,9 +642,6 @@ class Zebra_cURL {
         // if "urls" argument is not an array, trigger an error
         if (!is_array($urls)) trigger_error('First argument to "delete" method must be an array!', E_USER_ERROR);
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values)
 
@@ -665,7 +662,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 2),
+                'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
 
@@ -818,9 +815,6 @@ class Zebra_cURL {
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url)
 
@@ -841,7 +835,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 3),
+                'arguments'         =>  array_slice(func_get_args(), 3),
 
             );
 
@@ -995,9 +989,6 @@ class Zebra_cURL {
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url)
 
@@ -1019,7 +1010,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 5),
+                'arguments'         =>  array_slice(func_get_args(), 5),
 
             );
 
@@ -1163,9 +1154,6 @@ class Zebra_cURL {
     public function get($urls, $callback = '')
     {
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url)
 
@@ -1186,7 +1174,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 2),
+                'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
 
@@ -1315,9 +1303,6 @@ class Zebra_cURL {
     public function header($urls, $callback = '')
     {
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ($urls as $url)
 
@@ -1338,7 +1323,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 2),
+                'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
 
@@ -1657,9 +1642,6 @@ class Zebra_cURL {
         // if "urls" argument is not an array, trigger an error
         if (!is_array($urls)) trigger_error('First argument to "post" method must be an array!', E_USER_ERROR);
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values)
 
@@ -1680,7 +1662,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 2),
+                'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
 
@@ -1954,9 +1936,6 @@ class Zebra_cURL {
         // if "urls" argument is not an array, trigger an error
         if (!is_array($urls)) trigger_error('First argument to "put" method must be an array!', E_USER_ERROR);
 
-        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
-        $arguments = func_get_args();
-
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values)
 
@@ -1977,7 +1956,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice($arguments, 2),
+                'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
 
@@ -2653,8 +2632,12 @@ class Zebra_cURL {
             // if we're downloading something
             if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER]) {
 
+                // use parse_url to analyze the string
+                // we use this so we won't have hashtags and/or query string in the file's name later on
+                $parsed = parse_url($request['url']);
+
                 // open a file and save the file pointer
-                $request['file_handler'] = fopen($request['path'] . basename($request['url']), 'w+');
+                $request['file_handler'] = fopen($request['path'] . basename($parsed['path']), 'w+');
 
                 // tell libcurl to use the file for streaming the download
                 $this->option(CURLOPT_FILE, $request['file_handler']);
