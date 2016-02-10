@@ -16,7 +16,7 @@ The code is heavily commented and generates no warnings/errors/notices when PHPâ
 
 ##Features
 
-- supports GET (with caching) and POST request, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
+- supports GET (with caching), POST, HEADER, PUT, DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
 - allows the running of multiple requests at once asynchronously, in parallel, but also as soon as one thread finishes it can be processed right away without having to wait for the other threads in the queue to finish
 - downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from the server of having to read files into memory first, and then writing them to disk
 - provides a very detailed information about the made requests
@@ -29,10 +29,27 @@ PHP 5.0.2+ with the cURL extension installed
 
 ## How to use
 
+**Scrap a page**
+
+```php
+// include the library
+require 'path/to/Zebra_cURL.php';
+
+// instantiate the Zebra_cURL class
+$curl = new Zebra_cURL();
+
+// cache results 3600 seconds
+$curl->cache('cache', 3600);
+
+// a simple way of scrapping a page
+// (you can do more with the "get" method and callback functions)
+echo $curl->scrap('https://google.com', true);
+```
+
 **Fetch RSS feeds**
 
 ```php
-function mycallback($result) {
+function callback($result, $feeds) {
 
     // everything went well at cURL level
     if ($result->response[1] == CURLE_OK) {
@@ -41,12 +58,26 @@ function mycallback($result) {
         // see http://httpstatus.es/ for a list of possible response codes
         if ($result->info['http_code'] == 200) {
 
-            // see all the returned data
-            // remember, the "body" property of $result is run through
-            // "htmlentities()", so you may need to "html_entity_decode" it
-            // (unless you call the constructor with the FALSE argument)
-            print_r('<pre>');
-            print_r($result);
+            // the content is an XML, process it
+            $xml = simplexml_load_string($result->body);
+
+            // different types of RSS feeds...
+            if (isset($xml->channel->item))
+
+                // show title and date for each entry
+                foreach ($xml->channel->item as $entry) {
+                    echo '<h2><span>' . $feeds[$result->info['original_url']] . '</span> <a href="' . $entry->link . '">' . $entry->title . '</a></h2>';
+                    echo '<p>' . $entry->pubDate . '</p><hr>';
+                }
+
+            // different types of RSS feeds...
+            else
+
+                // show title and date for each entry
+                foreach ($xml->entry as $entry) {
+                    echo '<h2><span>' . $feeds[$result->info['original_url']] . '</span> <a href="' . $entry->link['href'] . '">' . $entry->title . '</a></h2>';
+                    echo '<p>' . $entry->updated . '</p><hr>';
+                }
 
         // show the server's response code
         } else die('Server responded with code ' . $result->info['http_code']);
@@ -57,33 +88,28 @@ function mycallback($result) {
 
 }
 
+// include the library
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra_cURL class
 $curl = new Zebra_cURL();
 
-// cache results 60 seconds
-$curl->cache('cache', 60);
+// cache results 3600 seconds
+$curl->cache('cache', 3600);
+
+$feeds = array(
+    'http://rss1.smashingmagazine.com/feed/'        =>  'Smashing Magazine',
+    'http://feeds.feedburner.com/nettuts'           =>  'TutsPlus',
+    'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
+);
 
 // get RSS feeds of some popular tech websites
-$curl->get(array(
-    'http://rss1.smashingmagazine.com/feed/',
-    'http://allthingsd.com/feed/',
-    'http://feeds.feedburner.com/nettuts',
-    'http://www.webmonkey.com/feed/',
-    'http://feeds.feedburner.com/alistapart/main',
-), 'callback');
-
-?>
-
+$curl->get(array_keys($feeds), 'callback', $feeds);
 ```
 
 **Download an image**
 
 ```php
-
-<?php
-
 // include the library
 require 'path/to/Zebra_cURL.php';
 
@@ -92,9 +118,6 @@ $curl = new Zebra_cURL();
 
 // download one of the official twitter image
 $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
-
-?>
-
 ```
 
 Documentation and more information can be found on the **[project's homepage](http://stefangabos.ro/php-libraries/zebra-curl/)**
