@@ -995,6 +995,9 @@ class Zebra_cURL {
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
+        $arguments = func_get_args();
+
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url)
 
