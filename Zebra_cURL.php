@@ -567,7 +567,7 @@ class Zebra_cURL {
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
-     *                              as described below, while any further arguments passed to the {@link put} method
+     *                              as described below, while any further arguments passed to the {@link delete} method
      *                              will be passed as extra arguments to the callback function:
      *
      *                              -   <b>info</b>     -   an associative array containing information about the request
@@ -614,9 +614,6 @@ class Zebra_cURL {
      *                                                      <i>array(CURLE_OK, 0);</i> consult
      *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                      to see the possible values of this property;
-     *
-     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
-     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @since 1.3.3
      *
@@ -1623,9 +1620,6 @@ class Zebra_cURL {
      *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                      to see the possible values of this property;
      *
-     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
-     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
-     *
      *  @return void
      */
     public function post($urls, $callback = '')
@@ -1918,9 +1912,6 @@ class Zebra_cURL {
      *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                      to see the possible values of this property;
      *
-     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
-     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
-     *
      *  @since 1.3.3
      *
      *  @return void
@@ -1973,10 +1964,11 @@ class Zebra_cURL {
      *  Instructs the library to queue requests rather than processing them right away. Useful for grouping different
      *  types of requests and treat them as a single request.
      *
-     *  Until {@link start() start} method is called, all calls to {@link download() download}, {@link ftp_download ftp_download},
-     *  {@link get() get}, {@link header() header} and {@link post() post} methods will queue up rather than being
-     *  executed right away. Once the {@link start() start} method is called, all queued requests will be processed while
-     *  values of {@link $threads threads} and {@link $pause_interval pause_interval} properties will still apply.
+     *  Until {@link start() start} method is called, all calls to {@link delete() delete}, {@link download() download},
+     *  {@link ftp_download ftp_download}, {@link get() get}, {@link header() header}, {@link post() post} and {@link put() put}
+     *  methods will queue up rather than being executed right away. Once the {@link start() start} method is called,
+     *  all queued requests will be processed while values of {@link $threads threads} and {@link $pause_interval pause_interval}
+     *  properties will still apply.
      *
      *  <code>
      *  // the callback function to be executed for each and every
