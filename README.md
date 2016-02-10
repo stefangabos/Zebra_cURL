@@ -39,7 +39,7 @@ require 'path/to/Zebra_cURL.php';
 $curl = new Zebra_cURL();
 
 // cache results 3600 seconds
-$curl->cache('cache', 3600);
+$curl->cache('path/to/cache', 3600);
 
 // a simple way of scrapping a page
 // (you can do more with the "get" method and callback functions)
@@ -95,7 +95,7 @@ require 'path/to/Zebra_cURL.php';
 $curl = new Zebra_cURL();
 
 // cache results 3600 seconds
-$curl->cache('cache', 3600);
+$curl->cache('path/to/cache', 3600);
 
 $feeds = array(
     'http://rss1.smashingmagazine.com/feed/'        =>  'Smashing Magazine',
