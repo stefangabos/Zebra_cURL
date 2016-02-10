@@ -31,7 +31,7 @@ The code is heavily commented and generates no warnings/errors/notices when PHPâ
 
 ## Requirements
 
-PHP 5.0.2+ with the cURL extension installed
+PHP 5.3.0+ with the cURL extension installed
 
 ## How to use
 

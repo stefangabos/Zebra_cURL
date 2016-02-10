@@ -577,7 +577,7 @@ class Zebra_cURL {
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
      *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -764,7 +764,7 @@ class Zebra_cURL {
      *
      *                                      May be given as a string representing a name of an existing function, as an
      *                                      anonymous function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                                      create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                                      closure}.
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
@@ -944,7 +944,7 @@ class Zebra_cURL {
      *
      *                                      May be given as a string representing a name of an existing function, as an
      *                                      anonymous function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                                      create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                                      create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                                      closure}.
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
@@ -1111,7 +1111,7 @@ class Zebra_cURL {
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
      *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1270,7 +1270,7 @@ class Zebra_cURL {
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
      *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1594,7 +1594,7 @@ class Zebra_cURL {
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
      *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1889,7 +1889,7 @@ class Zebra_cURL {
      *
      *                              May be given as a string representing a name of an existing function, as an anonymous
      *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
-     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or via a {@link http://www.php.net/manual/en/function.create-function.php
      *                              closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
