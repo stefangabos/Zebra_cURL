@@ -394,8 +394,9 @@ class Zebra_cURL {
      *
      *                                  Setting this to FALSE will disable caching.
      *
-     *                                  <i>Unless set to FALSE, this must point to a writable directory or an error will
-     *                                  be triggered!</i>
+     *                                  <i>If set to a non-existing path, the library will try to create the folder
+     *                                  and will trigger an error if, for whatever reasons, it is unable to do so. If the
+     *                                  folder can be created, its permissions will be set to the value of $chmod</i>
      *
      *  @param  integer     $lifetime   (Optional) The number of seconds after which cache will be considered expired.
      *
@@ -430,7 +431,10 @@ class Zebra_cURL {
     {
 
         // if caching is not explicitly disabled
-        if ($path != false)
+        if ($path != false) {
+
+            // if path doesn't exist, attempt to create it
+            if (!is_dir($path)) @mkdir($path, $chmod, true);
 
             // save cache-related properties
             $this->cache = array(
@@ -441,7 +445,7 @@ class Zebra_cURL {
             );
 
         // if caching is explicitly disabled, set this property to FALSE
-        else $this->cache = false;
+        } else $this->cache = false;
 
     }
 
