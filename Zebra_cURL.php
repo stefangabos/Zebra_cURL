@@ -619,6 +619,9 @@ class Zebra_cURL {
      *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                      to see the possible values of this property;
      *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
+     *
      *  @since 1.3.3
      *
      *  @return void
@@ -794,6 +797,9 @@ class Zebra_cURL {
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                              to see the possible values of this property;
      *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
+     *
      *  @return void
      */
     public function download($urls, $path, $callback = '')
@@ -967,6 +973,9 @@ class Zebra_cURL {
      *                                                              be <i>array(CURLE_OK, 0);</i> consult
      *                                                              {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                              to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @return void
      */
@@ -1624,6 +1633,9 @@ class Zebra_cURL {
      *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                      to see the possible values of this property;
      *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
+     *
      *  @return void
      */
     public function post($urls, $callback = '')
@@ -1915,6 +1927,9 @@ class Zebra_cURL {
      *                                                      <i>array(CURLE_OK, 0);</i> consult
      *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
      *                                                      to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
      *
      *  @since 1.3.3
      *
