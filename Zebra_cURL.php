@@ -865,7 +865,7 @@ class Zebra_cURL {
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
      *
-     *  Files are downloaded preserving their name so you may want to check that, if you are downloading more images
+     *  Files are downloaded preserving their name so you may want to check that, if you are downloading more files
      *  having the same name (either from the same, or from different servers)!
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
