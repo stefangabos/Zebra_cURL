@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.3 (last revision: February 10, 2016)
+ *  @version    1.3.3 (last revision: February 11, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2132,7 +2132,7 @@ class Zebra_cURL {
      *
      *  @param  boolean     $verify_peer        (Optional) Should the peer's certificate be verified by cURL?
      *
-     *                                          Default is FALSE.
+     *                                          Default is TRUE.
      *
      *                                          <i>This option can also be set using the {@link option} method and
      *                                          setting </i> <b>CURLOPT_SSL_VERIFYPEER</b> <i> option to the desired value</i>.
@@ -2173,7 +2173,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function ssl($verify_peer = false, $verify_host = 2, $file = false, $path = false)
+    public function ssl($verify_peer = true, $verify_host = 2, $file = false, $path = false)
     {
 
         // set default options
