@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.3 (last revision: January 12, 2016)
+ *  @version    1.3.3 (last revision: February 10, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -484,6 +484,189 @@ class Zebra_cURL {
     }
 
     /**
+     *  Performs an HTTP <b>DELETE</b> request to one or more URLs with the POST data as specified by the <i>$urls</i> argument,
+     *  and executes the callback function specified by the <i>$callback</i> argument for each and every request, as soon
+     *  as a request finishes.
+     *
+     *  This method will automatically set the following options:
+     *
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_CUSTOMREQUEST</b> - "DELETE"
+     *  - <b>CURLOPT_HEADER</b> - TRUE
+     *  - <b>CURLOPT_NOBODY</b> - FALSE
+     *  - <b>CURLOPT_POST</b> - FALSE
+     *  - <b>CURLOPT_POSTFIELDS</b> - the POST data
+     *
+     *  ...and will unset the following options:
+     *
+     *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_HTTPGET</b> - TRUE
+     *  - <b>CURLOPT_FILE</b>
+     *
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
+     *
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
+     *
+     *  <code>
+     *  // the callback function to be executed for each and every
+     *  // request, as soon as a request finishes
+     *  // the callback function receives as argument an object with 4 properties
+     *  // (info, header, body and response)
+     *  function mycallback($result) {
+     *
+     *      // everything went well at cURL level
+     *      if ($result->response[1] == CURLE_OK) {
+     *
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
+     *
+     *      // something went wrong
+     *      // ($result still contains all data that could be gathered)
+     *      } else die('cURL responded with: ' . $result->response[0]);
+     *
+     *  }
+     *
+     *  // include the Zebra_cURL library
+     *  require 'path/to/Zebra_cURL';
+     *
+     *  // instantiate the Zebra_cURL object
+     *  $curl = new Zebra_cURL();
+     *
+     *  // do a PUT and execute the "mycallback" function for each
+     *  // request, as soon as it finishes
+     *  $curl->delete(array(
+     *      'http://www.somewebsite.com'  =>  array(
+     *          'data_1'  =>  'value 1',
+     *          'data_2'  =>  'value 2',
+     *      ),
+     *  ), 'mycallback');
+     *  </code>
+     *
+     *  @param  mixed   $urls       An associative array in the form of <i>url => delete-data</i>, where "delete-data" is an
+     *                              associative array in the form of <i>name => value</i>.
+     *
+     *                              "delete-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *
+     *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
+     *
+     *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
+     *
+     *                              May be given as a string representing a name of an existing function, as an anonymous
+     *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              closure}.
+     *
+     *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
+     *                              as described below, while any further arguments passed to the {@link put} method
+     *                              will be passed as extra arguments to the callback function:
+     *
+     *                              -   <b>info</b>     -   an associative array containing information about the request
+     *                                                      that just finished, as returned by PHP's
+     *                                                      {@link http://php.net/manual/en/function.curl-getinfo.php curl_getinfo()}
+     *                                                      function;
+     *
+     *                              -   <b>headers</b>  -   an associative array with 2 items:
+     *
+     *                                                      <b>- last_request</b> an array with a single entry containing
+     *                                                      the request headers generated by <i>the last request</i>; so,
+     *                                                      remember, if there are redirects involved, there will be more
+     *                                                      requests made, but only information from the last one will be
+     *                                                      available; if explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLINFO_HEADER_OUT</b> to 0 or FALSE,
+     *                                                      this will be an empty string;
+     *
+     *                                                      <b>- responses</b> an array with one or more entries (if there
+     *                                                      are redirects involved) with the response headers of all the
+     *                                                      requests made; if explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLOPT_HEADER</b> to 0 or FALSE, this
+     *                                                      will be an empty string;
+     *
+     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      associative array in the form of property => value</i>
+     *
+     *                              -   <b>body</b> -       the response of the request (the content of the page at the
+     *                                                      URL).
+     *
+     *                                                      Unless disabled via the {@link __construct() constructor}, all
+     *                                                      applicable characters will be converted to HTML entities via
+     *                                                      PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
+     *                                                      function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
+     *                                                      function to do reverse this, if it's the case;
+     *
+     *                                                      If "body" is explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
+     *                                                      will be an empty string;
+     *
+     *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
+     *                                                      entries: the first entry is the textual representation of the
+     *                                                      result's code, while second is the result's code itself; if
+     *                                                      the request was successful, these values will be
+     *                                                      <i>array(CURLE_OK, 0);</i> consult
+     *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
+     *                                                      to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
+     *
+     *  @since 1.3.3
+     *
+     *  @return void
+     */
+    public function delete($urls, $callback = '')
+    {
+
+        // if "urls" argument is not an array, trigger an error
+        if (!is_array($urls)) trigger_error('First argument to "delete" method must be an array!', E_USER_ERROR);
+
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
+        $arguments = func_get_args();
+
+        // iterate through the list of URLs to process
+        foreach ((array)$urls as $url => $values)
+
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'url'               =>  $url,
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_CUSTOMREQUEST   =>  'DELETE',
+                    CURLOPT_HEADER          =>  1,
+                    CURLOPT_NOBODY          =>  0,
+                    CURLOPT_POST            =>  0,
+                    CURLOPT_POSTFIELDS      =>  is_array($values) ? http_build_query($values, NULL, '&') : $values,
+                    CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_HTTPGET         =>  null,
+                    CURLOPT_FILE            =>  null,
+                ),
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 2),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
+
+    }
+
+    /**
      *  Downloads one or more files from one or more URLs specified by the <i>$urls</i> argument, saves the downloaded
      *  files (with their original name) to the path specified by the <i>$path</i> argument, and executes the callback
      *  function specified by the <i>$callback</i> argument for each and every request, as soon as a request finishes.
@@ -500,6 +683,7 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
+     *  - <b>CURLOPT_CUSTOMREQUEST</b>
      *  - <b>CURLOPT_HTTPGET</b>
      *  - <b>CURLOPT_NOBODY</b>
      *  - <b>CURLOPT_POST</b>
@@ -625,13 +809,13 @@ class Zebra_cURL {
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'type'              =>  'download',
                 'url'               =>  $url,
                 'path'              =>  rtrim($path, '/\\') . '/',
                 'options'           =>  array(
                     CURLINFO_HEADER_OUT     =>  1,
                     CURLOPT_BINARYTRANSFER  =>  1,
                     CURLOPT_HEADER          =>  0,
+                    CURLOPT_CUSTOMREQUEST   =>  null,
                     CURLOPT_HTTPGET         =>  null,
                     CURLOPT_NOBODY          =>  null,
                     CURLOPT_POST            =>  null,
@@ -675,6 +859,7 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
+     *  - <b>CURLOPT_CUSTOMREQUEST</b>
      *  - <b>CURLOPT_HTTPGET</b>
      *  - <b>CURLOPT_NOBODY</b>
      *  - <b>CURLOPT_POST</b>
@@ -795,7 +980,6 @@ class Zebra_cURL {
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'type'              =>  'download',
                 'url'               =>  $url,
                 'path'              =>  rtrim($path, '/\\') . '/',
                 'options'           =>  array(
@@ -803,6 +987,7 @@ class Zebra_cURL {
                     CURLOPT_BINARYTRANSFER  =>  1,
                     CURLOPT_HEADER          =>  0,
                     CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
+                    CURLOPT_CUSTOMREQUEST   =>  null,
                     CURLOPT_HTTPGET         =>  null,
                     CURLOPT_NOBODY          =>  null,
                     CURLOPT_POST            =>  null,
@@ -841,6 +1026,7 @@ class Zebra_cURL {
      *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_CUSTOMREQUEST</b>
      *  - <b>CURLOPT_FILE</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
@@ -962,7 +1148,6 @@ class Zebra_cURL {
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'type'              =>  'get',
                 'url'               =>  $url,
                 'options'           =>  array(
                     CURLINFO_HEADER_OUT     =>  1,
@@ -970,6 +1155,7 @@ class Zebra_cURL {
                     CURLOPT_HTTPGET         =>  1,
                     CURLOPT_NOBODY          =>  0,
                     CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_CUSTOMREQUEST   =>  null,
                     CURLOPT_FILE            =>  null,
                     CURLOPT_POST            =>  null,
                     CURLOPT_POSTFIELDS      =>  null,
@@ -1006,6 +1192,7 @@ class Zebra_cURL {
      *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_CUSTOMREQUEST</b>
      *  - <b>CURLOPT_FILE</b>
      *  - <b>CURLOPT_POST</b>
      *  - <b>CURLOPT_POSTFIELDS</b>
@@ -1113,7 +1300,6 @@ class Zebra_cURL {
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'type'              =>  'header',
                 'url'               =>  $url,
                 'options'           =>  array(
                     CURLINFO_HEADER_OUT     =>  1,
@@ -1121,6 +1307,7 @@ class Zebra_cURL {
                     CURLOPT_HTTPGET         =>  1,
                     CURLOPT_NOBODY          =>  1,
                     CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_CUSTOMREQUEST   =>  null,
                     CURLOPT_FILE            =>  null,
                     CURLOPT_POST            =>  null,
                     CURLOPT_POSTFIELDS      =>  null,
@@ -1306,6 +1493,7 @@ class Zebra_cURL {
      *  ...and will unset the following options:
      *
      *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_CUSTOMREQUEST</b>
      *  - <b>CURLOPT_HTTPGET</b> - TRUE
      *  - <b>CURLOPT_FILE</b>
      *
@@ -1370,7 +1558,7 @@ class Zebra_cURL {
      *  @param  mixed   $urls       An associative array in the form of <i>url => post-data</i>, where "post-data" is an
      *                              associative array in the form of <i>name => value</i>.
      *
-     *                              "post-data" can also be an arbitrary string - useful for POST-ing JSON.
+     *                              "post-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
      *
      *                              To post a file, prepend the filename with @ and use the full path. The file type can
      *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
@@ -1454,7 +1642,6 @@ class Zebra_cURL {
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'type'              =>  'post',
                 'url'               =>  $url,
                 'options'           =>  array(
                     CURLINFO_HEADER_OUT     =>  1,
@@ -1463,6 +1650,7 @@ class Zebra_cURL {
                     CURLOPT_POST            =>  1,
                     CURLOPT_POSTFIELDS      =>  is_array($values) ? http_build_query($values, NULL, '&') : $values,
                     CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_CUSTOMREQUEST   =>  null,
                     CURLOPT_HTTPGET         =>  null,
                     CURLOPT_FILE            =>  null,
                 ),
@@ -1590,6 +1778,194 @@ class Zebra_cURL {
                 CURLOPT_PROXY               =>  null,
                 CURLOPT_PROXYPORT           =>  null,
             ));
+
+    }
+
+    /**
+     *  Performs an HTTP <b>PUT</b> request to one or more URLs with the POST data as specified by the <i>$urls</i> argument,
+     *  and executes the callback function specified by the <i>$callback</i> argument for each and every request, as soon
+     *  as a request finishes.
+     *
+     *  This method will automatically set the following options:
+     *
+     *  - <b>CURLINFO_HEADER_OUT</b> - TRUE
+     *  - <b>CURLOPT_CUSTOMREQUEST</b> - "PUT"
+     *  - <b>CURLOPT_HEADER</b> - TRUE
+     *  - <b>CURLOPT_NOBODY</b> - FALSE
+     *  - <b>CURLOPT_POST</b> - FALSE
+     *  - <b>CURLOPT_POSTFIELDS</b> - the POST data
+     *
+     *  ...and will unset the following options:
+     *
+     *  - <b>CURLOPT_BINARYTRANSFER</b>
+     *  - <b>CURLOPT_HTTPGET</b> - TRUE
+     *  - <b>CURLOPT_FILE</b>
+     *
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  can be set through the {@link threads} property. See also the {@link $pause_interval pause_interval} property.
+     *
+     *  <i>Note that requests may not finish in the same order as initiated!</i>
+     *
+     *  <code>
+     *  // the callback function to be executed for each and every
+     *  // request, as soon as a request finishes
+     *  // the callback function receives as argument an object with 4 properties
+     *  // (info, header, body and response)
+     *  function mycallback($result) {
+     *
+     *      // everything went well at cURL level
+     *      if ($result->response[1] == CURLE_OK) {
+     *
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see http://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else die('Server responded with code ' . $result->info['http_code']);
+     *
+     *      // something went wrong
+     *      // ($result still contains all data that could be gathered)
+     *      } else die('cURL responded with: ' . $result->response[0]);
+     *
+     *  }
+     *
+     *  // include the Zebra_cURL library
+     *  require 'path/to/Zebra_cURL';
+     *
+     *  // instantiate the Zebra_cURL object
+     *  $curl = new Zebra_cURL();
+     *
+     *  // do a PUT and execute the "mycallback" function for each
+     *  // request, as soon as it finishes
+     *  $curl->put(array(
+     *      'http://www.somewebsite.com'  =>  array(
+     *          'data_1'  =>  'value 1',
+     *          'data_2'  =>  'value 2',
+     *      ),
+     *  ), 'mycallback');
+     *  </code>
+     *
+     *  @param  mixed   $urls       An associative array in the form of <i>url => put-data</i>, where "put-data" is an
+     *                              associative array in the form of <i>name => value</i>.
+     *
+     *                              "put-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *
+     *                              To put a file, prepend the filename with @ and use the full path. The file type can
+     *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
+     *                              You should always specify the mime type as most of the times cURL will send the wrong
+     *                              mime type...
+     *
+     *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
+     *
+     *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
+     *
+     *                              May be given as a string representing a name of an existing function, as an anonymous
+     *                              function created on the fly via {@link http://www.php.net/manual/en/function.create-function.php
+     *                              create_function} or, as of PHP 5.3.0, via a {@link http://www.php.net/manual/en/function.create-function.php
+     *                              closure}.
+     *
+     *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
+     *                              as described below, while any further arguments passed to the {@link put} method
+     *                              will be passed as extra arguments to the callback function:
+     *
+     *                              -   <b>info</b>     -   an associative array containing information about the request
+     *                                                      that just finished, as returned by PHP's
+     *                                                      {@link http://php.net/manual/en/function.curl-getinfo.php curl_getinfo()}
+     *                                                      function;
+     *
+     *                              -   <b>headers</b>  -   an associative array with 2 items:
+     *
+     *                                                      <b>- last_request</b> an array with a single entry containing
+     *                                                      the request headers generated by <i>the last request</i>; so,
+     *                                                      remember, if there are redirects involved, there will be more
+     *                                                      requests made, but only information from the last one will be
+     *                                                      available; if explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLINFO_HEADER_OUT</b> to 0 or FALSE,
+     *                                                      this will be an empty string;
+     *
+     *                                                      <b>- responses</b> an array with one or more entries (if there
+     *                                                      are redirects involved) with the response headers of all the
+     *                                                      requests made; if explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLOPT_HEADER</b> to 0 or FALSE, this
+     *                                                      will be an empty string;
+     *
+     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      associative array in the form of property => value</i>
+     *
+     *                              -   <b>body</b> -       the response of the request (the content of the page at the
+     *                                                      URL).
+     *
+     *                                                      Unless disabled via the {@link __construct() constructor}, all
+     *                                                      applicable characters will be converted to HTML entities via
+     *                                                      PHP's {@link http://php.net/manual/en/function.htmlentities.php htmlentities()}
+     *                                                      function, so remember to use PHP's {@link http://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode()}
+     *                                                      function to do reverse this, if it's the case;
+     *
+     *                                                      If "body" is explicitly disabled via the {@link option()}
+     *                                                      method by setting <b>CURLOPT_NOBODY</b> to 0 or FALSE, this
+     *                                                      will be an empty string;
+     *
+     *                              -   <b>response</b> -   the response given by the cURL library as an array with 2
+     *                                                      entries: the first entry is the textual representation of the
+     *                                                      result's code, while second is the result's code itself; if
+     *                                                      the request was successful, these values will be
+     *                                                      <i>array(CURLE_OK, 0);</i> consult
+     *                                                      {@link http://www.php.net/manual/en/function.curl-errno.php#103128 this list}
+     *                                                      to see the possible values of this property;
+     *
+     *  <samp>If the callback function returns FALSE  while {@link cache} is enabled, the library will not cache the
+     *  respective request, making it easy to retry failed requests without having to clear all cache.</samp>
+     *
+     *  @since 1.3.3
+     *
+     *  @return void
+     */
+    public function put($urls, $callback = '')
+    {
+
+        // if "urls" argument is not an array, trigger an error
+        if (!is_array($urls)) trigger_error('First argument to "put" method must be an array!', E_USER_ERROR);
+
+        // prior to PHP 5.3, func_get_args() cannot be used as a function parameter, so we need this intermediary step
+        $arguments = func_get_args();
+
+        // iterate through the list of URLs to process
+        foreach ((array)$urls as $url => $values)
+
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+                'url'               =>  $url,
+                'options'           =>  array(
+                    CURLINFO_HEADER_OUT     =>  1,
+                    CURLOPT_CUSTOMREQUEST   =>  'PUT',
+                    CURLOPT_HEADER          =>  1,
+                    CURLOPT_NOBODY          =>  0,
+                    CURLOPT_POST            =>  0,
+                    CURLOPT_POSTFIELDS      =>  is_array($values) ? http_build_query($values, NULL, '&') : $values,
+                    CURLOPT_BINARYTRANSFER  =>  null,
+                    CURLOPT_HTTPGET         =>  null,
+                    CURLOPT_FILE            =>  null,
+                ),
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice($arguments, 2),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
