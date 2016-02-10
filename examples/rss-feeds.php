@@ -1,6 +1,33 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Minimalist RSS reader</title>
+    <style type="text/css">
+    h2 {
+        font-family: Tahoma;
+        font-size: 18px;
+        margin: 1em 0 0;
+    }
+    h2 span {
+        color: #C40000;
+    }
+    h2 a {
+        color: #333;
+        text-decoration: none;
+    }
+    p {
+        font-family: Tahoma;
+        font-size: 12px;
+        margin: 0 0 1.4em;
+    }
+    </style>
+</head>
+<body>
+
 <?php
 
-function callback($result) {
+function callback($result, $feeds) {
 
     // everything went well at cURL level
     if ($result->response[1] == CURLE_OK) {
@@ -9,11 +36,26 @@ function callback($result) {
         // see http://httpstatus.es/ for a list of possible response codes
         if ($result->info['http_code'] == 200) {
 
-            // see all the returned data
-            // remember, that the "body" property of $result, unless specifically disabled in the library's constructor,
-            // is run through "htmlentities()", so you may want to "html_entity_decode" it
-            print_r('<pre>');
-            print_r($result->info);
+            // the content is an XML, process it
+            $xml = simplexml_load_string($result->body);
+
+            // different types of RSS feeds...
+            if (isset($xml->channel->item))
+
+                // show title and date for each entry
+                foreach ($xml->channel->item as $entry) {
+                    echo '<h2><span>' . $feeds[$result->info['original_url']] . '</span> <a href="' . $entry->link . '">' . $entry->title . '</a></h2>';
+                    echo '<p>' . $entry->pubDate . '</p><hr>';
+                }
+
+            // different types of RSS feeds...
+            else
+
+                // show title and date for each entry
+                foreach ($xml->entry as $entry) {
+                    echo '<h2><span>' . $feeds[$result->info['original_url']] . '</span> <a href="' . $entry->link['href'] . '">' . $entry->title . '</a></h2>';
+                    echo '<p>' . $entry->updated . '</p><hr>';
+                }
 
         // show the server's response code
         } else die('Server responded with code ' . $result->info['http_code']);
@@ -33,12 +75,16 @@ $curl = new Zebra_cURL();
 // cache results 3600 seconds
 $curl->cache('cache', 3600);
 
+$feeds = array(
+    'http://rss1.smashingmagazine.com/feed/'        =>  'Smashing Magazine',
+    'http://feeds.feedburner.com/nettuts'           =>  'TutsPlus',
+    'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
+);
+
 // get RSS feeds of some popular tech websites
-$curl->get(array(
-    'http://rss1.smashingmagazine.com/feed/',
-    'http://allthingsd.com/feed/',
-    'http://feeds.feedburner.com/nettuts',
-    'http://feeds.feedburner.com/alistapart/main',
-), 'callback');
+$curl->get(array_keys($feeds), 'callback', $feeds);
 
 ?>
+
+</body
+</html>
