@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.3 (last revision: February 11, 2016)
+ *  @version    1.3.3 (last revision: February 23, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -441,7 +441,7 @@ class Zebra_cURL {
     {
 
         // if caching is not explicitly disabled
-        if ($path != false) {
+        if ($path !== false) {
 
             // if path doesn't exist, attempt to create it
             if (!is_dir($path)) @mkdir($path, $chmod, true);
