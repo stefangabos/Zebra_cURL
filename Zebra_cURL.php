@@ -1656,11 +1656,21 @@ class Zebra_cURL {
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values) {
 
+            // iterate through the parameters
             foreach ($values as $key => $value)
+
+                // if we have to upload a file
                 if (strpos($value, '@') === 0)
+
+                    // if PHP version is 5.5+
                     if (version_compare(PHP_VERSION, '5.5') >= 0) {
+
+                        // remove the @ from the name
                         $file = substr($value, 1);
+
+                        // use CURLFile to prepare the file
                         $values[$key] = new CURLFile($file);
+
                     }
 
             // add each URL and associated properties to the "_requests" property
@@ -1963,6 +1973,23 @@ class Zebra_cURL {
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values)
 
+            // iterate through the parameters
+            foreach ($values as $key => $value)
+
+                // if we have to upload a file
+                if (strpos($value, '@') === 0)
+
+                    // if PHP version is 5.5+
+                    if (version_compare(PHP_VERSION, '5.5') >= 0) {
+
+                        // remove the @ from the name
+                        $file = substr($value, 1);
+
+                        // use CURLFile to prepare the file
+                        $values[$key] = new CURLFile($file);
+
+                    }
+
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
                 'url'               =>  $url,
@@ -1972,7 +1999,7 @@ class Zebra_cURL {
                     CURLOPT_HEADER          =>  1,
                     CURLOPT_NOBODY          =>  0,
                     CURLOPT_POST            =>  0,
-                    CURLOPT_POSTFIELDS      =>  is_array($values) ? http_build_query($values, NULL, '&') : $values,
+                    CURLOPT_POSTFIELDS      =>  $values,
                     CURLOPT_BINARYTRANSFER  =>  null,
                     CURLOPT_HTTPGET         =>  null,
                     CURLOPT_FILE            =>  null,
