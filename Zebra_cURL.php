@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.3 (last revision: February 23, 2016)
+ *  @version    1.3.4 (last revision: April 15, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -339,6 +339,13 @@ class Zebra_cURL {
             CURLOPT_RETURNTRANSFER      =>  1,
 
         ));
+
+        // if PHP version is at least 5.5
+        if (version_compare(PHP_VERSION, '5.5') >= 0)
+
+            // disable usage of @ in POST arguments
+            // see https://wiki.php.net/rfc/curl-file-upload
+            $this->option(CURLOPT_SAFE_UPLOAD, true);
 
         // set defaults for accessing HTTPS servers
         $this->ssl();
@@ -1568,10 +1575,14 @@ class Zebra_cURL {
      *
      *                              "post-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
      *
-     *                              To post a file, prepend the filename with @ and use the full path. The file type can
-     *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
-     *                              You should always specify the mime type as most of the times cURL will send the wrong
-     *                              mime type...
+     *                              To post a file, prepend the filename with @ and use the full server path.
+     *
+     *                              For PHP 5.5+ files are uploaded using {@link http://php.net/manual/ro/class.curlfile.php CURLFile}
+     *                              and {@link https://wiki.php.net/rfc/curl-file-upload CURLOPT_SAFE_UPLOAD} will be set to TRUE.
+     *
+     *                              For lower PHP versions, files will be uploaded the "old" way and the file's mime type
+     *                              should be explicitly specified by following the filename with the type in the format
+     *                              <b>';type=mimetype'.</b> as most of the times cURL will send the wrong mime type...
      *
      *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
      *
@@ -1643,7 +1654,14 @@ class Zebra_cURL {
         if (!is_array($urls)) trigger_error('First argument to "post" method must be an array!', E_USER_ERROR);
 
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url => $values)
+        foreach ((array)$urls as $url => $values) {
+
+            foreach ($values as $key => $value)
+                if (strpos($value, '@') === 0)
+                    if (version_compare(PHP_VERSION, '5.5') >= 0) {
+                        $file = substr($value, 1);
+                        $values[$key] = new CURLFile($file);
+                    }
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
@@ -1653,7 +1671,7 @@ class Zebra_cURL {
                     CURLOPT_HEADER          =>  1,
                     CURLOPT_NOBODY          =>  0,
                     CURLOPT_POST            =>  1,
-                    CURLOPT_POSTFIELDS      =>  is_array($values) ? http_build_query($values, NULL, '&') : $values,
+                    CURLOPT_POSTFIELDS      =>  $values,
                     CURLOPT_BINARYTRANSFER  =>  null,
                     CURLOPT_CUSTOMREQUEST   =>  null,
                     CURLOPT_HTTPGET         =>  null,
@@ -1665,6 +1683,8 @@ class Zebra_cURL {
                 'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
+
+        }
 
         // if we're just queuing requests for now, do not execute the next lines
         if ($this->_queue) return;
@@ -1860,10 +1880,14 @@ class Zebra_cURL {
      *
      *                              "put-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
      *
-     *                              To put a file, prepend the filename with @ and use the full path. The file type can
-     *                              be explicitly specified by following the filename with the type in the format <b>';type=mimetype'.</b>
-     *                              You should always specify the mime type as most of the times cURL will send the wrong
-     *                              mime type...
+     *                              To put a file, prepend the filename with @ and use the full server path.
+     *
+     *                              For PHP 5.5+ files are uploaded using {@link http://php.net/manual/ro/class.curlfile.php CURLFile}
+     *                              and {@link https://wiki.php.net/rfc/curl-file-upload CURLOPT_SAFE_UPLOAD} will be set to TRUE.
+     *
+     *                              For lower PHP versions, files will be uploaded the "old" way and the file's mime type
+     *                              should be explicitly specified by following the filename with the type in the format
+     *                              <b>';type=mimetype'.</b> as most of the times cURL will send the wrong mime type...
      *
      *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
      *
@@ -2437,17 +2461,10 @@ class Zebra_cURL {
                     $result->info = array('original_url' => $request['url']) + $result->info;
 
                     // if request was a POST
-                    if (isset($request['options'][CURLOPT_POSTFIELDS]) && $request['options'][CURLOPT_POSTFIELDS]) {
+                    if (isset($request['options'][CURLOPT_POSTFIELDS]) && $request['options'][CURLOPT_POSTFIELDS])
 
-                        // put sent POST parameters in the response
-                        // both as string...
-                        $result->post['string'] = $request['options'][CURLOPT_POSTFIELDS];
-
-                        // ...and as an array
-                        parse_str($request['options'][CURLOPT_POSTFIELDS], $post);
-                        $result->post['array'] = $post;
-
-                    }
+                        // put POST parameters in the response
+                        $result->post = $request['options'][CURLOPT_POSTFIELDS];
 
                     // last request headers
                     $result->headers['last_request'] =
