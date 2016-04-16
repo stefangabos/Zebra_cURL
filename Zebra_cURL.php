@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.4 (last revision: April 15, 2016)
+ *  @version    1.3.4 (last revision: April 16, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1656,8 +1656,8 @@ class Zebra_cURL {
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values) {
 
-            // iterate through the parameters
-            foreach ($values as $key => $value)
+            // walk recursively through the array
+            array_walk_recursive($values, function(&$value) {
 
                 // if we have to upload a file
                 if (strpos($value, '@') === 0)
@@ -1669,9 +1669,11 @@ class Zebra_cURL {
                         $file = substr($value, 1);
 
                         // use CURLFile to prepare the file
-                        $values[$key] = new CURLFile($file);
+                        $value = new CURLFile($file);
 
                     }
+
+            });
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
@@ -1973,8 +1975,8 @@ class Zebra_cURL {
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values)
 
-            // iterate through the parameters
-            foreach ($values as $key => $value)
+            // walk recursively through the array
+            array_walk_recursive($values, function(&$value) {
 
                 // if we have to upload a file
                 if (strpos($value, '@') === 0)
@@ -1986,9 +1988,11 @@ class Zebra_cURL {
                         $file = substr($value, 1);
 
                         // use CURLFile to prepare the file
-                        $values[$key] = new CURLFile($file);
+                        $value = new CURLFile($file);
 
                     }
+
+            });
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
