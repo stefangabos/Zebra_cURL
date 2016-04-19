@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.4 (last revision: April 16, 2016)
+ *  @version    1.3.4 (last revision: April 19, 2016)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1656,24 +1656,27 @@ class Zebra_cURL {
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values) {
 
-            // walk recursively through the array
-            array_walk_recursive($values, function(&$value) {
+            // if $values is an array
+            if (is_array($values))
 
-                // if we have to upload a file
-                if (strpos($value, '@') === 0)
+                // walk recursively through the array
+                array_walk_recursive($values, function(&$value) {
 
-                    // if PHP version is 5.5+
-                    if (version_compare(PHP_VERSION, '5.5') >= 0) {
+                    // if we have to upload a file
+                    if (strpos($value, '@') === 0)
 
-                        // remove the @ from the name
-                        $file = substr($value, 1);
+                        // if PHP version is 5.5+
+                        if (version_compare(PHP_VERSION, '5.5') >= 0) {
 
-                        // use CURLFile to prepare the file
-                        $value = new CURLFile($file);
+                            // remove the @ from the name
+                            $file = substr($value, 1);
 
-                    }
+                            // use CURLFile to prepare the file
+                            $value = new CURLFile($file);
 
-            });
+                        }
+
+                });
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
@@ -1975,24 +1978,27 @@ class Zebra_cURL {
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url => $values)
 
-            // walk recursively through the array
-            array_walk_recursive($values, function(&$value) {
+            // if $values is an array
+            if (is_array($values))
 
-                // if we have to upload a file
-                if (strpos($value, '@') === 0)
+                // walk recursively through the array
+                array_walk_recursive($values, function(&$value) {
 
-                    // if PHP version is 5.5+
-                    if (version_compare(PHP_VERSION, '5.5') >= 0) {
+                    // if we have to upload a file
+                    if (strpos($value, '@') === 0)
 
-                        // remove the @ from the name
-                        $file = substr($value, 1);
+                        // if PHP version is 5.5+
+                        if (version_compare(PHP_VERSION, '5.5') >= 0) {
 
-                        // use CURLFile to prepare the file
-                        $value = new CURLFile($file);
+                            // remove the @ from the name
+                            $file = substr($value, 1);
 
-                    }
+                            // use CURLFile to prepare the file
+                            $value = new CURLFile($file);
 
-            });
+                        }
+
+                });
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
