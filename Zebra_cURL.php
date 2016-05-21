@@ -2458,7 +2458,10 @@ class Zebra_cURL {
 
             // queue the first batch of requests
             // (as many as defined by the "threads" property, or less if there aren't as many requests)
-            $this->_queue_requests();
+            // Testing shows that passing $this->threads directly will result in
+            // a maximum number of concurrent requests (unlike the other call
+            // which needs a +1 to compensate).
+            $this->_queue_requests($this->threads);
 
             // a flag telling the library if there are any requests currently processing
             $running = null;
@@ -2592,8 +2595,11 @@ class Zebra_cURL {
 
                     }
 
-                    // if there are more URLs to process, queue the next one
-                    if (!empty($this->_requests)) $this->_queue_requests();
+                    // if there are more URLs to process, queue the next one.
+                    // +1 is in order to compensate.  Testing shows that if this
+                    // is not done, the maximum number of concurrent requests
+                    // will be one less than $this->threads.
+                    if (!empty($this->_requests)) $this->_queue_requests($this->threads + 1);
 
                     // remove the handle that we finished processing
                     // this needs to be done *after* we've already queued a new URL for processing
@@ -2617,8 +2623,8 @@ class Zebra_cURL {
                 // call usleep() if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
                 if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(100);
 
-            // as long as there are threads running
-            } while ($running);
+            // as long as there are threads running (or requests that still need to be made)
+            } while ($running || count($this->_running));
 
             // close the multi curl handle
             curl_multi_close($this->_multi_handle);
@@ -2661,18 +2667,28 @@ class Zebra_cURL {
      *  queued, so that as soon as one request finishes another one will instantly take its place, thus making sure that
      *  the maximum allowed number of parallel threads are running all the time.
      *
+     *  @param integer $max_num_to_queue
+     *      Maximum number of items that can be in the queue.  This affects the
+     *      number of concurrent requests that are sent.
+     *
      *  @return void
      *
      *  @access private
      */
-    private function _queue_requests()
+    private function _queue_requests($max_num_to_queue)
     {
+        // This callback function is used to determine the queue loop.
+        $can_queue_a_request = function () use ($max_num_to_queue) {
+            if (empty($this->_requests)) {
+                return false;
+            }
+            $num_running = count($this->_running);
+            $result = ($max_num_to_queue > $num_running);
+            return $result;
+        };
 
-        // get the number of remaining urls
-        $requests_count = count($this->_requests);
-
-        // iterate through the items in the queue
-        for ($i = 0; $i < ($requests_count < $this->threads ? $requests_count : $this->threads); $i++) {
+        // Add items to the queue if there are spare threads available
+        while ($can_queue_a_request()) {
 
             // remove the first request from the queue
             $request = array_shift($this->_requests);
@@ -2728,7 +2744,6 @@ class Zebra_cURL {
             $this->_running['fh' . $resource_number] = $request;
 
         }
-
     }
 
     /**
