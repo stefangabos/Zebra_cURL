@@ -1,6 +1,6 @@
 # Zebra_cURL
 
-####A high performance PHP cURL library
+#### A high performance PHP cURL library
 
 ----
 
@@ -20,7 +20,7 @@ Zebra_cURL requires the <a href="http://www.php.net/manual/en/curl.installation.
 
 The code is heavily commented and generates no warnings/errors/notices when PHP’s error reporting level is set to <a href="http://www.php.net/manual/en/function.error-reporting.php">E_ALL</a>.
 
-##Features
+## Features
 
 - supports GET (with caching), POST, HEADER, PUT, DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
 - allows the running of multiple requests at once asynchronously, in parallel, but also as soon as one thread finishes it can be processed right away without having to wait for the other threads in the queue to finish
