@@ -1311,7 +1311,7 @@ class Zebra_cURL {
     {
 
         // iterate through the list of URLs to process
-        foreach ($urls as $url)
+        foreach ((array)$urls as $url)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
