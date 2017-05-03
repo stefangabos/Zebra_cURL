@@ -28,7 +28,7 @@
  *  For more resources visit {@link http://stefangabos.ro/}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.4 (last revision: April 19, 2016)
+ *  @version    1.3.5 (last revision: May 03, 2017)
  *  @copyright  (c) 2013 - 2016 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -276,8 +276,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    function __construct($htmlentities = true)
-    {
+    public function __construct($htmlentities = true) {
 
         // if the cURL extension is not available, trigger an error and stop execution
         if (!extension_loaded('curl')) trigger_error('php_curl extension is not loaded', E_USER_ERROR);
@@ -444,8 +443,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755)
-    {
+    public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755) {
 
         // if caching is not explicitly disabled
         if ($path !== false) {
@@ -480,8 +478,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function cookies($path)
-    {
+    public function cookies($path) {
+
         // file does not exist
         if (!is_file($path)) {
 
@@ -643,8 +641,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function delete($urls, $callback = '')
-    {
+    public function delete($urls, $callback = '') {
 
         // if "urls" argument is not an array, trigger an error
         if (!is_array($urls)) trigger_error('First argument to "delete" method must be an array!', E_USER_ERROR);
@@ -816,8 +813,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function download($urls, $path, $callback = '')
-    {
+    public function download($urls, $path, $callback = '') {
 
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
@@ -990,8 +986,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function ftp_download($urls, $path, $username = '', $password = '', $callback = '')
-    {
+    public function ftp_download($urls, $path, $username = '', $password = '', $callback = '') {
 
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
@@ -1158,8 +1153,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function get($urls, $callback = '')
-    {
+    public function get($urls, $callback = '') {
 
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url)
@@ -1307,8 +1301,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function header($urls, $callback = '')
-    {
+    public function header($urls, $callback = '') {
 
         // iterate through the list of URLs to process
         foreach ((array)$urls as $url)
@@ -1420,8 +1413,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY)
-    {
+    public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY) {
 
         // set the required options
 		$this->option(array(
@@ -1468,8 +1460,7 @@ class Zebra_cURL {
      *  @return void
      *
      */
-    public function option($option, $value = '')
-    {
+    public function option($option, $value = '') {
 
         // if $options is given as an array
         if (is_array($option))
@@ -1647,8 +1638,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function post($urls, $callback = '')
-    {
+    public function post($urls, $callback = '') {
 
         // if "urls" argument is not an array, trigger an error
         if (!is_array($urls)) trigger_error('First argument to "post" method must be an array!', E_USER_ERROR);
@@ -1790,8 +1780,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function proxy($proxy, $port = 80, $username = '', $password = '')
-    {
+    public function proxy($proxy, $port = 80, $username = '', $password = '') {
 
         // if not disabled
         if ($proxy) {
@@ -1969,8 +1958,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function put($urls, $callback = '')
-    {
+    public function put($urls, $callback = '') {
 
         // if "urls" argument is not an array, trigger an error
         if (!is_array($urls)) trigger_error('First argument to "put" method must be an array!', E_USER_ERROR);
@@ -2105,8 +2093,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function queue()
-    {
+    public function queue() {
 
         // set a flag indicating the library to queue requests rather than executing them right away
         $this->_queue = true;
@@ -2124,13 +2111,13 @@ class Zebra_cURL {
      *  $curl = new Zebra_cURL();
      *
      *  // get page's content only
-     *  $content = $curl->get('https://www.somewebsite.com/', true);
+     *  $content = $curl->scrap('https://www.somewebsite.com/');
      *
      *  // print that to screen
      *  echo $content;
      *
      *  // get everything we can about the page
-     *  $content = $curl->get('https://www.somewebsite.com/');
+     *  $content = $curl->scrap('https://www.somewebsite.com/', false);
      *
      *  // print that to screen
      *  print_r('<pre>');
@@ -2146,14 +2133,14 @@ class Zebra_cURL {
      *                                  scrapped page, as an object with properties as described for the <i>$callback</i>
      *                                  argument of the {@link get} method.
      *
-     *                                  Default is FALSE.
+     *                                  Default is TRUE.
      *
      *  @since 1.3.3
      *
      *  @return mixed   Returns the scrapped page's content, when <i>$body_only</i> is set to TRUE, or an object with
      *                  properties as described for the <i>$callback</i> argument of the {@link get} method.
      */
-    function scrap($url, $body_only = false) {
+    public function scrap($url, $body_only = true) {
 
         // this method requires the $url argument to be a string
         if (is_array($url)) trigger_error('URL must be a string', E_USER_ERROR);
@@ -2234,8 +2221,7 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function ssl($verify_peer = true, $verify_host = 2, $file = false, $path = false)
-    {
+    public function ssl($verify_peer = true, $verify_host = 2, $file = false, $path = false) {
 
         // set default options
         $this->option(array(
@@ -2292,8 +2278,7 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _debug()
-    {
+    private function _debug() {
 
         $result = '';
 
@@ -2351,8 +2336,7 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _parse_headers($headers)
-    {
+    private function _parse_headers($headers) {
 
         $result = array();
 
@@ -2393,8 +2377,7 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _process()
-    {
+    private function _process() {
 
         // if caching is enabled but path doesn't exist, or is not writable
         if ($this->cache !== false && (!is_dir($this->cache['path']) || !is_writable($this->cache['path'])))
@@ -2665,8 +2648,7 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _queue_requests()
-    {
+    private function _queue_requests() {
 
         // get the number of remaining urls
         $requests_count = count($this->_requests);
@@ -2741,8 +2723,7 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _user_agent()
-    {
+    private function _user_agent() {
 
         // browser version: 9 or 10
         $version = rand(9, 10);
@@ -2770,5 +2751,3 @@ class Zebra_cURL {
     }
 
 }
-
-?>
