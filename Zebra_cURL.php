@@ -1,31 +1,9 @@
 <?php
 
 /**
- *  Zebra_cURL, a high performance PHP cURL library
+ *  A high performance PHP cURL library allowing the running of multiple requests at once, asynchronously, in parallel
  *
- *  Zebra_cURL is a high performance PHP library acting as a wrapper to PHP's {@link http://www.php.net/manual/en/book.curl.php libcurl library},
- *  which not only allows the running of multiple requests at once asynchronously, in parallel, but also as soon as one
- *  thread finishes it can be processed right away without having to wait for the other threads in the queue to finish.
- *
- *  Also, each time a request is completed another one is added to the queue, thus keeping a constant number of threads
- *  running at all times and eliminating wasted CPU cycles from busy waiting. This result is a faster and more efficient
- *  way of processing large quantities of cURL requests (like fetching thousands of RSS feeds at once), drastically reducing
- *  processing time.
- *
- *  This script supports GET and POST request, basic downloads, downloads from FTP servers, HTTP Authentication, and
- *  requests through proxy servers.
- *
- *  For maximum efficiency downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary
- *  strain from the server of having to read files into memory first, and then writing them to disk.
- *
- *  Zebra_cURL requires the {@link http://www.php.net/manual/en/curl.installation.php PHP cURL extension} to be enabled.
- *
- *  The code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to
- *  {@link http://www.php.net/manual/en/function.error-reporting.php E_ALL}.
- *
- *  Visit {@link http://stefangabos.ro/php-libraries/zebra-curl/} for more information.
- *
- *  For more resources visit {@link http://stefangabos.ro/}
+ *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
  *  @version    1.3.5 (last revision: May 03, 2017)
