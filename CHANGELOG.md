@@ -1,3 +1,13 @@
+## version 1.3.4 (May 21, 2017)
+
+- fixed broken file uploads when making POST and PUT requests
+- fixed warning that would be shown when POST-ing/PUT-ing raw data; thanks **Sebastian Popa**
+- fixed bug where the [header](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodheader) method would only accept an array of URLs or would trigger an error otherwise
+- minor source code tweaks
+- unnecessary files are no more included when downloading from GitHub or via Composer
+- documentation is now available in the repository and on GitHub
+- the home of the library is now exclusively on GitHub
+
 ## version 1.3.3 (February 11, 2016)
 
 - minimum required PHP version is now 5.3.0 instead of 5.0.3
