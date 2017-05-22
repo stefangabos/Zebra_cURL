@@ -1,5 +1,7 @@
-## version 1.3.4 (May 21, 2017)
+## version 1.3.4 (May 22, 2017)
 
+- fixed bug when having pauses between batches of requests
+- fixed bug with script stopping after first request if the "threads" property was set to 1; thanks to @sbosshardt
 - fixed broken file uploads when making POST and PUT requests
 - fixed warning that would be shown when POST-ing/PUT-ing raw data; thanks **Sebastian Popa**
 - fixed bug where the [header](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodheader) method would only accept an array of URLs or would trigger an error otherwise
