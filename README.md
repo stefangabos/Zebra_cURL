@@ -46,7 +46,7 @@ require_once ('Zebra_cURL.php');
 You can install Zebra_cURL via [Composer](https://packagist.org/packages/stefangabos/zebra_curl)
 
 ```
-composer require stefangabos/zebra_curl:dev-master
+composer require stefangabos/zebra_curl
 ```
 
 ## How to use
