@@ -2553,8 +2553,8 @@ class Zebra_cURL {
 
                     }
 
-                    // if there are more URLs to process, queue the next one
-                    if (!empty($this->_requests)) $this->_queue_requests();
+                    // if there are more URLs to process and we're don't pause between batches of requests, queue the next one(s)
+                    if (!empty($this->_requests) && !$this->pause_interval) $this->_queue_requests();
 
                     // remove the handle that we finished processing
                     // this needs to be done *after* we've already queued a new URL for processing
@@ -2611,7 +2611,7 @@ class Zebra_cURL {
             $this->_process();
 
             // wait for as many seconds as specified by the "pause_interval" property
-            sleep($this->pause_interval);
+            if (!empty($urls)) sleep($this->pause_interval);
 
         }
 
