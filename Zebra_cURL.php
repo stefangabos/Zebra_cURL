@@ -6,7 +6,7 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.3.4 (last revision: May 21, 2017)
+ *  @version    1.3.4 (last revision: May 22, 2017)
  *  @copyright  (c) 2013 - 2017 Stefan Gabos
  *  @license    http://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2578,8 +2578,8 @@ class Zebra_cURL {
                 // call usleep() if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
                 if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(100);
 
-            // as long as there are threads running
-            } while ($running);
+            // as long as there are threads running or requests waiting in the queue
+            } while ($running || !empty($this->_running));
 
             // close the multi curl handle
             curl_multi_close($this->_multi_handle);
