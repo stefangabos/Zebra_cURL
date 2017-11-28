@@ -84,13 +84,18 @@ h6 {
 .doc_index h3,
 h4.variable,
 h4.method {
-    background: #f6f8fa;
+    background: #ffecec;
     padding: 1em;
     border: 1px solid #e1e4e8;
     border-bottom-width: 4px;
     font-size: 100%;
     margin-bottom: 0;
 }
+
+h4.variable-static {
+    background: #eae9da;
+}
+
 
 h4.variable span,
 h4.method span {

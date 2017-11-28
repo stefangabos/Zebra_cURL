@@ -39,13 +39,16 @@ Package: <strong>Zebra_cURL</strong>
 <ul>
 <li><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></li>
 </ul>
+<p><strong>Files:</strong></p>
+<ul>
+<li><a href="../Zebra_cURL/_Zebra_cURL.php.html">Zebra_cURL.php</a></li>
+</ul>
 </div>
 </td>
 <td valign="top" width="100%">
 <div id="doc_content">
 <h2>Class: <strong>Zebra_cURL</strong></h2>
 <h6><strong>source file:</strong> /Zebra_cURL.php</h6>
-<h3>Class Overview</h3>
 <pre></pre>
 <p>A high performance PHP cURL library allowing the running of multiple requests at once, asynchronously, in parallel<p>Read more <a href="https://github.com/stefangabos/Zebra_cURL/">here</a></p></p>
 <h4>Author(s):</h4>
@@ -54,7 +57,7 @@ Package: <strong>Zebra_cURL</strong>
 </ul>
 <h4>Version:</h4>
 <ul>
-<li>1.3.4 (last revision: May 22, 2017)</li>
+<li>1.3.5 (last revision: November 01, 2017)</li>
 </ul>
 <h4>Copyright:</h4>
 <ul>
@@ -65,30 +68,32 @@ Package: <strong>Zebra_cURL</strong>
 <div class="left">
 <h3>Properties</h3>
 <ul>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">$pause_interval</a></li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#var$threads">$threads</a></li>
+<li><a href="#var$pause_interval">$pause_interval</a></li>
+<li><a href="#var$threads">$threads</a></li>
 </ul>
 </div>
 <div class="left">
 <h3>Methods</h3>
 <ul>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#method__construct">__construct</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodcache">cache</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodcookies">cookies</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methoddelete">delete</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodheader">header</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodhttp_authentication">http_authentication</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodproxy">proxy</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodput">put</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodqueue">queue</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodscrap">scrap</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a>()</li>
-<li><a href="../Zebra_cURL/Zebra_cURL.html#methodstart">start</a>()</li>
+</ul>
+<ul>
+<li><a href="#method__construct">__construct</a></li>
+<li><a href="#methodcache">cache</a></li>
+<li><a href="#methodcookies">cookies</a></li>
+<li><a href="#methoddelete">delete</a></li>
+<li><a href="#methoddownload">download</a></li>
+<li><a href="#methodftp_download">ftp_download</a></li>
+<li><a href="#methodget">get</a></li>
+<li><a href="#methodheader">header</a></li>
+<li><a href="#methodhttp_authentication">http_authentication</a></li>
+<li><a href="#methodoption">option</a></li>
+<li><a href="#methodpost">post</a></li>
+<li><a href="#methodproxy">proxy</a></li>
+<li><a href="#methodput">put</a></li>
+<li><a href="#methodqueue">queue</a></li>
+<li><a href="#methodscrap">scrap</a></li>
+<li><a href="#methodssl">ssl</a></li>
+<li><a href="#methodstart">start</a></li>
 </ul>
 </div>
 <div class="clear"></div>
@@ -105,11 +110,11 @@ times</strong>, until there are no more requests to process).</p>
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>since:</strong></td>
+<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
 <td valign="top">1.3.0</td>
 </tr>
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -126,7 +131,7 @@ times</strong>, until there are no more requests to process).</p>
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -136,7 +141,7 @@ times</strong>, until there are no more requests to process).</p>
 <a name="class_methods"></a>
 <h3>Class methods</h3>
 <a name="method__construct"></a>
-<h4 class="method"><span><em>constructor</em></span> __construct()</h4>
+<h4 class="method"><span><em>constructor</em></span> __construct() <span class="smalllinenumber">[line 257]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -159,8 +164,8 @@ server sends as part of the HTTP header (note this is recursive, PHP will
 follow as many <em>Location:</em> headers as specified by the value of
 CURLOPT_MAXREDIRS - see below);</li></ul> <ul><li><strong>CURLOPT_HEADER</strong>           -   <strong>TRUE</strong>; get the response header(s); if set to FALSE the &quot;responses&quot;
 entry of the &quot;headers&quot; attribute of the object given as argument to the
-callback function, will be an empty string;</li></ul> <ul><li><strong>CURLOPT_MAXREDIRS</strong>        -   <strong>50</strong>; the maximum amount of HTTP redirections to follow; used
-together with CURLOPT_FOLLOWLOCATION;</li></ul> <ul><li><strong>CURLOPT_RETURNTRANSFER</strong>   -   <strong>TRUE</strong>; return the transfer's body as a string instead of outputting
+callback function, will be an empty string;</li></ul> <ul><li><strong>CURLOPT_MAXREDIRS</strong>        -   <strong>50</strong>; the maximum amount of HTTP redirects to follow; used together
+with CURLOPT_FOLLOWLOCATION;</li></ul> <ul><li><strong>CURLOPT_RETURNTRANSFER</strong>   -   <strong>TRUE</strong>; return the transfer's body as a string instead of outputting
 it directly; if set to FALSE the &quot;body&quot; attribute of the object given as
 argument to a callback function will be an empty string;</li></ul> <ul><li><strong>CURLOPT_SSL_VERIFYHOST</strong>   -   <strong>2</strong>; check the existence of a common name in the SSL peer certificate
 (for when connecting to HTTPS), and that it matches with the provided
@@ -173,7 +178,7 @@ respond unless a valid user-agent string is provided</li></ul>
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -189,7 +194,7 @@ respond unless a valid user-agent string is provided</li></ul>
 <div class="clear"></div>
 </div>
 <a name="methodcache"></a>
-<h4 class="method"><span><em>method</em></span> cache()</h4>
+<h4 class="method"><span><em>method</em></span> cache() <span class="smalllinenumber">[line 424]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -260,7 +265,7 @@ $chmod
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -293,7 +298,7 @@ folder can be created, its permissions will be set to the value of $chmod</em></
 <div class="clear"></div>
 </div>
 <a name="methodcookies"></a>
-<h4 class="method"><span><em>method</em></span> cookies()</h4>
+<h4 class="method"><span><em>method</em></span> cookies() <span class="smalllinenumber">[line 459]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -307,7 +312,7 @@ $path
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -323,7 +328,7 @@ $path
 <div class="clear"></div>
 </div>
 <a name="methoddelete"></a>
-<h4 class="method"><span><em>method</em></span> delete()</h4>
+<h4 class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 622]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -382,11 +387,11 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>since:</strong></td>
+<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
 <td valign="top">1.3.3</td>
 </tr>
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -419,7 +424,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methoddownload"></a>
-<h4 class="method"><span><em>method</em></span> download()</h4>
+<h4 class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 802]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -436,8 +441,11 @@ $callback
 = '']
 )
 </p>
-<p>Downloads one or more files from one or more URLs specified by the <em>$urls</em> argument, saves the downloaded   files (with their original name) to the path specified by the <em>$path</em> argument, and executes the callback   function specified by the <em>$callback</em> argument for each and every request, as soon as a request finishes.</p>
-<p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><strong>CURLINFO_HEADER_OUT</strong> - TRUE</li><li><strong>CURLOPT_BINARYTRANSFER</strong> - TRUE</li><li><strong>CURLOPT_HEADER</strong> - TRUE</li><li><strong>CURLOPT_FILE</strong></li></ul><p>   ...and will unset the following options:</p><p><ul><li><strong>CURLOPT_CUSTOMREQUEST</strong></li><li><strong>CURLOPT_HTTPGET</strong></li><li><strong>CURLOPT_NOBODY</strong></li><li><strong>CURLOPT_POST</strong></li><li><strong>CURLOPT_POSTFIELDS</strong></li></ul><p>   Files are downloaded preserving their original names, so you may want to check that if you are downloading more   files having the same name!</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,   can be set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also the <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> property.</p><p><em>Note that requests may not finish in the same order as initiated!</em></p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;to&nbsp;be&nbsp;executed&nbsp;for&nbsp;each&nbsp;and&nbsp;every</span></div></li>
+<p>Downloads one or more files from one or more URLs specified by the <em>$urls</em> argument, saves the downloaded   files to the path specified by the <em>$path</em> argument, and executes the callback function specified by the   <em>$callback</em> argument for each and every request, as soon as a request finishes.</p>
+<p><div class="highlight">If the path you are downloading from refers to a file, then the file's original name will be preserved, but
+if you are downloading a file generated by a script (i.e. http://foo.com/bar.php?w=1200&amp;h=800) the downloaded file's
+name will be random generated. You should always refer to the downloaded file in the result's &quot;info&quot; attribute, in
+the &quot;downloaded_filename&quot; section - see the example below.</div></p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><strong>CURLINFO_HEADER_OUT</strong> - TRUE</li><li><strong>CURLOPT_BINARYTRANSFER</strong> - TRUE</li><li><strong>CURLOPT_HEADER</strong> - TRUE</li><li><strong>CURLOPT_FILE</strong></li></ul><p>   ...and will unset the following options:</p><p><ul><li><strong>CURLOPT_CUSTOMREQUEST</strong></li><li><strong>CURLOPT_HTTPGET</strong></li><li><strong>CURLOPT_NOBODY</strong></li><li><strong>CURLOPT_POST</strong></li><li><strong>CURLOPT_POSTFIELDS</strong></li></ul><p>   Files are downloaded preserving their original names, so you may want to check that if you are downloading more   files having the same name!</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request, as soon as a request finishes. The number of parallel requests to be constantly processed, at all times,   can be set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also the <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> property.</p><p><em>Note that requests may not finish in the same order as initiated!</em></p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;to&nbsp;be&nbsp;executed&nbsp;for&nbsp;each&nbsp;and&nbsp;every</span></div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;request,&nbsp;as&nbsp;soon&nbsp;as&nbsp;a&nbsp;request&nbsp;finishes</span></div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;receives&nbsp;as&nbsp;argument&nbsp;an&nbsp;object&nbsp;with&nbsp;4&nbsp;properties</span></div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;(info,&nbsp;header,&nbsp;body&nbsp;and&nbsp;response)</span></div></li>
@@ -453,6 +461,9 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;see&nbsp;all&nbsp;the&nbsp;returned&nbsp;data</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-str">'&lt;pre&gt;'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;get&nbsp;the&nbsp;downloaded&nbsp;file's&nbsp;path</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'downloaded_filename'</span><span class="src-sym">]</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><span class="src-key">die</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
@@ -479,7 +490,7 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -522,7 +533,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodftp_download"></a>
-<h4 class="method"><span><em>method</em></span> ftp_download()</h4>
+<h4 class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 975]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -589,7 +600,7 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -639,7 +650,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodget"></a>
-<h4 class="method"><span><em>method</em></span> get()</h4>
+<h4 class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1142]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -700,7 +711,7 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -733,7 +744,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodheader"></a>
-<h4 class="method"><span><em>method</em></span> header()</h4>
+<h4 class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1290]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -787,7 +798,7 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -819,7 +830,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodhttp_authentication"></a>
-<h4 class="method"><span><em>method</em></span> http_authentication()</h4>
+<h4 class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1402]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -883,7 +894,7 @@ $type
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -909,7 +920,7 @@ $type
 <div class="clear"></div>
 </div>
 <a name="methodoption"></a>
-<h4 class="method"><span><em>method</em></span> option()</h4>
+<h4 class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1449]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -944,7 +955,7 @@ $value
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -965,7 +976,7 @@ $value
 <div class="clear"></div>
 </div>
 <a name="methodpost"></a>
-<h4 class="method"><span><em>method</em></span> post()</h4>
+<h4 class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1627]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1033,7 +1044,7 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1066,7 +1077,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodproxy"></a>
-<h4 class="method"><span><em>method</em></span> proxy()</h4>
+<h4 class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 1769]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1131,7 +1142,7 @@ $password
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1166,7 +1177,7 @@ formatted like</em> <strong>[username]:[password]</strong>.     .</p></td>
 <div class="clear"></div>
 </div>
 <a name="methodput"></a>
-<h4 class="method"><span><em>method</em></span> put()</h4>
+<h4 class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 1947]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1225,11 +1236,11 @@ $callback
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>since:</strong></td>
+<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
 <td valign="top">1.3.3</td>
 </tr>
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1262,7 +1273,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodqueue"></a>
-<h4 class="method"><span><em>method</em></span> queue()</h4>
+<h4 class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 2082]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1331,11 +1342,11 @@ queue (
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>since:</strong></td>
+<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
 <td valign="top">1.3.0</td>
 </tr>
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1343,7 +1354,7 @@ queue (
 <div class="clear"></div>
 </div>
 <a name="methodscrap"></a>
-<h4 class="method"><span><em>method</em></span> scrap()</h4>
+<h4 class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2129]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>mixed</em>
@@ -1380,15 +1391,15 @@ $body_only
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>return:</strong></td>
+<td valign="top"><strong>return:</strong>&nbsp;&nbsp;</td>
 <td valign="top">Returns the scrapped page's content, when <em>$body_only</em> is set to TRUE, or an object with                   properties as described for the <em>$callback</em> argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</td>
 </tr>
 <tr>
-<td valign="top"><strong>since:</strong></td>
+<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
 <td valign="top">1.3.3</td>
 </tr>
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1409,7 +1420,7 @@ $body_only
 <div class="clear"></div>
 </div>
 <a name="methodssl"></a>
-<h4 class="method"><span><em>method</em></span> ssl()</h4>
+<h4 class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2210]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1452,7 +1463,7 @@ $path
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1489,7 +1500,7 @@ setting</em> <strong>CURLOPT_CAPATH</strong> <em>option to the desired value</em
 <div class="clear"></div>
 </div>
 <a name="methodstart"></a>
-<h4 class="method"><span><em>method</em></span> start()</h4>
+<h4 class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2247]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1501,11 +1512,11 @@ start (
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top"><strong>since:</strong></td>
+<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
 <td valign="top">1.3.0</td>
 </tr>
 <tr>
-<td valign="top"><strong>access:</strong></td>
+<td valign="top"><strong>access:</strong>&nbsp;&nbsp;</td>
 <td valign="top">public</td>
 </tr>
 </table>
@@ -1517,7 +1528,7 @@ start (
 </tr>
 </table>
 <div id="doc_footer">
-Documentation generated on <span>Mon, 22 May 2017 10:56:39 +0200</span> by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+Documentation generated on <span>Tue, 28 Nov 17</span> by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 </div>
 </div>
 </body>
