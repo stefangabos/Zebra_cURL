@@ -38,7 +38,7 @@ PHP 5.3.0+ with the [cURL extension](http://www.php.net/manual/en/curl.installat
 Download the latest version, unpack it, and load it in your project
 
 ```php
-require_once ('Zebra_cURL.php');
+require_once 'Zebra_cURL.php';
 ```
 
 ## Installation with Composer
