@@ -225,8 +225,8 @@ class Zebra_cURL {
      *                                          entry of the "headers" attribute of the object given as argument to the
      *                                          callback function, will be an empty string;
      *
-     *  -   <b>CURLOPT_MAXREDIRS</b>        -   <b>50</b>; the maximum amount of HTTP redirections to follow; used
-     *                                          together with CURLOPT_FOLLOWLOCATION;
+     *  -   <b>CURLOPT_MAXREDIRS</b>        -   <b>50</b>; the maximum amount of HTTP redirects to follow; used together
+     *                                          with CURLOPT_FOLLOWLOCATION;
      *
      *  -   <b>CURLOPT_RETURNTRANSFER</b>   -   <b>TRUE</b>; return the transfer's body as a string instead of outputting
      *                                          it directly; if set to FALSE the "body" attribute of the object given as
@@ -302,7 +302,7 @@ class Zebra_cURL {
             // include the response header(s) as a property of the object given as argument to the callback
             CURLOPT_HEADER              =>  1,
 
-            // the maximum amount of HTTP redirections to follow; used together with CURLOPT_FOLLOWLOCATION
+            // the maximum amount of HTTP redirects to follow; used together with CURLOPT_FOLLOWLOCATION
             CURLOPT_MAXREDIRS           =>  50,
 
             // the maximum number of seconds to allow cURL functions to execute before timing out
