@@ -16,10 +16,6 @@ For maximum efficiency downloads are streamed (bytes downloaded are directly wri
 
 The code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](http://www.php.net/manual/en/function.error-reporting.php).
 
-## Support the development of this library
-
-[![Donate](https://img.shields.io/badge/Be%20kind%20%7C%20Donate%20$3%20with%20-%20PayPal%20-brightgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64)
-
 ## Features
 
 - supports GET (with caching), POST, HEADER, PUT, DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
@@ -29,24 +25,30 @@ The code is heavily commented and generates no warnings/errors/notices when PHP'
 - has [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)
 - code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](http://www.php.net/manual/en/function.error-reporting.php)
 
+## Support the development of this library
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64)
+
 ## Requirements
 
 PHP 5.3.0+ with the [cURL extension](http://www.php.net/manual/en/curl.installation.php) enabled.
 
 ## Installation
 
-Download the latest version, unpack it, and load it in your project
+You can install Zebra_cURL via [Composer](https://packagist.org/packages/stefangabos/zebra_curl)
+
+```bash
+# get the latest stable release
+composer require stefangabos/zebra_curl
+
+# get the latest commit
+composer require stefangabos/zebra_curl:dev-master
+```
+
+Or you can install it manually by downloading the latest version, unpacking it, and then including it in your project
 
 ```php
 require_once 'Zebra_cURL.php';
-```
-
-## Installation with Composer
-
-You can install Zebra_cURL via [Composer](https://packagist.org/packages/stefangabos/zebra_curl)
-
-```
-composer require stefangabos/zebra_curl
 ```
 
 ## How to use
