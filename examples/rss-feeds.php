@@ -86,5 +86,5 @@ $curl->get(array_keys($feeds), 'callback', $feeds);
 
 ?>
 
-</body
+</body>
 </html>
