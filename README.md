@@ -144,4 +144,22 @@ $curl = new Zebra_cURL();
 $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
 ```
 
+**Request with custom headers**
+
+```php
+// Include the library
+require 'path/to/Zebra_cURL.php';
+
+// Instantiate the Zebra_cURL class
+$curl = new Zebra_cURL;
+
+// Set custom headers with option method
+$curl->option(CURLOPT_HTTPHEADER, [
+    'accept: application/json',
+    'X-Token-Foo-Bar: ABC123' // Pass keys to api's for example
+]);
+
+echo $curl->scrap('http://httpbin.org/get') . PHP_EOL;
+```
+
 :books: Checkout the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
