@@ -557,7 +557,7 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                              May be given as a string representing the name of an existing function, or a
+     *                              May be given as a string representing the name of an existing function, or as a
      *                              {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -746,8 +746,8 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback           (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                                      May be given as a string representing the name of an existing function, or a
-     *                                      {@link http://php.net/manual/en/functions.anonymous.php closure}.
+     *                                      May be given as a string representing the name of an existing function, or as
+     *                                      a {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
      *                                      properties</b> as described below, while any further arguments passed to the
@@ -920,8 +920,8 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback           (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                                      May be given as a string representing the name of an existing function, or a
-     *                                      {@link http://php.net/manual/en/functions.anonymous.php closure}.
+     *                                      May be given as a string representing the name of an existing function, or as
+     *                                      a {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                                      The callback function receives as first argument <b>an object</b> with <b>4
      *                                      properties</b> as described below, while any further arguments passed to the
@@ -1081,7 +1081,7 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                              May be given as a string representing the name of an existing function, or a
+     *                              May be given as a string representing the name of an existing function, or as a
      *                              {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1234,7 +1234,7 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                              May be given as a string representing the name of an existing function, or a
+     *                              May be given as a string representing the name of an existing function, or as a
      *                              {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1554,7 +1554,7 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                              May be given as a string representing the name of an existing function, or a
+     *                              May be given as a string representing the name of an existing function, or as a
      *                              {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
@@ -1870,7 +1870,7 @@ class Zebra_cURL {
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
-     *                              May be given as a string representing the name of an existing function, or a
+     *                              May be given as a string representing the name of an existing function, or as a
      *                              {@link http://php.net/manual/en/functions.anonymous.php closure}.
      *
      *                              The callback function receives as first argument <b>an object</b> with <b>4 properties</b>
