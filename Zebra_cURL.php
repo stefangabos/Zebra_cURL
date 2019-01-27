@@ -618,26 +618,33 @@ class Zebra_cURL {
      */
     public function delete($urls, $callback = '') {
 
-        // if "urls" argument is not an array, trigger an error
-        if (!is_array($urls)) trigger_error('First argument to "delete" method must be an array!', E_USER_ERROR);
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
 
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url => $values)
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_CUSTOMREQUEST   =>  'DELETE',
-                    CURLOPT_HEADER          =>  1,
-                    CURLOPT_NOBODY          =>  0,
-                    CURLOPT_POST            =>  0,
-                    CURLOPT_POSTFIELDS      =>  is_array($values) ? http_build_query($values, NULL, '&') : $values,
-                    CURLOPT_BINARYTRANSFER  =>  null,
-                    CURLOPT_HTTPGET         =>  null,
-                    CURLOPT_FILE            =>  null,
-                ),
+
+                'url'               =>  $values['url'],
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_CUSTOMREQUEST   =>  'DELETE',
+                        CURLOPT_HEADER          =>  1,
+                        CURLOPT_NOBODY          =>  0,
+                        CURLOPT_POST            =>  0,
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], NULL, '&') : $values['data']) : '',
+                        CURLOPT_BINARYTRANSFER  =>  null,
+                        CURLOPT_HTTPGET         =>  null,
+                        CURLOPT_FILE            =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
@@ -799,23 +806,34 @@ class Zebra_cURL {
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
+
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url)
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
+
+                'url'               =>  $values['url'],
+
                 'path'              =>  rtrim($path, '/\\') . '/',
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_BINARYTRANSFER  =>  1,
-                    CURLOPT_HEADER          =>  0,
-                    CURLOPT_CUSTOMREQUEST   =>  null,
-                    CURLOPT_HTTPGET         =>  null,
-                    CURLOPT_NOBODY          =>  null,
-                    CURLOPT_POST            =>  null,
-                    CURLOPT_POSTFIELDS      =>  null,
-                ),
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_BINARYTRANSFER  =>  1,
+                        CURLOPT_HEADER          =>  0,
+                        CURLOPT_CUSTOMREQUEST   =>  null,
+                        CURLOPT_HTTPGET         =>  null,
+                        CURLOPT_NOBODY          =>  null,
+                        CURLOPT_POST            =>  null,
+                        CURLOPT_POSTFIELDS      =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
@@ -971,23 +989,30 @@ class Zebra_cURL {
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url)
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
+
+                'url'               =>  $values['url'],
+
                 'path'              =>  rtrim($path, '/\\') . '/',
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_BINARYTRANSFER  =>  1,
-                    CURLOPT_HEADER          =>  0,
-                    CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
-                    CURLOPT_CUSTOMREQUEST   =>  null,
-                    CURLOPT_HTTPGET         =>  null,
-                    CURLOPT_NOBODY          =>  null,
-                    CURLOPT_POST            =>  null,
-                    CURLOPT_POSTFIELDS      =>  null,
-                ),
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_BINARYTRANSFER  =>  1,
+                        CURLOPT_HEADER          =>  0,
+                        CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
+                        CURLOPT_CUSTOMREQUEST   =>  null,
+                        CURLOPT_HTTPGET         =>  null,
+                        CURLOPT_NOBODY          =>  null,
+                        CURLOPT_POST            =>  null,
+                        CURLOPT_POSTFIELDS      =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
@@ -1132,23 +1157,33 @@ class Zebra_cURL {
      */
     public function get($urls, $callback = '') {
 
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
+
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url)
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_HEADER          =>  1,
-                    CURLOPT_HTTPGET         =>  1,
-                    CURLOPT_NOBODY          =>  0,
-                    CURLOPT_BINARYTRANSFER  =>  null,
-                    CURLOPT_CUSTOMREQUEST   =>  null,
-                    CURLOPT_FILE            =>  null,
-                    CURLOPT_POST            =>  null,
-                    CURLOPT_POSTFIELDS      =>  null,
-                ),
+
+                'url'               =>  $values['url'],
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_HEADER          =>  1,
+                        CURLOPT_HTTPGET         =>  1,
+                        CURLOPT_NOBODY          =>  0,
+                        CURLOPT_BINARYTRANSFER  =>  null,
+                        CURLOPT_CUSTOMREQUEST   =>  null,
+                        CURLOPT_FILE            =>  null,
+                        CURLOPT_POST            =>  null,
+                        CURLOPT_POSTFIELDS      =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
@@ -1279,22 +1314,28 @@ class Zebra_cURL {
     public function header($urls, $callback = '') {
 
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url)
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_HEADER          =>  1,
-                    CURLOPT_HTTPGET         =>  1,
-                    CURLOPT_NOBODY          =>  1,
-                    CURLOPT_BINARYTRANSFER  =>  null,
-                    CURLOPT_CUSTOMREQUEST   =>  null,
-                    CURLOPT_FILE            =>  null,
-                    CURLOPT_POST            =>  null,
-                    CURLOPT_POSTFIELDS      =>  null,
-                ),
+
+                'url'               =>  $values['url'],
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_HEADER          =>  1,
+                        CURLOPT_HTTPGET         =>  1,
+                        CURLOPT_NOBODY          =>  1,
+                        CURLOPT_BINARYTRANSFER  =>  null,
+                        CURLOPT_CUSTOMREQUEST   =>  null,
+                        CURLOPT_FILE            =>  null,
+                        CURLOPT_POST            =>  null,
+                        CURLOPT_POSTFIELDS      =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
@@ -1613,56 +1654,38 @@ class Zebra_cURL {
      */
     public function post($urls, $callback = '') {
 
-        // if "urls" argument is not an array, trigger an error
-        if (!is_array($urls)) trigger_error('First argument to "post" method must be an array!', E_USER_ERROR);
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
 
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url => $values) {
-
-            // if $values is an array
-            if (is_array($values))
-
-                // walk recursively through the array
-                array_walk_recursive($values, function(&$value) {
-
-                    // if we have to upload a file
-                    if (strpos($value, '@') === 0)
-
-                        // if PHP version is 5.5+
-                        if (version_compare(PHP_VERSION, '5.5') >= 0) {
-
-                            // remove the @ from the name
-                            $file = substr($value, 1);
-
-                            // use CURLFile to prepare the file
-                            $value = new CURLFile($file);
-
-                        }
-
-                });
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_HEADER          =>  1,
-                    CURLOPT_NOBODY          =>  0,
-                    CURLOPT_POST            =>  1,
-                    CURLOPT_POSTFIELDS      =>  $values,
-                    CURLOPT_BINARYTRANSFER  =>  null,
-                    CURLOPT_CUSTOMREQUEST   =>  null,
-                    CURLOPT_HTTPGET         =>  null,
-                    CURLOPT_FILE            =>  null,
-                ),
+
+                'url'               =>  $values['url'],
+
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_HEADER          =>  1,
+                        CURLOPT_NOBODY          =>  0,
+                        CURLOPT_POST            =>  1,
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
+                        CURLOPT_BINARYTRANSFER  =>  null,
+                        CURLOPT_CUSTOMREQUEST   =>  null,
+                        CURLOPT_HTTPGET         =>  null,
+                        CURLOPT_FILE            =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
                 'arguments'         =>  array_slice(func_get_args(), 2),
 
             );
-
-        }
 
         // if we're just queuing requests for now, do not execute the next lines
         if ($this->_queue) return;
@@ -1935,44 +1958,28 @@ class Zebra_cURL {
         if (!is_array($urls)) trigger_error('First argument to "put" method must be an array!', E_USER_ERROR);
 
         // iterate through the list of URLs to process
-        foreach ((array)$urls as $url => $values)
-
-            // if $values is an array
-            if (is_array($values))
-
-                // walk recursively through the array
-                array_walk_recursive($values, function(&$value) {
-
-                    // if we have to upload a file
-                    if (strpos($value, '@') === 0)
-
-                        // if PHP version is 5.5+
-                        if (version_compare(PHP_VERSION, '5.5') >= 0) {
-
-                            // remove the @ from the name
-                            $file = substr($value, 1);
-
-                            // use CURLFile to prepare the file
-                            $value = new CURLFile($file);
-
-                        }
-
-                });
+        foreach ($urls as $values)
 
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
-                'url'               =>  $url,
-                'options'           =>  array(
-                    CURLINFO_HEADER_OUT     =>  1,
-                    CURLOPT_CUSTOMREQUEST   =>  'PUT',
-                    CURLOPT_HEADER          =>  1,
-                    CURLOPT_NOBODY          =>  0,
-                    CURLOPT_POST            =>  0,
-                    CURLOPT_POSTFIELDS      =>  $values,
-                    CURLOPT_BINARYTRANSFER  =>  null,
-                    CURLOPT_HTTPGET         =>  null,
-                    CURLOPT_FILE            =>  null,
-                ),
+
+                'url'               =>  $values['url'],
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_CUSTOMREQUEST   =>  'PUT',
+                        CURLOPT_HEADER          =>  1,
+                        CURLOPT_NOBODY          =>  0,
+                        CURLOPT_POST            =>  0,
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
+                        CURLOPT_BINARYTRANSFER  =>  null,
+                        CURLOPT_HTTPGET         =>  null,
+                        CURLOPT_FILE            =>  null,
+                    ),
+
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
