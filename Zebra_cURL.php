@@ -236,9 +236,8 @@ class Zebra_cURL {
      *                                          (for when connecting to HTTPS), and that it matches with the provided
      *                                          hostname; see also the {@link ssl} method;
      *
-     *  -   <b>CURLOPT_SSL_VERIFYPEER</b>   -   <b>FALSE</b>; stop cURL from verifying the peer's certificate (which
-     *                                          would most likely cause the request to fail). see also the {@link ssl}
-     *                                          method;
+     *  -   <b>CURLOPT_SSL_VERIFYPEER</b>   -   <b>TRUE</b>; cURL will verify the peer's certificate (which will most likely
+     *                                          cause the request to fail). see also the {@link ssl} method;
      *
      *  -   <b>CURLOPT_TIMEOUT</b>          -   <b>10</b>; the maximum number of seconds to allow cURL functions to
      *                                          execute;
