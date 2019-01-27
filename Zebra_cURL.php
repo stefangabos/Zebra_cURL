@@ -2349,6 +2349,112 @@ class Zebra_cURL {
     }
 
     /**
+     *  Normalizes URLs.
+     *
+     *  Since URLs can be given as a string, an array of URLs, one associative array or an array of associative arrays,
+     *  this method normalizes all of those into an array of associative arrays.
+     *
+     *  @return array
+     *
+     *  @access private
+     */
+    private function _prepare_urls($urls) {
+
+        // if $urls is *one* associative array containing one of "url", "options" and "data" entries
+        if (is_array($urls) && !empty(array_intersect(array('url', 'options', 'data'), array_keys($urls)))) {
+
+            // since "url" is mandatory, stop if not present
+            if (!isset($urls['url'])) trigger_error('<strong>url</strong> key is missing from argument', E_USER_ERROR);
+
+            // return as an array of arrays
+            return array($urls);
+
+        // if $urls is an array
+        } elseif (is_array($urls)) {
+
+            $result = array();
+
+            // iterate over the entries in the array
+            foreach ($urls as $key => $values) {
+
+                // if key is numeric, as in
+                // array('http://address.com')
+                // array(array(
+                //      'url'       =>  'http://address.com',
+                //      'options'   =>  array(...)
+                // ))
+                if (is_numeric($key)) {
+
+                    // if $values is an associative array containing one of "url", "options" and "data" entries, like
+                    // array(
+                    //      'url'       =>  'http://address.com',
+                    //      'options'   =>  array(...)
+                    // )
+                    if (is_array($values) && !empty(array_intersect(array('url', 'options', 'data'), array_keys($values)))) {
+
+                        // since "url" is mandatory, stop if not present
+                        if (!isset($values['url'])) trigger_error('<strong>url</strong> key is missing from argument', E_USER_ERROR);
+
+                        // keep everything as it is
+                        $result[] = $values;
+
+                    // if $values is not an array or not an associative array containing one of "url", "options" and "data" entries, like
+                    // 'http://address.com'
+                    } else {
+
+                        // it has to be the URL
+                        $result[] = array('url' => $values);
+
+                    }
+
+                // if key is not numeric, as in
+                // 'http://address.com' => array(...)
+                } else {
+
+                    // the value has to be the "data"
+                    $result[] = array('url' => $key, 'data' => $values);
+
+                }
+
+            }
+
+            // update the values
+            $urls = $result;
+
+        // if $urls is not an array, as in
+        // 'http://address.com'
+        } else {
+
+            // it has to be the URL, and make it an array of arrays
+            $urls = array(array('url' => $urls));
+
+        }
+
+        // walk recursively through the array
+        array_walk_recursive($urls, function(&$value) {
+
+            // if we have to upload a file
+            if (strpos($value, '@') === 0)
+
+                // if PHP version is 5.5+
+                if (version_compare(PHP_VERSION, '5.5') >= 0) {
+
+                    // remove the @ from the name
+                    $file = substr($value, 1);
+
+                    // use CURLFile to prepare the file
+                    $value = new CURLFile($file);
+
+                }
+
+        });
+
+        // return the normalized array
+        return $urls;
+
+    }
+
+    /**
      *  Does the actual work.
      *
      *  @return void
