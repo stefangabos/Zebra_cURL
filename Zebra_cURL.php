@@ -1123,6 +1123,10 @@ class Zebra_cURL {
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
 
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
+
         // iterate through the list of URLs to process
         foreach ($urls as $values)
 
@@ -1506,6 +1510,10 @@ class Zebra_cURL {
      *  @return void
      */
     public function header($urls, $callback = '') {
+
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
 
         // iterate through the list of URLs to process
         foreach ($urls as $values)
@@ -2270,8 +2278,9 @@ class Zebra_cURL {
      */
     public function put($urls, $callback = '') {
 
-        // if "urls" argument is not an array, trigger an error
-        if (!is_array($urls)) trigger_error('First argument to "put" method must be an array!', E_USER_ERROR);
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
 
         // iterate through the list of URLs to process
         foreach ($urls as $values)
