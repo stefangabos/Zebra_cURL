@@ -15,5 +15,3 @@ $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 $curl->ftp_download('https://ftp.mozilla.org/pub/firefox/releases/65.0/KEY', 'cache');
 
 echo 'File downloaded - look in the "cache" folder!';
-
-?>
