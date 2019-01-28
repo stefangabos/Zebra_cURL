@@ -133,7 +133,7 @@ times</strong>, until there are no more requests to process).</p>
 <a name="class_methods"></a>
 <h3>Class methods</h3>
 <a name="method__construct"></a>
-<h4 class="method"><span><em>constructor</em></span> __construct() <span class="smalllinenumber">[line 256]</span></h4>
+<h4 class="method"><span><em>constructor</em></span> __construct() <span class="smalllinenumber">[line 257]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -162,7 +162,8 @@ it directly; if set to FALSE the &quot;body&quot; attribute of the object given 
 argument to a callback function will be an empty string;</li></ul> <ul><li><strong>CURLOPT_SSL_VERIFYHOST</strong>   -   <strong>2</strong>; check the existence of a common name in the SSL peer certificate
 (for when connecting to HTTPS), and that it matches with the provided
 hostname; see also the <a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a> method;</li></ul> <ul><li><strong>CURLOPT_SSL_VERIFYPEER</strong>   -   <strong>TRUE</strong>; cURL will verify the peer's certificate (which will most likely
-cause the request to fail). see also the <a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a> method;</li></ul> <ul><li><strong>CURLOPT_TIMEOUT</strong>          -   <strong>10</strong>; the maximum number of seconds to allow cURL functions to
+cause the request to fail). see the <a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a> method on how to fix this
+if it fails;</li></ul> <ul><li><strong>CURLOPT_TIMEOUT</strong>          -   <strong>10</strong>; the maximum number of seconds to allow cURL functions to
 execute;</li></ul> <ul><li><strong>CURLOPT_USERAGENT</strong>        -   A (slightly) random user agent (Internet Explorer 9 or 10, on Windows
 Vista, 7 or 8, with other extra strings). Some web services will not
 respond unless a valid user-agent string is provided</li></ul>
@@ -185,7 +186,7 @@ respond unless a valid user-agent string is provided</li></ul>
 <div class="clear"></div>
 </div>
 <a name="methodcache"></a>
-<h4 class="method"><span><em>method</em></span> cache() <span class="smalllinenumber">[line 423]</span></h4>
+<h4 class="method"><span><em>method</em></span> cache() <span class="smalllinenumber">[line 424]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -289,7 +290,7 @@ folder can be created, its permissions will be set to the value of $chmod</em></
 <div class="clear"></div>
 </div>
 <a name="methodcookies"></a>
-<h4 class="method"><span><em>method</em></span> cookies() <span class="smalllinenumber">[line 458]</span></h4>
+<h4 class="method"><span><em>method</em></span> cookies() <span class="smalllinenumber">[line 459]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -319,7 +320,7 @@ $path
 <div class="clear"></div>
 </div>
 <a name="methoddelete"></a>
-<h4 class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 672]</span></h4>
+<h4 class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 673]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -463,7 +464,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methoddownload"></a>
-<h4 class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 887]</span></h4>
+<h4 class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 888]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -593,7 +594,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodftp_download"></a>
-<h4 class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 1120]</span></h4>
+<h4 class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 1121]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -745,7 +746,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodget"></a>
-<h4 class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1321]</span></h4>
+<h4 class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1322]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -860,7 +861,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodheader"></a>
-<h4 class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1507]</span></h4>
+<h4 class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1508]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -967,7 +968,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodhttp_authentication"></a>
-<h4 class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1625]</span></h4>
+<h4 class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1626]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1057,7 +1058,7 @@ $type
 <div class="clear"></div>
 </div>
 <a name="methodoption"></a>
-<h4 class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1672]</span></h4>
+<h4 class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1673]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1113,7 +1114,7 @@ $value
 <div class="clear"></div>
 </div>
 <a name="methodpost"></a>
-<h4 class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1909]</span></h4>
+<h4 class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1910]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1267,7 +1268,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodproxy"></a>
-<h4 class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 2033]</span></h4>
+<h4 class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 2034]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1367,7 +1368,7 @@ formatted like</em> <strong>[username]:[password]</strong>.     .</p></td>
 <div class="clear"></div>
 </div>
 <a name="methodput"></a>
-<h4 class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 2270]</span></h4>
+<h4 class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 2271]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1516,7 +1517,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodqueue"></a>
-<h4 class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 2389]</span></h4>
+<h4 class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 2390]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1597,7 +1598,7 @@ queue (
 <div class="clear"></div>
 </div>
 <a name="methodscrap"></a>
-<h4 class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2439]</span></h4>
+<h4 class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2440]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>mixed</em>
@@ -1664,7 +1665,7 @@ at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> metho
 <div class="clear"></div>
 </div>
 <a name="methodssl"></a>
-<h4 class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2520]</span></h4>
+<h4 class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2529]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1717,7 +1718,7 @@ $path
 <td valign="top"><em>boolean</em></td>
 <td valign="top"><strong>$verify_peer</strong></td>
 <td valign="top"><p>(Optional) Should the peer's certificate be verified by cURL?</p><p>Default is TRUE.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and
-setting</em> <strong>CURLOPT_SSL_VERIFYPEER</strong> <em>option to the desired value</em>.</p></td>
+setting</em> <strong>CURLOPT_SSL_VERIFYPEER</strong> <em>option to the desired value</em>.</p><p>When you are communicating with an HTTPS site (or any other protocol that                                           uses TLS), it will, by default, verify that the server is signed by a                                           trusted Certificate Authority (CA) and it will most likely fail.</p><p>When it does fail, instead of disabling this check, better                                           <a href="https://curl.haxx.se/docs/caextract.html">download a bundle from Mozilla</a>                                           and reference it via the <em>$file</em> argument below.</p></td>
 </tr>
 <tr>
 <td valign="top"><em>integer</em></td>
@@ -1744,7 +1745,7 @@ setting</em> <strong>CURLOPT_CAPATH</strong> <em>option to the desired value</em
 <div class="clear"></div>
 </div>
 <a name="methodstart"></a>
-<h4 class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2557]</span></h4>
+<h4 class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2566]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>

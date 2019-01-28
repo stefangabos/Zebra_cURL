@@ -237,7 +237,8 @@ class Zebra_cURL {
      *                                          hostname; see also the {@link ssl} method;
      *
      *  -   <b>CURLOPT_SSL_VERIFYPEER</b>   -   <b>TRUE</b>; cURL will verify the peer's certificate (which will most likely
-     *                                          cause the request to fail). see also the {@link ssl} method;
+     *                                          cause the request to fail). see the {@link ssl} method on how to fix this
+     *                                          if it fails;
      *
      *  -   <b>CURLOPT_TIMEOUT</b>          -   <b>10</b>; the maximum number of seconds to allow cURL functions to
      *                                          execute;
@@ -2480,6 +2481,14 @@ class Zebra_cURL {
      *
      *                                          <i>This option can also be set using the {@link option} method and
      *                                          setting </i> <b>CURLOPT_SSL_VERIFYPEER</b> <i> option to the desired value</i>.
+     *
+     *                                          When you are communicating with an HTTPS site (or any other protocol that
+     *                                          uses TLS), it will, by default, verify that the server is signed by a
+     *                                          trusted Certificate Authority (CA) and it will most likely fail.
+     *
+     *                                          When it does fail, instead of disabling this check, better
+     *                                          {@link https://curl.haxx.se/docs/caextract.html download a bundle from Mozilla}
+     *                                          and reference it via the <i>$file</i> argument below.
      *
      *  @param  integer     $verify_host        (Optional) Specifies whether or not to check the existence of a common
      *                                          name in the SSL peer certificate and that it matches with the provided
