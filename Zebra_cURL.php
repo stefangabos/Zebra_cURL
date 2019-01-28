@@ -2463,9 +2463,9 @@ class Zebra_cURL {
      *  // instantiate the class
      *  $curl = new Zebra_cURL();
      *
-     *  // instruct the library to verify peer's SSL certificate
+     *  // instruct the library to skip verifying peer's SSL certificate
      *  // (ignored if request is not made through HTTPS)
-     *  $curl->ssl(true);
+     *  $curl->ssl(false);
      *
      *  // fetch a page
      *  $curl->get('https://www.somewebsite.com/', function($result) { print_r("<pre>"); print_r($result); });
