@@ -2394,7 +2394,7 @@ class Zebra_cURL {
     }
 
     /**
-     *  A shorthand for making a single {@link get} request without the need of a callback function
+     *  A shorthand for making <b>a single</b> {@link get} request without the need of a callback function
      *
      *  <code>
      *  // include the Zebra_cURL library
@@ -2417,7 +2417,10 @@ class Zebra_cURL {
      *  print_r($content);
      *  </code>
      *
-     *  @param  string      $url        An URL to fetch
+     *  @param  string      $url        An URL to fetch.
+     *
+     *                                  <samp>Note that this method supports a single URL. For processing multiple URLs
+     *                                  at once, see the {@link get() get} method.</samp>
      *
      *  @param  boolean     $body_only  (Optional) When set to TRUE, will instruct the method to return <i>only</i>
      *                                  the page's content, without info, headers, responses, etc.
