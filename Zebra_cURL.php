@@ -480,9 +480,8 @@ class Zebra_cURL {
     }
 
     /**
-     *  Performs an HTTP <b>DELETE</b> request to one or more URLs with the POST data as specified by the <i>$urls</i> argument,
-     *  and executes the callback function specified by the <i>$callback</i> argument for each and every request, as soon
-     *  as a request finishes.
+     *  Performs an HTTP <b>DELETE</b> request to one or more URLs with optional POST data, and executes the callback
+     *  function specified by the <i>$callback</i> argument for each and every request, as soon as a request finishes.
      *
      *  This method will automatically set the following options:
      *
@@ -548,12 +547,66 @@ class Zebra_cURL {
      *  ), 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $urls       An associative array in the form of <i>url => delete-data</i>, where "delete-data" is an
-     *                              associative array in the form of <i>name => value</i>.
+     *  @param  mixed   $urls       Can be any of the following:
      *
-     *                              "delete-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              <code>
+     *                              // a string
+     *                              $curl->delete('http://address.com');
      *
-     *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
+     *                              // an array, for multiple requests
+     *                              $curl->delete(array(
+     *                                  'http://address1.com',
+     *                                  'http://address2.com',
+     *                              ));
+     *
+     *                              // an associative array in the form of Array(url => delete-data), where "delete-data"
+     *                              // is an associative array in the form of Array(name => value) and represent the value(s)
+     *                              // to be set for CURLOPT_POSTFIELDS
+     *                              // "delete-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              $curl->delete(array('http://address.com' => array(
+     *                                  'data_1'  =>  'value 1',
+     *                                  'data_2'  =>  'value 2',
+     *                              )));
+     *
+     *                              // just like above but an *array* of associative arrays, for multiple requests
+     *                              $curl->delete(array(
+     *                                  array('http://address.com1' => array(
+     *                                      'data_1'  =>  'value 1',
+     *                                      'data_2'  =>  'value 2',
+     *                                  )),
+     *                                  array('http://address.com2' => array(
+     *                                      'data_1'  =>  'value 1',
+     *                                      'data_2'  =>  'value 2',
+     *                                  )),
+     *                              ));
+     *                              </code>
+     *
+     *                              If you need to set {@link option() custom options} for each request, use the following
+     *                              format:
+     *
+     *                              <code>
+     *                              // this can also be an array of arrays, for multiple requests
+     *                              $curl->delete(array(
+     *
+     *                                  // mandatory!
+     *                                  'url'       =>  'http://address.com',
+     *
+     *                                  // optional, used to set any cURL option
+     *                                  // in the same way you would set with the options() method
+     *                                  'options'   =>  array(
+     *                                                      CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                  ),
+     *
+     *                                  // optional, if you need to pass any arguments
+     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using the "options" entry above)
+     *                                  'data'      =>  array(
+     *                                                      'data_1'  =>  'value 1',
+     *                                                      'data_2'  =>  'value 2',
+     *                                                  ),
+     *                              ));
+     *                              </code>
+     *
+     *                              <samp>If any data is sent, the "Content-Type" header will be set to "multipart/form-data"</samp>
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
@@ -664,9 +717,9 @@ class Zebra_cURL {
     }
 
     /**
-     *  Downloads one or more files from one or more URLs specified by the <i>$urls</i> argument, saves the downloaded
-     *  files to the path specified by the <i>$path</i> argument, and executes the callback function specified by the
-     *  <i>$callback</i> argument for each and every request, as soon as a request finishes.
+     *  Downloads one or more files from one or more URLs, saves the downloaded files to the path specified by the
+     *  <i>$path</i> argument, and executes the callback function specified by the <i>$callback</i> argument for each and
+     *  every request, as soon as a request finishes.
      *
      *  <samp>If the path you are downloading from refers to a file, then the file's original name will be preserved but,
      *  if you are downloading a file generated by a script (i.e. http://foo.com/bar.php?w=1200&h=800), the downloaded
@@ -744,7 +797,37 @@ class Zebra_cURL {
      *  ), 'destination/path/', 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $urls               A single URL or an array of URLs to process.
+     *  @param  mixed   $urls               Can be any of the following:
+     *
+     *                                      <code>
+     *                                      // a string
+     *                                      $curl->download('http://address.com/file.foo', 'path', 'callback');
+     *
+     *                                      // an array, for multiple requests
+     *                                      $curl->download(array(
+     *                                          'http://address1.com/file1.foo',
+     *                                          'http://address2.com/file2.bar',
+     *                                      ), 'path', 'callback');
+     *                                      </code>
+     *
+     *                                      If you need to set {@link option() custom options} for each request, use the
+     *                                      following format:
+     *
+     *                                      <code>
+     *                                      // this can also be an array of arrays, for multiple requests
+     *                                      $curl->download(array(
+     *
+     *                                          // mandatory!
+     *                                          'url'       =>  'http://address.com/file.foo',
+     *
+     *                                          // optional, used to set any cURL option
+     *                                          // in the same way you would set with the options() method
+     *                                          'options'   =>  array(
+     *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                          ),
+     *
+     *                                      ), 'path', 'callback');
+     *                                      </code>
      *
      *  @param  string  $path               The path to where to save the file(s) to.
      *
@@ -853,12 +936,12 @@ class Zebra_cURL {
     }
 
     /**
-     *  Works exactly like the {@link download} method only that downloads are made from an FTP server.
+     *  Works exactly like the {@link download} method but downloads are made from an FTP server.
      *
-     *  Downloads from an FTP server to which the connection is made using the given <i>$username</i> and <i>$password</i>
-     *  arguments, one or more files specified by the <i>$urls</i> argument, saves the downloaded files (with their original
-     *  name) to the path specified by the <i>$path</i> argument, and executes the callback function specified by the
-     *  <i>$callback</i> argument for each and every request, as soon as a request finishes.
+     *  Downloads one or more files from an FTP server, to which the connection is made using the given <i>$username</i>
+     *  and <i>$password</i> arguments, saves the downloaded files (with their original name) to the path specified by
+     *  the <i>$path</i> argument, and executes the callback function specified by the <i>$callback</i> argument for each
+     *  and every request, as soon as a request finishes.
      *
      *  Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your
      *  server of reading files into memory first, and then writing them to disk.
@@ -925,7 +1008,58 @@ class Zebra_cURL {
      *  $curl->ftp_download('ftp://somefile.ext', 'destination/path', 'username', 'password', 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $urls               A single URL or an array of URLs to process.
+     *  @param  mixed   $urls               Can be any of the following:
+     *
+     *                                      <code>
+     *                                      // a string
+     *                                      $curl->ftp_download('ftp://address.com/file.foo', 'destination/path', 'username', 'password', 'callback');
+     *
+     *                                      // an array, for multiple requests
+     *                                      $curl->ftp_download(array(
+     *                                          'ftp://address1.com/file1.foo',
+     *                                          'ftp://address2.com/file2.bar',
+     *                                      ), 'destination/path', 'username', 'password', 'callback');
+     *                                      </code>
+     *
+     *                                      If you need to set {@link option() custom options}, use the following format:
+     *
+     *                                      <code>
+     *                                      // this can also be an array of arrays, for multiple requests
+     *                                      $curl->ftp_download(array(
+     *
+     *                                          // mandatory!
+     *                                          'url'       =>  'ftp://address.com/file.foo',
+     *
+     *                                          // optional, used to set any cURL option
+     *                                          // in the same way you would set with the options() method
+     *                                          'options'   =>  array(
+     *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                          ),
+     *
+     *                                      ), 'destination/path', 'username', 'password', 'callback');
+     *                                      </code>
+     *
+     *                                      Note that in all the examples above, you are downloading files from a single
+     *                                      FTP server. To make requests to multiple FTP server, set the <b>CURLOPT_USERPWD</b>
+     *                                      option yourself. The <i>$username</i> and <i>$password</i> arguments will be
+     *                                      overwritten by the values set like this.
+     *
+     *                                      <code>
+     *                                      $curl->ftp_download(array(
+     *                                          array(
+     *                                              'url'       =>  'ftp://address1.com/file1.foo',
+     *                                              'options'   =>  array(
+     *                                                                  CURLOPT_USERPWD =>  'username1:password1',
+     *                                                              ),
+     *                                          ),
+     *                                          array(
+     *                                              'url'       =>  'ftp://address2.com/file2.foo',
+     *                                              'options'   =>  array(
+     *                                                                  CURLOPT_USERPWD =>  'username2:password2',
+     *                                                              ),
+     *                                          ),
+     *                                      ), 'destination/path', '', '', 'callback');
+     *                                      </code>
      *
      *  @param  string  $path               The path to where to save the file(s) to.
      *
@@ -1032,9 +1166,8 @@ class Zebra_cURL {
     }
 
     /**
-     *  Performs an HTTP <b>GET</b> request to one or more URLs specified by the <i>$urls</i> argument and executes the
-     *  callback function specified by the <i>$callback</i> argument for each and every request, as soon as a request
-     *  finishes.
+     *  Performs an HTTP <b>GET</b> request to one or more URLs and executes the callback function specified by the
+     *  <i>$callback</i> argument for each and every request, as soon as a request finishes.
      *
      *  This method will automatically set the following options:
      *
@@ -1102,7 +1235,37 @@ class Zebra_cURL {
      *  ), 'mycallback')
      *  </code>
      *
-     *  @param  mixed   $urls       A single URL or an array of URLs to process.
+     *  @param  mixed   $urls       Can be any of the following:
+     *
+     *                              <code>
+     *                              // a string
+     *                              $curl->get('http://address.com/', 'callback');
+     *
+     *                              // an array, for multiple requests
+     *                              $curl->get(array(
+     *                                  'http://address1.com/',
+     *                                  'http://address2.com/',
+     *                              ), 'callback');
+     *                              </code>
+     *
+     *                              If you need to set {@link option() custom options} for each request, use the
+     *                              following format:
+     *
+     *                              <code>
+     *                              // this can also be an array of arrays, for multiple requests
+     *                              $curl->get(array(
+     *
+     *                                  // mandatory!
+     *                                  'url'       =>  'http://address.com/',
+     *
+     *                                  // optional, used to set any cURL option
+     *                                  // in the same way you would set with the options() method
+     *                                  'options'   =>  array(
+     *                                                      CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                  ),
+     *
+     *                              ), 'callback');
+     *                              </code>
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
@@ -1265,7 +1428,37 @@ class Zebra_cURL {
      *  $curl->header('http://www.somewebsite.com', 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $urls       A single URL or an array of URLs to process.
+     *  @param  mixed   $urls       Can be any of the following:
+     *
+     *                              <code>
+     *                              // a string
+     *                              $curl->header('http://address.com/', 'callback');
+     *
+     *                              // an array, for multiple requests
+     *                              $curl->header(array(
+     *                                  'http://address1.com/',
+     *                                  'http://address2.com/',
+     *                              ), 'callback');
+     *                              </code>
+     *
+     *                              If you need to set {@link option() custom options} for each request, use the
+     *                              following format:
+     *
+     *                              <code>
+     *                              // this can also be an array of arrays, for multiple requests
+     *                              $curl->header(array(
+     *
+     *                                  // mandatory!
+     *                                  'url'       =>  'http://address.com/',
+     *
+     *                                  // optional, used to set any cURL option
+     *                                  // in the same way you would set with the options() method
+     *                                  'options'   =>  array(
+     *                                                      CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                  ),
+     *
+     *                              ), 'callback');
+     *                              </code>
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
@@ -1500,9 +1693,8 @@ class Zebra_cURL {
     }
 
     /**
-     *  Performs an HTTP <b>POST</b> request to one or more URLs with the POST data as specified by the <i>$urls</i> argument,
-     *  and executes the callback function specified by the <i>$callback</i> argument for each and every request, as soon
-     *  as a request finishes.
+     *  Performs an HTTP <b>POST</b> request to one or more URLs and executes the callback function specified by the
+     *  <i>$callback</i> argument for each and every request, as soon as a request finishes.
      *
      *  This method will automatically set the following options:
      *
@@ -1577,10 +1769,64 @@ class Zebra_cURL {
      *  ), 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $urls       An associative array in the form of <i>url => post-data</i>, where "post-data" is an
-     *                              associative array in the form of <i>name => value</i>.
+     *  @param  mixed   $urls       Can be any of the following:
      *
-     *                              "post-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              <code>
+     *                              // a string (no POST values sent)
+     *                              $curl->post('http://address.com');
+     *
+     *                              // an array, for multiple requests (no POST values sent)
+     *                              $curl->delete(array(
+     *                                  'http://address1.com',
+     *                                  'http://address2.com',
+     *                              ));
+     *
+     *                              // an associative array in the form of Array(url => post-data), where "post-data"
+     *                              // is an associative array in the form of Array(name => value) and represent the value(s)
+     *                              // to be set for CURLOPT_POSTFIELDS
+     *                              // "post-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              $curl->post(array('http://address.com' => array(
+     *                                  'data_1'  =>  'value 1',
+     *                                  'data_2'  =>  'value 2',
+     *                              )));
+     *
+     *                              // just like above but an *array* of associative arrays, for multiple requests
+     *                              $curl->post(array(
+     *                                  array('http://address.com1' => array(
+     *                                      'data_1'  =>  'value 1',
+     *                                      'data_2'  =>  'value 2',
+     *                                  )),
+     *                                  array('http://address.com2' => array(
+     *                                      'data_1'  =>  'value 1',
+     *                                      'data_2'  =>  'value 2',
+     *                                  )),
+     *                              ));
+     *                              </code>
+     *
+     *                              If you need to set {@link option() custom options} for each request, use the following
+     *                              format:
+     *
+     *                              <code>
+     *                              // this can also be an array of arrays, for multiple requests
+     *                              $curl->post(array(
+     *
+     *                                  // mandatory!
+     *                                  'url'       =>  'http://address.com',
+     *
+     *                                  // optional, used to set any cURL option
+     *                                  // in the same way you would set with the options() method
+     *                                  'options'   =>  array(
+     *                                                      CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                  ),
+     *
+     *                                  // optional, if you need to pass any arguments
+     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using the "options" entry above)
+     *                                  'data'      =>  array(
+     *                                                      'data_1'  =>  'value 1',
+     *                                                      'data_2'  =>  'value 2',
+     *                                                  ),
+     *                              ));
+     *                              </code>
      *
      *                              To post a file, prepend the filename with @ and use the full server path.
      *
@@ -1591,7 +1837,15 @@ class Zebra_cURL {
      *                              should be explicitly specified by following the filename with the type in the format
      *                              <b>';type=mimetype'.</b> as most of the times cURL will send the wrong mime type...
      *
-     *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
+     *                              <code>
+     *                              $curl->post(array('http://address.com' => array(
+     *                                  'data_1'  =>  'value 1',
+     *                                  'data_2'  =>  'value 2',
+     *                                  'data_3'  =>  '@absolute/path/to/file.ext',
+     *                              )));
+     *                              </code>
+     *
+     *                              <samp>If any data is sent, the "Content-Type" header will be set to "multipart/form-data"</samp>
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
@@ -1807,9 +2061,8 @@ class Zebra_cURL {
     }
 
     /**
-     *  Performs an HTTP <b>PUT</b> request to one or more URLs with the POST data as specified by the <i>$urls</i> argument,
-     *  and executes the callback function specified by the <i>$callback</i> argument for each and every request, as soon
-     *  as a request finishes.
+     *  Performs an HTTP <b>PUT</b> request to one or more URLs and executes the callback function specified by the
+     *  <i>$callback</i> argument for each and every request, as soon as a request finishes.
      *
      *  This method will automatically set the following options:
      *
@@ -1875,10 +2128,64 @@ class Zebra_cURL {
      *  ), 'mycallback');
      *  </code>
      *
-     *  @param  mixed   $urls       An associative array in the form of <i>url => put-data</i>, where "put-data" is an
-     *                              associative array in the form of <i>name => value</i>.
+     *  @param  mixed   $urls       Can be any of the following:
      *
-     *                              "put-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              <code>
+     *                              // a string (no values sent)
+     *                              $curl->put('http://address.com');
+     *
+     *                              // an array, for multiple requests (no values sent)
+     *                              $curl->put(array(
+     *                                  'http://address1.com',
+     *                                  'http://address2.com',
+     *                              ));
+     *
+     *                              // an associative array in the form of Array(url => put-data), where "put-data"
+     *                              // is an associative array in the form of Array(name => value) and represent the value(s)
+     *                              // to be set for CURLOPT_POSTFIELDS
+     *                              // "put-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              $curl->put(array('http://address.com' => array(
+     *                                  'data_1'  =>  'value 1',
+     *                                  'data_2'  =>  'value 2',
+     *                              )));
+     *
+     *                              // just like above but an *array* of associative arrays, for multiple requests
+     *                              $curl->put(array(
+     *                                  array('http://address.com1' => array(
+     *                                      'data_1'  =>  'value 1',
+     *                                      'data_2'  =>  'value 2',
+     *                                  )),
+     *                                  array('http://address.com2' => array(
+     *                                      'data_1'  =>  'value 1',
+     *                                      'data_2'  =>  'value 2',
+     *                                  )),
+     *                              ));
+     *                              </code>
+     *
+     *                              If you need to set {@link option() custom options} for each request, use the following
+     *                              format:
+     *
+     *                              <code>
+     *                              // this can also be an array of arrays, for multiple requests
+     *                              $curl->put(array(
+     *
+     *                                  // mandatory!
+     *                                  'url'       =>  'http://address.com',
+     *
+     *                                  // optional, used to set any cURL option
+     *                                  // in the same way you would set with the options() method
+     *                                  'options'   =>  array(
+     *                                                      CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                  ),
+     *
+     *                                  // optional, if you need to pass any arguments
+     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using the "options" entry above)
+     *                                  'data'      =>  array(
+     *                                                      'data_1'  =>  'value 1',
+     *                                                      'data_2'  =>  'value 2',
+     *                                                  ),
+     *                              ));
+     *                              </code>
      *
      *                              To put a file, prepend the filename with @ and use the full server path.
      *
@@ -1889,7 +2196,15 @@ class Zebra_cURL {
      *                              should be explicitly specified by following the filename with the type in the format
      *                              <b>';type=mimetype'.</b> as most of the times cURL will send the wrong mime type...
      *
-     *                              The <i>Content-Type</i> header will be set to <b>multipart/form-data.</b>
+     *                              <code>
+     *                              $curl->put(array('http://address.com' => array(
+     *                                  'data_1'  =>  'value 1',
+     *                                  'data_2'  =>  'value 2',
+     *                                  'data_3'  =>  '@absolute/path/to/file.ext',
+     *                              )));
+     *                              </code>
+     *
+     *                              <samp>If any data is sent, the "Content-Type" header will be set to "multipart/form-data"</samp>
      *
      *  @param  mixed   $callback   (Optional) Callback function to be called as soon as a request finishes.
      *
