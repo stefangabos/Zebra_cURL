@@ -117,7 +117,7 @@ h4.method span {
 }
 
 .doc_block li {
-    margin-bottom: 1em;
+    margin-bottom: 0;
 }
 
 .doc_block table td {

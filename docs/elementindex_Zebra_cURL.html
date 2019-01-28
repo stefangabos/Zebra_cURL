@@ -81,9 +81,9 @@ Package: <strong>Zebra_cURL</strong>
 <h3>d</h3>
 <dl>
 <dt>delete</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methoddelete">Zebra_cURL::delete()</a><span>Performs an HTTP <strong>DELETE</strong> request to one or more URLs with the POST data as specified by the <em>$urls</em> argument,   and executes the callback function specified by the <em>$callback</em> argument for each and every request, as soon   as a request finishes.</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methoddelete">Zebra_cURL::delete()</a><span>Performs an HTTP <strong>DELETE</strong> request to one or more URLs with optional POST data, and executes the callback   function specified by the <em>$callback</em> argument for each and every request, as soon as a request finishes.</span></dd>
 <dt>download</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methoddownload">Zebra_cURL::download()</a><span>Downloads one or more files from one or more URLs specified by the <em>$urls</em> argument, saves the downloaded   files to the path specified by the <em>$path</em> argument, and executes the callback function specified by the   <em>$callback</em> argument for each and every request, as soon as a request finishes.</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methoddownload">Zebra_cURL::download()</a><span>Downloads one or more files from one or more URLs, saves the downloaded files to the path specified by the   <em>$path</em> argument, and executes the callback function specified by the <em>$callback</em> argument for each and   every request, as soon as a request finishes.</span></dd>
 </dl>
 </div>
 <a href="elementindex_Zebra_cURL.html#top" class="top">top</a>
@@ -93,7 +93,7 @@ Package: <strong>Zebra_cURL</strong>
 <h3>f</h3>
 <dl>
 <dt>ftp_download</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodftp_download">Zebra_cURL::ftp_download()</a><span>Works exactly like the <a href="Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method only that downloads are made from an FTP server.</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodftp_download">Zebra_cURL::ftp_download()</a><span>Works exactly like the <a href="Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method but downloads are made from an FTP server.</span></dd>
 </dl>
 </div>
 <a href="elementindex_Zebra_cURL.html#top" class="top">top</a>
@@ -103,7 +103,7 @@ Package: <strong>Zebra_cURL</strong>
 <h3>g</h3>
 <dl>
 <dt>get</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodget">Zebra_cURL::get()</a><span>Performs an HTTP <strong>GET</strong> request to one or more URLs specified by the <em>$urls</em> argument and executes the   callback function specified by the <em>$callback</em> argument for each and every request, as soon as a request   finishes.</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodget">Zebra_cURL::get()</a><span>Performs an HTTP <strong>GET</strong> request to one or more URLs and executes the callback function specified by the   <em>$callback</em> argument for each and every request, as soon as a request finishes.</span></dd>
 </dl>
 </div>
 <a href="elementindex_Zebra_cURL.html#top" class="top">top</a>
@@ -137,11 +137,11 @@ Package: <strong>Zebra_cURL</strong>
 <dt>$pause_interval</dt>
 <dd>in file <em>Zebra_cURL.php</em>, variable <a href="Zebra_cURL/Zebra_cURL.html#var$pause_interval">Zebra_cURL::$pause_interval</a><span>The number of seconds to wait between processing batches of requests.</span></dd>
 <dt>post</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodpost">Zebra_cURL::post()</a><span>Performs an HTTP <strong>POST</strong> request to one or more URLs with the POST data as specified by the <em>$urls</em> argument,   and executes the callback function specified by the <em>$callback</em> argument for each and every request, as soon   as a request finishes.</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodpost">Zebra_cURL::post()</a><span>Performs an HTTP <strong>POST</strong> request to one or more URLs and executes the callback function specified by the   <em>$callback</em> argument for each and every request, as soon as a request finishes.</span></dd>
 <dt>proxy</dt>
 <dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodproxy">Zebra_cURL::proxy()</a><span>Instruct the library to tunnel all requests through a proxy server.</span></dd>
 <dt>put</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodput">Zebra_cURL::put()</a><span>Performs an HTTP <strong>PUT</strong> request to one or more URLs with the POST data as specified by the <em>$urls</em> argument,   and executes the callback function specified by the <em>$callback</em> argument for each and every request, as soon   as a request finishes.</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodput">Zebra_cURL::put()</a><span>Performs an HTTP <strong>PUT</strong> request to one or more URLs and executes the callback function specified by the   <em>$callback</em> argument for each and every request, as soon as a request finishes.</span></dd>
 </dl>
 </div>
 <a href="elementindex_Zebra_cURL.html#top" class="top">top</a>
@@ -161,7 +161,7 @@ Package: <strong>Zebra_cURL</strong>
 <h3>s</h3>
 <dl>
 <dt>scrap</dt>
-<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodscrap">Zebra_cURL::scrap()</a><span>A shorthand for making a single <a href="Zebra_cURL/Zebra_cURL.html#methodget">get</a> request without the need of a callback function</span></dd>
+<dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodscrap">Zebra_cURL::scrap()</a><span>A shorthand for making <strong>a single</strong> <a href="Zebra_cURL/Zebra_cURL.html#methodget">get</a> request without the need of a callback function</span></dd>
 <dt>ssl</dt>
 <dd>in file <em>Zebra_cURL.php</em>, method <a href="Zebra_cURL/Zebra_cURL.html#methodssl">Zebra_cURL::ssl()</a><span>Requests made to HTTPS servers sometimes require additional configuration, depending on the server. Most of the   times <a href="Zebra_cURL/Zebra_cURL.html#method__construct">the defaults</a> set by the library will get you through, but if defaults are not working,   you can set specific options using this method.</span></dd>
 <dt>start</dt>
@@ -198,7 +198,7 @@ Package: <strong>Zebra_cURL</strong>
 </tr>
 </table>
 <div id="doc_footer">
-Documentation generated on <span>Fri, 25 Jan 19</span> by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+Documentation generated on <span>Mon, 28 Jan 19</span> by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 </div>
 </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
