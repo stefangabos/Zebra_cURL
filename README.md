@@ -57,6 +57,7 @@ require_once 'Zebra_cURL.php';
 
 ```php
 // include the library
+// (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra_cURL class
@@ -65,9 +66,14 @@ $curl = new Zebra_cURL();
 // cache results 3600 seconds
 $curl->cache('path/to/cache', 3600);
 
+// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+// so we don't get CURLE_SSL_CACERT response from cURL
+// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
+
 // a simple way of scrapping a page
 // (you can do more with the "get" method and callback functions)
-echo $curl->scrap('https://google.com', true);
+echo $curl->scrap('https://github.com/', true);
 ```
 
 **Fetch RSS feeds**
@@ -90,8 +96,10 @@ function callback($result, $feeds) {
 
                 // show title and date for each entry
                 foreach ($xml->channel->item as $entry) {
-                    echo '<h2><span>' . $feeds[$result->info['original_url']] . '</span> [' . $entry->title . '](' . $entry->link . ')</h2>';
-                    echo '<p>' . $entry->pubDate . '</p><hr>';
+                    echo '<h6>' . $feeds[$result->info['original_url']] . '</h6>';
+                    echo '<h2><a href="' . $entry->link . '">' . $entry->title . '</a></h2>';
+                    echo '<p><small>' . $entry->pubDate . '</small></p>';
+                    echo '<p>' . substr(strip_tags($entry->description), 0, 500) . '</p><hr>';
                 }
 
             // different types of RSS feeds...
@@ -99,8 +107,10 @@ function callback($result, $feeds) {
 
                 // show title and date for each entry
                 foreach ($xml->entry as $entry) {
-                    echo '<h2><span>' . $feeds[$result->info['original_url']] . '</span> [' . $entry->title . '](' . $entry->link['href'] . ')</h2>';
-                    echo '<p>' . $entry->updated . '</p><hr>';
+                    echo '<h6>' . $feeds[$result->info['original_url']] . '</h6>';
+                    echo '<h2><a href="' . $entry->link['href'] . '">' . $entry->title . '</a></h2>';
+                    echo '<p><small>' . $entry->updated . '</small></p>';
+                    echo '<p>' . substr(strip_tags($entry->content), 0, 500) . '</p><hr>';
                 }
 
         // show the server's response code
@@ -113,6 +123,7 @@ function callback($result, $feeds) {
 }
 
 // include the library
+// (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra_cURL class
@@ -121,9 +132,14 @@ $curl = new Zebra_cURL();
 // cache results 3600 seconds
 $curl->cache('path/to/cache', 3600);
 
+// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+// so we don't get CURLE_SSL_CACERT response from cURL
+// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
+
 $feeds = array(
-    'http://rss1.smashingmagazine.com/feed/'        =>  'Smashing Magazine',
-    'http://feeds.feedburner.com/nettuts'           =>  'TutsPlus',
+    'https://rss1.smashingmagazine.com/feed/'       =>  'Smashing Magazine',
+    'https://feeds.feedburner.com/nettuts'          =>  'TutsPlus',
     'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
 );
 
@@ -135,10 +151,16 @@ $curl->get(array_keys($feeds), 'callback', $feeds);
 
 ```php
 // include the library
+// (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra_cURL class
 $curl = new Zebra_cURL();
+
+// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+// so we don't get CURLE_SSL_CACERT response from cURL
+// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
 // download one of the official twitter image
 $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
@@ -148,6 +170,7 @@ $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bir
 
 ```php
 // include the library
+// (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra_cURL class
