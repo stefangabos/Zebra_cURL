@@ -2,11 +2,11 @@
 
 # Zebra_cURL
 
-*A high performance PHP cURL library allowing the running of multiple requests at once, asynchronously*
+*A high performance PHP cURL library allowing the running of multiple asynchronous requests at once*
 
 [![Latest Stable Version](https://poser.pugx.org/stefangabos/zebra_curl/v/stable)](https://packagist.org/packages/stefangabos/zebra_curl) [![Total Downloads](https://poser.pugx.org/stefangabos/zebra_curl/downloads)](https://packagist.org/packages/stefangabos/zebra_curl) [![Monthly Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/monthly)](https://packagist.org/packages/stefangabos/zebra_curl) [![Daily Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/daily)](https://packagist.org/packages/stefangabos/zebra_curl) [![License](https://poser.pugx.org/stefangabos/zebra_curl/license)](https://packagist.org/packages/stefangabos/zebra_curl)
 
-**Zebra_cURL** is a high performance PHP cURL which not only allows the running of multiple requests at once asynchronously but also finished threads can be processed right away without having to wait for the other threads in the queue to finish.
+**Zebra_cURL** is a high performance PHP cURL which not only allows the running of multiple asynchronous requests at once, but also finished threads can be processed right away without having to wait for the other threads in the queue to finish.
 
 Also, each time a request is completed another one is added to the queue, thus keeping a constant number of threads running at all times and eliminating wasted CPU cycles from busy waiting. This result is a faster and more efficient way of processing large quantities of cURL requests (like fetching thousands of RSS feeds at once), drastically reducing processing time.
 
