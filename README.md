@@ -188,4 +188,4 @@ $curl->option(CURLOPT_HTTPHEADER, [
 echo $curl->scrap('http://httpbin.org/get') . PHP_EOL;
 ```
 
-:books: Checkout the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
+:books: Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
