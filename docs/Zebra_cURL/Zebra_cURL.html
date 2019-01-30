@@ -320,7 +320,7 @@ $path
 <div class="clear"></div>
 </div>
 <a name="methoddelete"></a>
-<h4 class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 674]</span></h4>
+<h4 class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 678]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -401,16 +401,19 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'http://address2.com'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(url&nbsp;=&gt;&nbsp;delete-data),&nbsp;where&nbsp;&quot;delete-data&quot;</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;is&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(name&nbsp;=&gt;&nbsp;value)&nbsp;and&nbsp;represent&nbsp;the&nbsp;value(s)</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;to&nbsp;be&nbsp;set&nbsp;for&nbsp;CURLOPT_POSTFIELDS</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;&quot;delete-data&quot;&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;arbitrary&nbsp;string&nbsp;-&nbsp;useful&nbsp;if&nbsp;you&nbsp;want&nbsp;to&nbsp;send&nbsp;raw&nbsp;data&nbsp;(like&nbsp;a&nbsp;JSON)</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(url&nbsp;=&gt;&nbsp;delete-data),</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;where&nbsp;&quot;delete-data&quot;&nbsp;is&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;Array(name&nbsp;=&gt;&nbsp;value)&nbsp;and&nbsp;represents&nbsp;the&nbsp;value(s)&nbsp;to&nbsp;be&nbsp;set&nbsp;for</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;CURLOPT_POSTFIELDS;</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;&quot;delete‑data&quot;&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;arbitrary&nbsp;string&nbsp;-&nbsp;useful&nbsp;if&nbsp;you</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;want&nbsp;to&nbsp;send&nbsp;raw&nbsp;data&nbsp;(like&nbsp;a&nbsp;JSON)</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methoddelete">delete</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'http://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;just&nbsp;like&nbsp;above&nbsp;but&nbsp;an&nbsp;*array*&nbsp;of&nbsp;associative&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;just&nbsp;like&nbsp;above&nbsp;but&nbsp;an&nbsp;*array*&nbsp;of&nbsp;associative&nbsp;arrays,&nbsp;for</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methoddelete">delete</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'http://address.com1'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
@@ -434,7 +437,8 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;if&nbsp;you&nbsp;need&nbsp;to&nbsp;pass&nbsp;any&nbsp;arguments</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;(equivalent&nbsp;of&nbsp;setting&nbsp;CURLOPT_POSTFIELDS&nbsp;using&nbsp;the&nbsp;&quot;options&quot;&nbsp;entry&nbsp;above)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;(equivalent&nbsp;of&nbsp;setting&nbsp;CURLOPT_POSTFIELDS&nbsp;using</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;the&nbsp;&quot;options&quot;&nbsp;entry&nbsp;above)</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
@@ -471,7 +475,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methoddownload"></a>
-<h4 class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 894]</span></h4>
+<h4 class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 898]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -608,7 +612,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodftp_download"></a>
-<h4 class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 1131]</span></h4>
+<h4 class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 1147]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -668,9 +672,15 @@ $callback
 <li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;Zebra_cURL&nbsp;object</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;connect&nbsp;to&nbsp;the&nbsp;FTP&nbsp;server&nbsp;using&nbsp;the&nbsp;given&nbsp;credential,&nbsp;download&nbsp;a&nbsp;file&nbsp;to&nbsp;a&nbsp;given&nbsp;location&nbsp;and</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;execute&nbsp;the&nbsp;&quot;mycallback&quot;&nbsp;function&nbsp;for&nbsp;each&nbsp;request,&nbsp;as&nbsp;soon&nbsp;as&nbsp;it&nbsp;finishes</span></div></li>
-<li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span><span class="src-str">'ftp://somefile.ext'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'destination/path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'username'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'password'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'mycallback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;connect&nbsp;to&nbsp;the&nbsp;FTP&nbsp;server&nbsp;using&nbsp;the&nbsp;given&nbsp;credential,&nbsp;download&nbsp;a&nbsp;file&nbsp;to&nbsp;a&nbsp;given&nbsp;location</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;and&nbsp;execute&nbsp;the&nbsp;&quot;mycallback&quot;&nbsp;function&nbsp;for&nbsp;each&nbsp;request,&nbsp;as&nbsp;soon&nbsp;as&nbsp;it&nbsp;finishes</span></div></li>
+<li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'ftp://somefile.ext'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'destination/path'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'username'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'password'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'mycallback'</span></div></li>
+<li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Tags:</h5>
 <table cellspacing="0" cellpadding="0">
@@ -685,7 +695,13 @@ $callback
 <td valign="top"><em>mixed</em></td>
 <td valign="top"><strong>$urls</strong></td>
 <td valign="top"><p>Can be any of the following:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
-<li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span><span class="src-str">'ftp://address.com/file.foo'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'destination/path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'username'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'password'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'ftp://address.com/file.foo'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'destination/path'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'username'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'password'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'callback'</span></div></li>
+<li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;array,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
@@ -767,7 +783,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodget"></a>
-<h4 class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1341]</span></h4>
+<h4 class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1357]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -889,7 +905,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodheader"></a>
-<h4 class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1532]</span></h4>
+<h4 class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1548]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1003,7 +1019,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodhttp_authentication"></a>
-<h4 class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1654]</span></h4>
+<h4 class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1670]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1093,7 +1109,7 @@ $type
 <div class="clear"></div>
 </div>
 <a name="methodoption"></a>
-<h4 class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1701]</span></h4>
+<h4 class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1717]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1149,7 +1165,7 @@ $value
 <div class="clear"></div>
 </div>
 <a name="methodpost"></a>
-<h4 class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1939]</span></h4>
+<h4 class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1959]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1235,16 +1251,19 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'http://address2.com'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(url&nbsp;=&gt;&nbsp;post-data),&nbsp;where&nbsp;&quot;post-data&quot;</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;is&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(name&nbsp;=&gt;&nbsp;value)&nbsp;and&nbsp;represent&nbsp;the&nbsp;value(s)</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;to&nbsp;be&nbsp;set&nbsp;for&nbsp;CURLOPT_POSTFIELDS</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;&quot;post-data&quot;&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;arbitrary&nbsp;string&nbsp;-&nbsp;useful&nbsp;if&nbsp;you&nbsp;want&nbsp;to&nbsp;send&nbsp;raw&nbsp;data&nbsp;(like&nbsp;a&nbsp;JSON)</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(url&nbsp;=&gt;&nbsp;post-data),</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;where&nbsp;&quot;post-data&quot;&nbsp;is&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;Array(name&nbsp;=&gt;&nbsp;value)&nbsp;and&nbsp;represents&nbsp;the&nbsp;value(s)&nbsp;to&nbsp;be&nbsp;set&nbsp;for</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;CURLOPT_POSTFIELDS;</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;&quot;post‑data&quot;&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;arbitrary&nbsp;string&nbsp;-&nbsp;useful&nbsp;if&nbsp;you</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;want&nbsp;to&nbsp;send&nbsp;raw&nbsp;data&nbsp;(like&nbsp;a&nbsp;JSON)</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'http://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;just&nbsp;like&nbsp;above&nbsp;but&nbsp;an&nbsp;*array*&nbsp;of&nbsp;associative&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;just&nbsp;like&nbsp;above&nbsp;but&nbsp;an&nbsp;*array*&nbsp;of&nbsp;associative&nbsp;arrays,&nbsp;for</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'http://address.com1'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
@@ -1268,7 +1287,8 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;if&nbsp;you&nbsp;need&nbsp;to&nbsp;pass&nbsp;any&nbsp;arguments</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;(equivalent&nbsp;of&nbsp;setting&nbsp;CURLOPT_POSTFIELDS&nbsp;using&nbsp;the&nbsp;&quot;options&quot;&nbsp;entry&nbsp;above)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;(equivalent&nbsp;of&nbsp;setting&nbsp;CURLOPT_POSTFIELDS&nbsp;using</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;the&nbsp;&quot;options&quot;&nbsp;entry&nbsp;above)</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
@@ -1310,7 +1330,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodproxy"></a>
-<h4 class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 2063]</span></h4>
+<h4 class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 2083]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1410,7 +1430,7 @@ formatted like</em> <strong>[username]:[password]</strong>.     .</p></td>
 <div class="clear"></div>
 </div>
 <a name="methodput"></a>
-<h4 class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 2301]</span></h4>
+<h4 class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 2325]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1491,16 +1511,19 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'http://address2.com'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(url&nbsp;=&gt;&nbsp;put-data),&nbsp;where&nbsp;&quot;put-data&quot;</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;is&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(name&nbsp;=&gt;&nbsp;value)&nbsp;and&nbsp;represent&nbsp;the&nbsp;value(s)</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;to&nbsp;be&nbsp;set&nbsp;for&nbsp;CURLOPT_POSTFIELDS</span></div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;&quot;put-data&quot;&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;arbitrary&nbsp;string&nbsp;-&nbsp;useful&nbsp;if&nbsp;you&nbsp;want&nbsp;to&nbsp;send&nbsp;raw&nbsp;data&nbsp;(like&nbsp;a&nbsp;JSON)</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of&nbsp;Array(url&nbsp;=&gt;&nbsp;put-data),</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;where&nbsp;&quot;put-data&quot;&nbsp;is&nbsp;an&nbsp;associative&nbsp;array&nbsp;in&nbsp;the&nbsp;form&nbsp;of</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;Array(name&nbsp;=&gt;&nbsp;value)&nbsp;and&nbsp;represent&nbsp;the&nbsp;value(s)&nbsp;to&nbsp;be&nbsp;set&nbsp;for</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;CURLOPT_POSTFIELDS;</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;&quot;put‑data&quot;&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;arbitrary&nbsp;string&nbsp;-&nbsp;useful&nbsp;if&nbsp;you</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;want&nbsp;to&nbsp;send&nbsp;raw&nbsp;data&nbsp;(like&nbsp;a&nbsp;JSON)</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodput">put</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'http://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
-<li><div class="src-line"><span class="src-comm">//&nbsp;just&nbsp;like&nbsp;above&nbsp;but&nbsp;an&nbsp;*array*&nbsp;of&nbsp;associative&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;just&nbsp;like&nbsp;above&nbsp;but&nbsp;an&nbsp;*array*&nbsp;of&nbsp;associative&nbsp;arrays,&nbsp;for</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodput">put</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'http://address.com1'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
@@ -1524,7 +1547,8 @@ $callback
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;if&nbsp;you&nbsp;need&nbsp;to&nbsp;pass&nbsp;any&nbsp;arguments</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;(equivalent&nbsp;of&nbsp;setting&nbsp;CURLOPT_POSTFIELDS&nbsp;using&nbsp;the&nbsp;&quot;options&quot;&nbsp;entry&nbsp;above)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;(equivalent&nbsp;of&nbsp;setting&nbsp;CURLOPT_POSTFIELDS&nbsp;using</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;the&nbsp;&quot;options&quot;&nbsp;entry&nbsp;above)</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
@@ -1566,7 +1590,7 @@ respective request, making it easy to retry failed requests without having to cl
 <div class="clear"></div>
 </div>
 <a name="methodqueue"></a>
-<h4 class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 2421]</span></h4>
+<h4 class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 2445]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1647,7 +1671,7 @@ queue (
 <div class="clear"></div>
 </div>
 <a name="methodscrap"></a>
-<h4 class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2471]</span></h4>
+<h4 class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2495]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>mixed</em>
@@ -1714,7 +1738,7 @@ at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> metho
 <div class="clear"></div>
 </div>
 <a name="methodssl"></a>
-<h4 class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2560]</span></h4>
+<h4 class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2584]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>
@@ -1794,7 +1818,7 @@ setting</em> <strong>CURLOPT_CAPATH</strong> <em>option to the desired value</em
 <div class="clear"></div>
 </div>
 <a name="methodstart"></a>
-<h4 class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2597]</span></h4>
+<h4 class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2621]</span></h4>
 <div class="doc_block">
 <p class="code">
 <em>void</em>

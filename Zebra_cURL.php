@@ -560,16 +560,19 @@ class Zebra_cURL {
      *                                  'http://address2.com',
      *                              ));
      *
-     *                              // an associative array in the form of Array(url => delete-data), where "delete-data"
-     *                              // is an associative array in the form of Array(name => value) and represent the value(s)
-     *                              // to be set for CURLOPT_POSTFIELDS
-     *                              // "delete-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              // an associative array in the form of Array(url => delete-data),
+     *                              // where "delete-data" is an associative array in the form of
+     *                              // Array(name => value) and represents the value(s) to be set for
+     *                              // CURLOPT_POSTFIELDS;
+     *                              // "delete‑data" can also be an arbitrary string - useful if you
+     *                              // want to send raw data (like a JSON)
      *                              $curl->delete(array('http://address.com' => array(
      *                                  'data_1'  =>  'value 1',
      *                                  'data_2'  =>  'value 2',
      *                              )));
      *
-     *                              // just like above but an *array* of associative arrays, for multiple requests
+     *                              // just like above but an *array* of associative arrays, for
+     *                              // multiple requests
      *                              $curl->delete(array(
      *                                  array('http://address.com1' => array(
      *                                      'data_1'  =>  'value 1',
@@ -599,7 +602,8 @@ class Zebra_cURL {
      *                                                  ),
      *
      *                                  // optional, if you need to pass any arguments
-     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using the "options" entry above)
+     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using
+     *                                  // the "options" entry above)
      *                                  'data'      =>  array(
      *                                                      'data_1'  =>  'value 1',
      *                                                      'data_2'  =>  'value 2',
@@ -1010,16 +1014,28 @@ class Zebra_cURL {
      *  // instantiate the Zebra_cURL object
      *  $curl = new Zebra_cURL();
      *
-     *  // connect to the FTP server using the given credential, download a file to a given location and
-     *  // execute the "mycallback" function for each request, as soon as it finishes
-     *  $curl->ftp_download('ftp://somefile.ext', 'destination/path', 'username', 'password', 'mycallback');
+     *  // connect to the FTP server using the given credential, download a file to a given location
+     *  // and execute the "mycallback" function for each request, as soon as it finishes
+     *  $curl->ftp_download(
+     *      'ftp://somefile.ext',
+     *      'destination/path',
+     *      'username',
+     *      'password',
+     *      'mycallback'
+     *  );
      *  </code>
      *
      *  @param  mixed   $urls               Can be any of the following:
      *
      *                                      <code>
      *                                      // a string
-     *                                      $curl->ftp_download('ftp://address.com/file.foo', 'destination/path', 'username', 'password', 'callback');
+     *                                      $curl->ftp_download(
+     *                                          'ftp://address.com/file.foo',
+     *                                          'destination/path',
+     *                                          'username',
+     *                                          'password',
+     *                                          'callback'
+     *                                      );
      *
      *                                      // an array, for multiple requests
      *                                      $curl->ftp_download(array(
@@ -1810,16 +1826,19 @@ class Zebra_cURL {
      *                                  'http://address2.com',
      *                              ));
      *
-     *                              // an associative array in the form of Array(url => post-data), where "post-data"
-     *                              // is an associative array in the form of Array(name => value) and represent the value(s)
-     *                              // to be set for CURLOPT_POSTFIELDS
-     *                              // "post-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              // an associative array in the form of Array(url => post-data),
+     *                              // where "post-data" is an associative array in the form of
+     *                              // Array(name => value) and represents the value(s) to be set for
+     *                              // CURLOPT_POSTFIELDS;
+     *                              // "post‑data" can also be an arbitrary string - useful if you
+     *                              // want to send raw data (like a JSON)
      *                              $curl->post(array('http://address.com' => array(
      *                                  'data_1'  =>  'value 1',
      *                                  'data_2'  =>  'value 2',
      *                              )));
      *
-     *                              // just like above but an *array* of associative arrays, for multiple requests
+     *                              // just like above but an *array* of associative arrays, for
+     *                              // multiple requests
      *                              $curl->post(array(
      *                                  array('http://address.com1' => array(
      *                                      'data_1'  =>  'value 1',
@@ -1849,7 +1868,8 @@ class Zebra_cURL {
      *                                                  ),
      *
      *                                  // optional, if you need to pass any arguments
-     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using the "options" entry above)
+     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using
+     *                                  // the "options" entry above)
      *                                  'data'      =>  array(
      *                                                      'data_1'  =>  'value 1',
      *                                                      'data_2'  =>  'value 2',
@@ -2170,16 +2190,19 @@ class Zebra_cURL {
      *                                  'http://address2.com',
      *                              ));
      *
-     *                              // an associative array in the form of Array(url => put-data), where "put-data"
-     *                              // is an associative array in the form of Array(name => value) and represent the value(s)
-     *                              // to be set for CURLOPT_POSTFIELDS
-     *                              // "put-data" can also be an arbitrary string - useful if you want to send raw data (like a JSON)
+     *                              // an associative array in the form of Array(url => put-data),
+     *                              // where "put-data" is an associative array in the form of
+     *                              // Array(name => value) and represent the value(s) to be set for
+     *                              // CURLOPT_POSTFIELDS;
+     *                              // "put‑data" can also be an arbitrary string - useful if you
+     *                              // want to send raw data (like a JSON)
      *                              $curl->put(array('http://address.com' => array(
      *                                  'data_1'  =>  'value 1',
      *                                  'data_2'  =>  'value 2',
      *                              )));
      *
-     *                              // just like above but an *array* of associative arrays, for multiple requests
+     *                              // just like above but an *array* of associative arrays, for
+     *                              // multiple requests
      *                              $curl->put(array(
      *                                  array('http://address.com1' => array(
      *                                      'data_1'  =>  'value 1',
@@ -2209,7 +2232,8 @@ class Zebra_cURL {
      *                                                  ),
      *
      *                                  // optional, if you need to pass any arguments
-     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using the "options" entry above)
+     *                                  // (equivalent of setting CURLOPT_POSTFIELDS using
+     *                                  // the "options" entry above)
      *                                  'data'      =>  array(
      *                                                      'data_1'  =>  'value 1',
      *                                                      'data_2'  =>  'value 2',
