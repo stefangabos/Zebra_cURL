@@ -644,7 +644,7 @@ class Zebra_cURL {
      *                                                      this method;
      *                                                      </li></ul></li></ul>
      *
-     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      <i>Unless disabled, each entry in the "headers" array is an
      *                                                      associative array in the form of property => value</i>
      *
      *                              -   <b>body</b> -       the response of the request (the content of the page at the
@@ -876,7 +876,7 @@ class Zebra_cURL {
      *                                                              available for this method;
      *                                                              </li></ul></li></ul>
      *
-     *                                                              <i>Unless disabled, each entry in the headers' array
+     *                                                              <i>Unless disabled, each entry in the "headers" array
      *                                                              is an associative array in the form of property =>
      *                                                              value</i>
      *
@@ -1125,7 +1125,7 @@ class Zebra_cURL {
      *                                                              available for this method;
      *                                                              </li></ul></li></ul>
      *
-     *                                                              <i>Unless disabled, each entry in the headers' array
+     *                                                              <i>Unless disabled, each entry in the "headers" array
      *                                                              is an associative array in the form of property =>
      *                                                              value</i>
      *
@@ -1329,7 +1329,7 @@ class Zebra_cURL {
      *                                                      this method;
      *                                                      </li></ul></li></ul>
      *
-     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      <i>Unless disabled, each entry in the "headers" array is an
      *                                                      associative array in the form of property => value</i>
      *
      *                              -   <b>body</b> -       the response of the request (the content of the page at the
@@ -1527,7 +1527,7 @@ class Zebra_cURL {
      *                                                      this method;
      *                                                      </li></ul></li></ul>
      *
-     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      <i>Unless disabled, each entry in the "headers" array is an
      *                                                      associative array in the form of property => value</i>
      *
      *                              -   <b>body</b>     -   an empty string as it is not available for this method;
@@ -1927,7 +1927,7 @@ class Zebra_cURL {
      *                                                      this method;
      *                                                      </li></ul></li></ul>
      *
-     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      <i>Unless disabled, each entry in the "headers" array is an
      *                                                      associative array in the form of property => value</i>
      *
      *                              -   <b>body</b> -       the response of the request (the content of the page at the
@@ -2291,7 +2291,7 @@ class Zebra_cURL {
      *                                                      this method;
      *                                                      </li></ul></li></ul>
      *
-     *                                                      <i>Unless disabled, each entry in the headers' array is an
+     *                                                      <i>Unless disabled, each entry in the "headers" array is an
      *                                                      associative array in the form of property => value</i>
      *
      *                              -   <b>body</b> -       the response of the request (the content of the page at the
