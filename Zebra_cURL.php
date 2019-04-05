@@ -698,7 +698,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], NULL, '&') : $values['data']) : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], null, '&') : $values['data']) : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
