@@ -1,9 +1,9 @@
-## version 1.4.0 (TBA)
+## version 1.4.0 (May 8, 2019)
 
 - custom options can now be set for each individual request when processing multiple requests at once; see [this issue](https://github.com/stefangabos/Zebra_cURL/issues/32) for the initial request and see the documentation for the _$urls_ argument in the documentation for the [get()](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodget) method (or any other method where multiple URLs can be specified)
+- removed from source code comments and documentation all references to the deprecated [create_function](http://php.net/en/create_function) function
 - improved documentation for the [ssl()](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodssl) method and how to easily get a CA certificates bundle to enable communication over HTTPS
 - all examples were updated and were made functional again
-- removed from source code comments and documentation all references to the deprecated [create_function](http://php.net/en/create_function) function
 
 ## version 1.3.4 (May 22, 2017)
 
