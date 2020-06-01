@@ -50,7 +50,11 @@ composer require stefangabos/zebra_curl:dev-master
 
 Or you can install it manually by downloading the latest version, unpacking it, and then including it in your project
 
-```php require_once 'Zebra_cURL.php'; ```
+```php 
+<?php
+
+require_once 'Zebra_cURL.php'; 
+```
 
 ## How to use
 
