@@ -50,15 +50,15 @@ composer require stefangabos/zebra_curl:dev-master
 
 Or you can install it manually by downloading the latest version, unpacking it, and then including it in your project
 
-```php
-require_once 'Zebra_cURL.php';
-```
+```php require_once 'Zebra_cURL.php'; ```
 
 ## How to use
 
 **Scrap a page**
 
 ```php
+<?php
+
 // include the library
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
@@ -82,6 +82,8 @@ echo $curl->scrap('https://github.com/', true);
 **Fetch RSS feeds**
 
 ```php
+<?php 
+
 function callback($result, $feeds) {
 
     // everything went well at cURL level
@@ -153,6 +155,8 @@ $curl->get(array_keys($feeds), 'callback', $feeds);
 **Download an image**
 
 ```php
+<?php
+
 // include the library
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
