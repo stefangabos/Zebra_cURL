@@ -1,5 +1,15 @@
 <?php
 
+// make sure error reporting is on
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// make sure cache folder exists and is writable
+if (!is_dir('cache') || !is_writable('cache')) trigger_error('the "cache" folder must be present and be writable in the "examples" folder', E_USER_ERROR);
+
+// make sure CA bundle exists
+elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not found', E_USER_ERROR);
+
 // include the library
 require '../Zebra_cURL.php';
 
@@ -14,4 +24,4 @@ $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 // download one of the official twitter image
 $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
 
-echo 'Image downloaded - look in the "cache" folder!';
+echo 'File downloaded to the "cache" folder.<br>Click <a href="cache/twitter-bird-callout.png">here</a> to open it.';

@@ -38,6 +38,10 @@
 
     <?php
 
+    // make sure error reporting is on
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
     function callback($result, $feeds) {
 
         // everything went well at cURL level
@@ -86,6 +90,12 @@
         } else die('cURL responded with: ' . $result->response[0]);
 
     }
+
+    // make sure cache folder exists and is writable
+    if (!is_dir('cache') || !is_writable('cache')) trigger_error('the "cache" folder must be present and be writable in the "examples" folder', E_USER_ERROR);
+
+    // make sure CA bundle exists
+    elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not found', E_USER_ERROR);
 
     // include the library
     require '../Zebra_cURL.php';
