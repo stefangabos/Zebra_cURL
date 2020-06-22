@@ -50,11 +50,15 @@
                 // the content is an XML, process it
                 $xml = simplexml_load_string($result->body);
 
+                $limit = 0;
+
                 // different types of RSS feeds...
                 if (isset($xml->channel->item))
 
                     // show title and date for each entry
+                    // (limit to 5 entries only)
                     foreach ($xml->channel->item as $entry) {
+                        if (++$limit > 5) break;
                         echo '<h6>' . $feeds[$result->info['original_url']] . '</h6>';
                         echo '<h2><a href="' . $entry->link . '">' . $entry->title . '</a></h2>';
                         echo '<p><small>' . $entry->pubDate . '</small></p>';
@@ -62,10 +66,12 @@
                     }
 
                 // different types of RSS feeds...
-                else
+                 else
 
                     // show title and date for each entry
+                    // (limit to 5 entries only)
                     foreach ($xml->entry as $entry) {
+                        if (++$limit > 5) break;
                         echo '<h6>' . $feeds[$result->info['original_url']] . '</h6>';
                         echo '<h2><a href="' . $entry->link['href'] . '">' . $entry->title . '</a></h2>';
                         echo '<p><small>' . $entry->updated . '</small></p>';
@@ -96,8 +102,8 @@
     $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
     $feeds = array(
-        'https://rss1.smashingmagazine.com/feed/'        =>  'Smashing Magazine',
-        'https://feeds.feedburner.com/nettuts'           =>  'TutsPlus',
+        'https://rss1.smashingmagazine.com/feed/'       =>  'Smashing Magazine',
+        'https://feeds.feedburner.com/nettuts'          =>  'TutsPlus',
         'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
     );
 
