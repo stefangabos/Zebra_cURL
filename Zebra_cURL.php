@@ -1821,7 +1821,7 @@ class Zebra_cURL {
      *                              $curl->post('http://address.com');
      *
      *                              // an array, for multiple requests (no POST values sent)
-     *                              $curl->delete(array(
+     *                              $curl->post(array(
      *                                  'http://address1.com',
      *                                  'http://address2.com',
      *                              ));
