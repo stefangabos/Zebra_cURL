@@ -16,9 +16,6 @@ require '../Zebra_cURL.php';
 // instantiate the Zebra_cURL class
 $curl = new Zebra_cURL();
 
-// cache results 3600 seconds
-$curl->cache('cache', 3600);
-
 // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
 // so we don't get CURLE_SSL_CACERT response from cURL
 // you can always update this bundle from https://curl.haxx.se/docs/caextract.html
@@ -40,6 +37,9 @@ $queue = array(
 
 );
 
+// we're using this so we can output stuff as we go
+ob_start();
+
 // as long as there are URL in the queue
 while (!empty($queue)) {
 
@@ -49,14 +49,20 @@ while (!empty($queue)) {
     // one call for the whole bunch and send results to a callback
     $curl->get($urls, function($result) use (&$queue) {
 
-        echo '<pre>done processing URL ' . $result->info['original_url'];
+        // we use these so we can output stuff as we go
+        echo str_pad('<pre>done processing URL ' . $result->info['original_url'], 1024);
+        ob_flush();
+        flush();
 
         // if not yet done
         if (strpos($result->info['original_url'], '-1') === false) {
 
-            echo '; queueing request ' . $result->info['original_url'] . '-1';
+            // we use these so we can output stuff as we go
+            echo str_pad("<pre>\t -> \tqueueing request " . $result->info['original_url'] . "-1", 1024);
+            ob_flush();
+            flush();
 
-            // queue request
+            // queue an extra request
             $queue[] = $result->info['original_url'] . '-1';
 
         }
