@@ -14,7 +14,7 @@ This script supports GET (with caching), POST, HEADER, PUT, DELETE requests, bas
 
 For maximum efficiency downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from the server of having to read files into memory first, and then writing them to disk.
 
-The code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](http://www.php.net/manual/en/function.error-reporting.php).
+The code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php).
 
 :books: Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
 
@@ -29,12 +29,12 @@ The code is heavily commented and generates no warnings/errors/notices when PHP'
 - downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from the server of having to read files into memory first, and then writing them to disk
 - provides a very detailed information about the made requests
 - has [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)
-- code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](http://www.php.net/manual/en/function.error-reporting.php)
+- code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php)
 
 
 ## Requirements
 
-PHP 5.3.0+ with the [cURL extension](http://www.php.net/manual/en/curl.installation.php) enabled.
+PHP 5.3.0+ with the [cURL extension](https://www.php.net/manual/en/curl.installation.php) enabled.
 
 ## Installation
 
@@ -50,10 +50,10 @@ composer require stefangabos/zebra_curl:dev-master
 
 Or you can install it manually by downloading the latest version, unpacking it, and then including it in your project
 
-```php 
+```php
 <?php
 
-require_once 'Zebra_cURL.php'; 
+require_once 'Zebra_cURL.php';
 ```
 
 ## How to use
@@ -86,7 +86,7 @@ echo $curl->scrap('https://github.com/', true);
 **Fetch RSS feeds**
 
 ```php
-<?php 
+<?php
 
 function callback($result, $feeds) {
 
@@ -94,7 +94,7 @@ function callback($result, $feeds) {
     if ($result->response[1] == CURLE_OK) {
 
         // if server responded with code 200 (meaning that everything went well)
-        // see http://httpstatus.es/ for a list of possible response codes
+        // see https://httpstatus.es/ for a list of possible response codes
         if ($result->info['http_code'] == 200) {
 
             // the content is an XML, process it
@@ -193,7 +193,7 @@ $curl->option(CURLOPT_HTTPHEADER, [
     'X-Token-Foo-Bar: ABC123'   // Pass keys to APIs, for example
 ]);
 
-echo $curl->scrap('http://httpbin.org/get') . PHP_EOL;
+echo $curl->scrap('https://httpbin.org/get') . PHP_EOL;
 ```
 
 :books: Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
