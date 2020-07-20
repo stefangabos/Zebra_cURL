@@ -2759,6 +2759,45 @@ class Zebra_cURL {
             // iterate over the entries in the array
             foreach ($urls as $key => $values) {
 
+                // if urls are defined like
+                // array(
+                //     array('https://www.url1.com' => array('foo' => 'bar')),
+                // )
+                // or like
+                // array(
+                //     array('https://www.url1.com' => array(
+                //         'data' => array('foo' => 'bar'),
+                //     )),
+                // )
+                if (empty(array_filter(array_keys($values), function($value) { return is_numeric($value); }))) {
+
+                    // if urls are defined like
+                    // array(
+                    //     array('https://www.url1.com' => array('foo' => 'bar')),
+                    // )
+                    if (empty(array_intersect(array('url', 'options', 'data'), array_keys(current($values))))) {
+
+                        // normalize format
+                        $values = array(
+                            'url'   =>  key($values),
+                            'data'  =>  current($values),
+                        );
+
+                    // if urls are defined like
+                    // array(
+                    //     array('https://www.url1.com' => array(
+                    //         'data' => array('foo' => 'bar'),
+                    //     )),
+                    // )
+                    } else {
+
+                        // normalize format
+                        $values = array_merge(array('url' => key($values)), current($values));
+
+                    }
+
+                }
+
                 // if key is numeric, as in
                 // array('http://address.com')
                 // array(array(
