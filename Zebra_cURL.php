@@ -2769,7 +2769,7 @@ class Zebra_cURL {
                 //         'data' => array('foo' => 'bar'),
                 //     )),
                 // )
-                if (empty(array_filter(array_keys($values), function($value) { return is_numeric($value); }))) {
+                if (is_array($values) && empty(array_filter(array_keys($values), function($value) { return is_numeric($value); }))) {
 
                     // if urls are defined like
                     // array(
