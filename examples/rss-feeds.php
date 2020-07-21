@@ -3,32 +3,41 @@
 <head>
 	<meta charset="utf-8">
 	<title>Minimalist RSS reader</title>
-    <style type="text/css">
+    <style>
     body {
         font-family: Tahoma;
-        font-size: 18px;
+        font-size: 14px;
     }
     .container {
-        width: 480px;
+        width: 580px;
         margin: 0 auto;
     }
     h2 {
-        margin: 0 0 5px;
-        font-size: 120%;
-        line-height: 1;
+        margin: 0.2em 0 0.2em;
+        font-size: 170%;
+        line-height: 1.1;
     }
     h6 {
         color: #C40000;
-        margin: 0 0 5px;
+        margin: 0;
+        font-size: 110%;
     }
     h2 a {
         color: #333;
         text-decoration: none;
     }
     p {
-        font-family: Tahoma;
-        font-size: 12px;
         margin: 0 0 1.4em;
+    }
+    hr {
+        height: 1px;
+        overflow: hidden;
+        border: none;
+        background: #dedede;
+        margin-bottom: 1.4em;
+    }
+    hr:last-child {
+        display: none;
     }
     </style>
 </head>
