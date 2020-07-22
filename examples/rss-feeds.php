@@ -7,10 +7,13 @@
     body {
         font-family: Tahoma;
         font-size: 14px;
+        background: #f0f0f0;
     }
     .container {
         width: 580px;
         margin: 0 auto;
+        background: #FFF;
+        padding: 1.4em;
     }
     h2 {
         margin: 0.2em 0 0.2em;
@@ -121,9 +124,9 @@
     $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
     $feeds = array(
-        'https://rss1.smashingmagazine.com/feed/'       =>  'Smashing Magazine',
-        'https://feeds.feedburner.com/nettuts'          =>  'TutsPlus',
-        'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
+        'https://www.smashingmagazine.com/feed/'    =>  'Smashing Magazine',
+        'https://code.tutsplus.com/posts.atom'      =>  'TutsPlus',
+        'https://alistapart.com/main/feed/'         =>  'A List Apart',
     );
 
     // get RSS feeds of some popular tech websites
