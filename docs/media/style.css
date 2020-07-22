@@ -2,10 +2,11 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.5;
     color: #24292e;
     text-align: left;
+    background: url('background-pattern.png');
 }
 
 a {
@@ -25,18 +26,31 @@ h6 {
 #phpdoc {
     min-height: calc(100% - 95px);
     height: calc(100% - 95px);
-    width: 991px;
+    width: 1040px;
     margin: 0 auto;
 }
 
 #phpdoc > table {
     height: 100%;
+    border: 1px solid #e1e4e8;
 }
 
 #doc_header {
     color: #fff;
     background: #24292e;
-    padding: 1em;
+    padding: 1em 1em 1em 55px;
+}
+
+#doc_header a.projects-homepage {
+    color: #FFF;
+    text-decoration: none;
+    position: relative;
+}
+
+#doc_header a.projects-homepage img {
+    position: absolute;
+    left: -45px;
+    top: -6px;
 }
 
 #doc_header ul {
@@ -60,23 +74,43 @@ h6 {
     color: #fff;
 }
 
+#doc_content {
+    background: #FFF;
+}
+
 #doc_content,
 #doc_sidebar {
-    padding: 1em 1em 0;
+    padding: 1em;
 }
 
 .sidebar {
     background: #fafbfc;
-    border-left: 1px solid #e1e4e8;
     border-right: 1px solid #e1e4e8;
     border-bottom: 1px solid #e1e4e8;
     white-space: nowrap;
 }
 
+.hello-separator {
+    border-top: 1px solid #dedede;
+    margin: 2em -1em;
+}
+
+.hello {
+    white-space: normal;
+    width: 200px;
+}
+
+.hello img {
+    width: 131px;
+    border-radius: 75px;
+    display: block;
+    margin: 0 auto 1em;
+}
+
 .doc_toc {
     background: #fafbfc;
     border: 1px solid #e1e4e8;
-    padding: 1em;
+    padding: 1em 1em 0;
     margin-bottom: 1.5em;
 }
 
@@ -87,12 +121,19 @@ h6 {
 .doc_index h3,
 h4.variable,
 h4.method {
-    background: #ffecec;
-    padding: 1em;
-    border: 1px solid #e1e4e8;
-    border-bottom-width: 4px;
-    font-size: 100%;
-    margin-bottom: 0;
+    padding: 1em 1em 1em 0;
+    border-top: 4px solid #e1e4e8;
+    font-size: 140%;
+    margin-bottom: 1px;
+}
+
+h4.method {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.smalllinenumber {
+    display: none;
 }
 
 h4.variable-static {
@@ -107,12 +148,17 @@ h4.method span {
     margin-right: .5em;
 }
 
+h4.variable span.value {
+    font-size: 100%;
+    color: #C40000;
+}
+
 .doc_block,
 .doc_index {
-    padding: 1em;
-    background: #fafbfc;
+    /* padding: 1em; */
+    /* background: #fafbfc; */
     margin-bottom: 1em;
-    border: 1px solid #e1e4e8;
+    /* border: 1px solid #e1e4e8; */
 }
 
 .doc_block:last-of-type {
@@ -123,12 +169,28 @@ h4.method span {
     margin-bottom: 0;
 }
 
-.doc_block li ul {
+.doc_block ul li.secondary {
     list-style-type: none;
+}
+
+.doc_block ul li.secondary ul {
+    margin-left: 2.4em;
+}
+
+.doc_block ul li.secondary ul li {
+    list-style-type: circle;
 }
 
 .doc_block table td {
     padding: .5em;
+}
+
+.doc_block > .code:first-child {
+    background: #fafafa;
+    border: 1px solid #dedede;
+    padding: 1em;
+    font-size: 100%;
+    margin: 1.5em 0;
 }
 
 .doc_index {
@@ -157,7 +219,7 @@ h4.method span {
 }
 
 .code {
-    background: #FFF;
+    background: #f6f8fa;
     border: 1px solid #e1e4e8;
     font-family: Consolas, 'Courier New', Courier, monospace;
     font-size: 90%;
@@ -165,6 +227,7 @@ h4.method span {
     margin: 0 0 1em;
     padding: 1em;
     line-height: 1.4;
+    border-radius: 5px;
 }
 
 .code li {
@@ -186,6 +249,18 @@ h5 {
 a.top {
     display: block;
     margin-top: 1em;
+    padding-left: 20px;
+}
+
+a.top:before {
+    content: "▲";
+    color: #dedede;
+    position: absolute;
+    left: 0;
+}
+
+a.top:before:hover {
+    text-decoration: none !important;
 }
 
 #doc_footer {
@@ -195,9 +270,11 @@ a.top {
 }
 
 .highlight {
+    border: 1px solid #dfe2e5;
     border-left: 0.5em solid #dfe2e5;
     padding: 1em;
-    background: #ffecec;
+    background: #fafafa;
+    font-style: italic;
 }
 
 .left {
@@ -212,6 +289,15 @@ a.top {
         border: 1px solid #ccc9a4;
         padding: 0 0 0 1em;
         margin : 0px
+}
+
+code {
+    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+    padding: 0px 4px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    border: 1px dotted #dedede;
+    margin-right: 1px;
 }
 
 .src-line {  }
