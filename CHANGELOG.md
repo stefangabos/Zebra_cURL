@@ -1,3 +1,8 @@
+## version 1.5.0 (TBA)
+
+- fixed bug when URLs were given in a certain format
+- documentation overhaul
+
 ## version 1.4.0 (May 8, 2019)
 
 - custom options can now be set for each individual request when processing multiple requests at once; see [this issue](https://github.com/stefangabos/Zebra_cURL/issues/32) for the initial request and see the documentation for the _$urls_ argument in the documentation for the [get()](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodget) method (or any other method where multiple URLs can be specified)
