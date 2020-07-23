@@ -1,9 +1,9 @@
 <?php
 
 /**
- *  A high performance PHP cURL library allowing the running of multiple asynchronous requests at once
+ *  A high performance PHP cURL library allowing the running of multiple asynchronous requests at once.
  *
- *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}
+ *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
  *  @version    1.5.0 (last revision: July 23, 2020)
