@@ -1,7 +1,8 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>Zebra_cURL - a high performance PHP cURL library allowing the running of multiple asynchronous requests at once - Class: Zebra_cURL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="../media/reset.css">
 <link rel="stylesheet" type="text/css" href="../media/style.css">
@@ -24,9 +25,9 @@
 <div class="clear"></div>
 </div>
 <div id="phpdoc">
-<table cellspacing="0" cellpadding="0" class="stretch">
+<table class="stretch">
 <tr>
-<td valign="top" class="sidebar">
+<td class="sidebar">
 <div id="doc_sidebar">
 <p><strong>Project's homepage</strong></p>
 <ul>
@@ -51,12 +52,12 @@ I have a few other projects that you might be interested in — <a href="https:/
 </p>
 </div>
 </td>
-<td valign="top" width="100%" style="background: #FFF">
+<td style="background: #FFF">
 <div id="doc_content">
 <h2>Class: <strong>Zebra_cURL</strong></h2>
 <h6><strong>source file:</strong> /Zebra_cURL.php</h6>
 <pre></pre>
-<p>A high performance PHP cURL library allowing the running of multiple asynchronous requests at once<p>Read more <a href="https://github.com/stefangabos/Zebra_cURL/">here</a></p></p>
+<p>A high performance PHP cURL library allowing the running of multiple asynchronous requests at once.<p>Read more <a href="https://github.com/stefangabos/Zebra_cURL/">here</a>.</p>
 <h4>Author(s):</h4>
 <ul>
 <li>Stefan Gabos <br><a href="mailto:contact@stefangabos.ro">contact@stefangabos.ro</a></li>
@@ -73,8 +74,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 <ul>
 <li>© 2013 - 2020 Stefan Gabos</li>
 </ul>
-<a name="top"></a>
-<div class="doc_toc">
+<div id="top" class="doc_toc">
 <div class="left">
 <h3>Properties</h3>
 <ul>
@@ -109,18 +109,15 @@ I have a few other projects that you might be interested in — <a href="https:/
 <div class="clear"></div>
 <div class="clear"></div>
 </div>
-<a name="class_vars"></a>
-<h3>Class properties</h3>
-<a name="var$pause_interval"></a>
-<h4 class="variable"><span><em>integer</em></span> $pause_interval <span class="value"></span></h4>
+<h3 id="class_vars">Class properties</h3>
+<h4 id="var$pause_interval" class="variable"><span><em>integer</em></span> $pause_interval <span class="value"></span></h4>
 <div class="doc_block">
 <p>The number of seconds to wait between processing batches of requests.</p>
 <p>If the value of this property is greater than <code>0</code>, the library will process as many requests as defined by the   <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property and then wait for <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> seconds before processing the next batch of   requests.</p><p>Default is <code>0</code> (the library will keep as many parallel threads as defined by <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> running at all times   until there are no more requests to process).</p>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="var$threads"></a>
-<h4 class="variable"><span><em>integer</em></span> $threads <span class="value"></span></h4>
+<h4 id="var$threads" class="variable"><span><em>integer</em></span> $threads <span class="value"></span></h4>
 <div class="doc_block">
 <p>The number of parallel, asynchronous requests to be processed by the library, at once.</p>
 <p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;process&nbsp;30&nbsp;simultaneous&nbsp;requests&nbsp;at&nbsp;once</span></div></li>
@@ -129,10 +126,8 @@ I have a few other projects that you might be interested in — <a href="https:/
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="class_methods"></a>
-<h3>Class methods</h3>
-<a name="method__construct"></a>
-<h4 class="method"><span><em>constructor</em></span> __construct() <span class="smalllinenumber">[line 269]</span></h4>
+<h3 id="class_methods">Class methods</h3>
+<h4 id="method__construct" class="method"><span><em>constructor</em></span> __construct() <span class="smalllinenumber">[line 269]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -177,18 +172,17 @@ default: <code>10</code></li></ul> <ul><li><code>CURLOPT_USERAGENT</code>       
 7 or 8, with other extra strings). Some web services will not respond unless
 a valid user-agent string is provided</li></ul>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>boolean</em></td>
-<td valign="top"><strong>$htmlentities</strong></td>
-<td valign="top"><p>(Optional) Instructs the script whether the response body returned by the                                       <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> and <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> methods should be run through PHP's                                       <a href="https://php.net/manual/en/function.htmlentities.php">htmlentities</a>                                       function.</p><p>Default is <code>TRUE</code></p></td>
+<td><em>boolean</em></td>
+<td><strong>$htmlentities</strong></td>
+<td><p>(Optional) Instructs the script whether the response body returned by the                                       <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> and <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> methods should be run through PHP's                                       <a href="https://php.net/manual/en/function.htmlentities.php">htmlentities</a>                                       function.</p><p>Default is <code>TRUE</code></p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodcache"></a>
-<h4 class="method"><span><em>method</em></span> cache() <span class="smalllinenumber">[line 435]</span></h4>
+<h4 id="methodcache" class="method"><span><em>method</em></span> cache() <span class="smalllinenumber">[line 435]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -217,7 +211,7 @@ void
 ) 
 </p>
 <p>Enables caching of request results.</p>
-<p class="highlight">Note that in case of downloads, only the actual request is cached and not the associated downloads</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p><p class="highlight">Note that in case of downloads, only the actual request is cached and not the associated downloads</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -261,33 +255,32 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$path</strong></td>
-<td valign="top"><p>Path where cache files to be stored.</p><p>Setting this to <code>FALSE</code> will disable caching.</p><p><em>If set to a non-existing path, the library will try to create the folder                                   and will trigger an error if, for whatever reasons, it is unable to do so. If the                                   folder can be created, its permissions will be set to the value of the $chmod                                   argument.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$path</strong></td>
+<td><p>Path where cache files to be stored.</p><p>Setting this to <code>FALSE</code> will disable caching.</p><p><em>If set to a non-existing path, the library will try to create the folder                                   and will trigger an error if, for whatever reasons, it is unable to do so. If the                                   folder can be created, its permissions will be set to the value of the $chmod                                   argument.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>integer</em></td>
-<td valign="top"><strong>$lifetime</strong></td>
-<td valign="top"><p>(Optional) The number of seconds after which cache will be considered expired.</p><p>Default is <code>3600</code> (one hour).</p></td>
+<td><em>integer</em></td>
+<td><strong>$lifetime</strong></td>
+<td><p>(Optional) The number of seconds after which cache will be considered expired.</p><p>Default is <code>3600</code> (one hour).</p></td>
 </tr>
 <tr>
-<td valign="top"><em>boolean</em></td>
-<td valign="top"><strong>$compress</strong></td>
-<td valign="top"><p>(Optional) If set to <code>TRUE</code>, cache files will be                                   <a href="https://php.net/manual/en/function.gzcompress.php">gzcompress</a>-ed so that                                   they occupy less disk space.</p><p>Default is <code>TRUE</code>.</p></td>
+<td><em>boolean</em></td>
+<td><strong>$compress</strong></td>
+<td><p>(Optional) If set to <code>TRUE</code>, cache files will be                                   <a href="https://php.net/manual/en/function.gzcompress.php">gzcompress</a>-ed so that                                   they occupy less disk space.</p><p>Default is <code>TRUE</code>.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>octal</em></td>
-<td valign="top"><strong>$chmod</strong></td>
-<td valign="top"><p>(Optional) The file system permissions to be set for newly created cache files.</p><p>I suggest using the value <code>0755</code> but, if you know what you are doing, here is how                                   you can calculate the permission levels:</p><ul><li>400 Owner Read</li><li>200 Owner Write</li><li>100 Owner Execute</li><li>40 Group Read</li><li>20 Group Write</li><li>10 Group Execute</li><li>4 Global Read</li><li>2 Global Write</li><li>1 Global Execute</li></ul><p>                                   Default is <code>0755</code>.</p></td>
+<td><em>octal</em></td>
+<td><strong>$chmod</strong></td>
+<td><p>(Optional) The file system permissions to be set for newly created cache files.</p><p>I suggest using the value <code>0755</code> but, if you know what you are doing, here is how                                   you can calculate the permission levels:</p><ul><li>400 Owner Read</li><li>200 Owner Write</li><li>100 Owner Execute</li><li>40 Group Read</li><li>20 Group Write</li><li>10 Group Execute</li><li>4 Global Read</li><li>2 Global Write</li><li>1 Global Execute</li></ul><p>                                   Default is <code>0755</code>.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodcookies"></a>
-<h4 class="method"><span><em>method</em></span> cookies() <span class="smalllinenumber">[line 470]</span></h4>
+<h4 id="methodcookies" class="method"><span><em>method</em></span> cookies() <span class="smalllinenumber">[line 470]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -300,18 +293,17 @@ void
 <p>Sets the path and name of the file to save cookie to / retrieve cookies from. All cookie data will be stored in   this file on a per-domain basis. Important when cookies need to stored/restored to maintain status/session of   requests made to the same domains.</p>
 <p>This method will automatically set the <code>CURLOPT_COOKIEJAR</code> and <code>CURLOPT_COOKIEFILE</code> options.</p>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$path</strong></td>
-<td valign="top"><p>The path to a file to save cookies to / retrieve cookies from.</p><p><em>If file does not exist the library will attempt to create it and, if it is unable to                               do so, it will trigger an error.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$path</strong></td>
+<td><p>The path to a file to save cookies to / retrieve cookies from.</p><p><em>If file does not exist the library will attempt to create it and, if it is unable to                               do so, it will trigger an error.</em></p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methoddelete"></a>
-<h4 class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 575]</span></h4>
+<h4 id="methoddelete" class="method"><span><em>method</em></span> delete() <span class="smalllinenumber">[line 575]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -328,7 +320,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>DELETE</code> request to one or more URLs with optional POST data, and executes the callback   function specified by the <em>$callback</em> argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> = <code>DELETE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> = <code>DELETE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -370,30 +362,29 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 </table>
 <h5>Tags</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
-<td valign="top">1.3.3</td>
+<td><strong>since:</strong>&nbsp;&nbsp;</td>
+<td>1.3.3</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methoddownload"></a>
-<h4 class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 748]</span></h4>
+<h4 id="methoddownload" class="method"><span><em>method</em></span> download() <span class="smalllinenumber">[line 748]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -413,7 +404,7 @@ void
 ) 
 </p>
 <p>Downloads one or more files from one or more URLs, saves the downloaded files to the path specified by the <em>$path</em>   argument, and executes the callback function specified by the <em>$callback</em> argument for each and every request,   as soon as the request finishes.</p>
-<p class="highlight">If the path you are downloading from refers to a file, the file's original name will be preserved but, if       you are downloading a file generated by a script (i.e. https://foo.com/bar.php?w=1200&amp;h=800), the downloaded       file's name will be random generated. Refer to the downloaded file's name in the result's <code>info</code> attribute,       in the <code>downloaded_filename</code> section - see the example below.</p><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_BINARYTRANSFER</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p><p class="highlight">If the path you are downloading from refers to a file, the file's original name will be preserved but, if       you are downloading a file generated by a script (i.e. https://foo.com/bar.php?w=1200&amp;h=800), the downloaded       file's name will be random generated. Refer to the downloaded file's name in the result's <code>info</code> attribute,       in the <code>downloaded_filename</code> section - see the example below.</p><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_BINARYTRANSFER</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -456,11 +447,11 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a><span class="src-sym">(</span><span class="src-str">'https://address.com/file.foo'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;array,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
@@ -468,7 +459,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://address1.com/file1.foo'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://address2.com/file2.bar'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;mandatory!</span></div></li>
@@ -484,21 +475,20 @@ void
 </ol></td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$path</strong></td>
-<td valign="top"><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or the directory is not writable, the                                       library will trigger an error.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$path</strong></td>
+<td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or the directory is not writable, the                                       library will trigger an error.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodftp_download"></a>
-<h4 class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 956]</span></h4>
+<h4 id="methodftp_download" class="method"><span><em>method</em></span> ftp_download() <span class="smalllinenumber">[line 956]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -530,7 +520,7 @@ void
 ) 
 </p>
 <p>Works exactly like the <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method but downloads are made from an FTP server.</p>
-<p>Downloads one or more files from an FTP server, to which the connection is made using the given <em>$username</em> and   <em>$password</em> arguments, saves the downloaded files (with their original name) to the path specified by the <em>$path</em>   argument, and executes the callback function specified by the <em>$callback</em> argument for each and every request,   as soon as the request finishes.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_BINARYTRANSFER</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>Downloads one or more files from an FTP server, to which the connection is made using the given <em>$username</em> and   <em>$password</em> arguments, saves the downloaded files (with their original name) to the path specified by the <em>$path</em>   argument, and executes the callback function specified by the <em>$callback</em> argument for each and every request,   as soon as the request finishes.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_BINARYTRANSFER</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -574,11 +564,11 @@ void
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'ftp://address.com/file.foo'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'destination/path'</span><span class="src-sym">,</span></div></li>
@@ -592,7 +582,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'ftp://address1.com/file1.foo'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'ftp://address2.com/file2.bar'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'destination/path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'username'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'password'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;mandatory!</span></div></li>
@@ -605,7 +595,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'destination/path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'username'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'password'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>Note that in all the examples above, you are downloading files from a single                                       FTP server. To make requests to multiple FTP servers, set the <code>CURLOPT_USERPWD</code>                                       option yourself. The <em>$username</em> and <em>$password</em> arguments will be overwritten                                       by the values set like this.</p><p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+</ol><p>Note that in all the examples above, you are downloading files from a single                                       FTP server. To make requests to multiple FTP servers, set the <code>CURLOPT_USERPWD</code>                                       option yourself. The <em>$username</em> and <em>$password</em> arguments will be overwritten                                       by the values set like this.</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'url'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'ftp://address1.com/file1.foo'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
@@ -622,31 +612,30 @@ void
 </ol></td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$path</strong></td>
-<td valign="top"><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or is not writable, the library will                                       trigger an error.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$path</strong></td>
+<td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or is not writable, the library will                                       trigger an error.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$username</strong></td>
-<td valign="top">(Optional) The username to be used to connect to the FTP server (if required).</td>
+<td><em>string</em></td>
+<td><strong>$username</strong></td>
+<td>(Optional) The username to be used to connect to the FTP server (if required).</td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$password</strong></td>
-<td valign="top">(Optional) The password to be used to connect to the FTP server (if required).</td>
+<td><em>string</em></td>
+<td><strong>$password</strong></td>
+<td>(Optional) The password to be used to connect to the FTP server (if required).</td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodget"></a>
-<h4 class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1170]</span></h4>
+<h4 id="methodget" class="method"><span><em>method</em></span> get() <span class="smalllinenumber">[line 1170]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -663,7 +652,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>GET</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -707,11 +696,11 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a><span class="src-sym">(</span><span class="src-str">'https://address.com/'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;array,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
@@ -719,7 +708,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://address1.com/'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://address2.com/'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;mandatory!</span></div></li>
@@ -735,9 +724,9 @@ void
 </ol></td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>May be given as a string representing the name of an existing function, or                                       as an <a href="https://php.net/manual/en/functions.anonymous.php">anonymous function</a>.</p><p>The callback function receives as first argument <strong>an object</strong> with <strong>4 properties</strong>                                       as described below. Any extra arguments passed to the <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method                                       will be passed as extra arguments to the callback function:</p><p><ul><li><code>info</code>      -   an associative array containing information about the request
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>May be given as a string representing the name of an existing function, or                                       as an <a href="https://php.net/manual/en/functions.anonymous.php">anonymous function</a>.</p><p>The callback function receives as first argument <strong>an object</strong> with <strong>4 properties</strong>                                       as described below. Any extra arguments passed to the <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method                                       will be passed as extra arguments to the callback function:</p><p><ul><li><code>info</code>      -   an associative array containing information about the request
 that just finished, as returned by PHP's <a href="https://php.net/manual/en/function.curl-getinfo.php">curl_getinfo()</a>
 function</li></ul> <ul><li><code>headers</code>   -   an associative array with 2 items:</li></ul>                                                           <ul><li class="secondary"><ul><li><code>last_request</code> - an array with a single entry containing
 the request headers generated by <em>the last request</em><br>
@@ -763,8 +752,7 @@ given by the cURL library as an array with 2 items:<br></li></ul>               
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodheader"></a>
-<h4 class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1284]</span></h4>
+<h4 id="methodheader" class="method"><span><em>method</em></span> header() <span class="smalllinenumber">[line 1284]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -781,7 +769,7 @@ void
 ) 
 </p>
 <p>Works exactly like the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method, the only difference being that this method will only return the   headers, without body.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>TRUE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>TRUE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;process&nbsp;given&nbsp;URLs</span></div></li>
@@ -811,23 +799,22 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodhttp_authentication"></a>
-<h4 class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1405]</span></h4>
+<h4 id="methodhttp_authentication" class="method"><span><em>method</em></span> http_authentication() <span class="smalllinenumber">[line 1405]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -889,31 +876,30 @@ CURLAUTH_ANY
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>If you have to unset previously set values use</p><p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodhttp_authentication">http_authentication</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol><p>If you have to unset previously set values use</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodhttp_authentication">http_authentication</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$username</strong></td>
-<td valign="top">User name to be used for authentication.</td>
+<td><em>string</em></td>
+<td><strong>$username</strong></td>
+<td>User name to be used for authentication.</td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$password</strong></td>
-<td valign="top">Password to be used for authentication.</td>
+<td><em>string</em></td>
+<td><strong>$password</strong></td>
+<td>Password to be used for authentication.</td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$type</strong></td>
-<td valign="top"><p>(Optional) The HTTP authentication method(s) to use. The options are:</p><p><ul><li><code>CURLAUTH_BASIC</code></li><li><code>CURLAUTH_DIGEST</code></li><li><code>CURLAUTH_GSSNEGOTIATE</code></li><li><code>CURLAUTH_NTLM</code></li><li><code>CURLAUTH_ANY</code></li><li><code>CURLAUTH_ANYSAFE</code></li></ul><p>                                       The bitwise <code>|</code> (or) operator can be used to combine more than one method. If                                       this is done, cURL will poll the server to see what methods it supports and                                       pick the best one.</p><p><code>CURLAUTH_ANY</code> is an alias for<br>                                       <code>CURLAUTH_BASIC | CURLAUTH_DIGEST | CURLAUTH_GSSNEGOTIATE | CURLAUTH_NTLM</code></p><p><code>CURLAUTH_ANYSAFE</code> is an alias for<br>                                       <code>CURLAUTH_DIGEST | CURLAUTH_GSSNEGOTIATE | CURLAUTH_NTLM</code></p><p>Default is <code>CURLAUTH_ANY</code></p></td>
+<td><em>string</em></td>
+<td><strong>$type</strong></td>
+<td><p>(Optional) The HTTP authentication method(s) to use. The options are:</p><p><ul><li><code>CURLAUTH_BASIC</code></li><li><code>CURLAUTH_DIGEST</code></li><li><code>CURLAUTH_GSSNEGOTIATE</code></li><li><code>CURLAUTH_NTLM</code></li><li><code>CURLAUTH_ANY</code></li><li><code>CURLAUTH_ANYSAFE</code></li></ul><p>                                       The bitwise <code>|</code> (or) operator can be used to combine more than one method. If                                       this is done, cURL will poll the server to see what methods it supports and                                       pick the best one.</p><p><code>CURLAUTH_ANY</code> is an alias for<br>                                       <code>CURLAUTH_BASIC | CURLAUTH_DIGEST | CURLAUTH_GSSNEGOTIATE | CURLAUTH_NTLM</code></p><p><code>CURLAUTH_ANYSAFE</code> is an alias for<br>                                       <code>CURLAUTH_DIGEST | CURLAUTH_GSSNEGOTIATE | CURLAUTH_NTLM</code></p><p>Default is <code>CURLAUTH_ANY</code></p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodoption"></a>
-<h4 class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1448]</span></h4>
+<h4 id="methodoption" class="method"><span><em>method</em></span> option() <span class="smalllinenumber">[line 1448]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -945,23 +931,22 @@ void
 <li><div class="src-line"><span class="src-comm">//&nbsp;requests&nbsp;are&nbsp;made&nbsp;here...</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$option</strong></td>
-<td valign="top"><p>A single option for which to set a value, or an associative array in the form of                               <em>option</em> =&gt; <em>value</em>.</p><p><em>Setting a value to <code>null</code> will unset that option.</em></p></td>
+<td><em>mixed</em></td>
+<td><strong>$option</strong></td>
+<td><p>A single option for which to set a value, or an associative array in the form of                               <em>option</em> =&gt; <em>value</em>.</p><p><em>Setting a value to <code>null</code> will unset that option.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$value</strong></td>
-<td valign="top"><p>(Optional) If the <em>$option</em> argument is not an array, then this argument represents                               the value to be set for the respective option. If the <em>$option</em> argument is an array,                               the value of this argument will be ignored.</p><p><em>Setting a value to <code>null</code> will unset that option.</em></p></td>
+<td><em>mixed</em></td>
+<td><strong>$value</strong></td>
+<td><p>(Optional) If the <em>$option</em> argument is not an array, then this argument represents                               the value to be set for the respective option. If the <em>$option</em> argument is an array,                               the value of this argument will be ignored.</p><p><em>Setting a value to <code>null</code> will unset that option.</em></p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodpost"></a>
-<h4 class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1643]</span></h4>
+<h4 id="methodpost" class="method"><span><em>method</em></span> post() <span class="smalllinenumber">[line 1643]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -978,7 +963,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>POST</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>TRUE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>TRUE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -1017,7 +1002,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>When uploading a file, we need to prefix the file name with <code>@</code></p><p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+</ol><p>When uploading a file, we need to prefix the file name with <code>@</code></p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://www.somewebsite.com'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
@@ -1025,11 +1010,11 @@ void
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'mycallback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string&nbsp;(no&nbsp;POST&nbsp;values&nbsp;sent)</span></div></li>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Can be any of the following:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;a&nbsp;string&nbsp;(no&nbsp;POST&nbsp;values&nbsp;sent)</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-str">'https://address.com'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;an&nbsp;array,&nbsp;for&nbsp;multiple&nbsp;requests&nbsp;(no&nbsp;POST&nbsp;values&nbsp;sent)</span></div></li>
@@ -1061,7 +1046,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">))</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
-</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
+</ol><p>If <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">custom options</a> need to be set for each request, use the                                       following format:</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;this&nbsp;can&nbsp;also&nbsp;be&nbsp;an&nbsp;array&nbsp;of&nbsp;arrays,&nbsp;for&nbsp;multiple&nbsp;requests</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;mandatory!</span></div></li>
@@ -1081,7 +1066,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
-</ol><p>To post a file, prepend the filename with <code>@</code> and use the full server path.</p><p>For PHP 5.5+ files are uploaded using <a href="https://php.net/manual/ro/class.curlfile.php">CURLFile</a>                                       and <code><a href="https://wiki.php.net/rfc/curl-file-upload">CURLOPT_SAFE_UPLOAD</a></code>                                       will be set to <code>TRUE</code>.</p><p>For lower PHP versions, files will be uploaded the <em>old</em> way and the file's                                       mime type should be explicitly specified by following the filename with the                                       type in the format <code>';type=mimetype'</code> as most of the times cURL will send the                                       wrong mime type...</p><p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'https://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+</ol><p>To post a file, prepend the filename with <code>@</code> and use the full server path.</p><p>For PHP 5.5+ files are uploaded using <a href="https://php.net/manual/ro/class.curlfile.php">CURLFile</a>                                       and <code><a href="https://wiki.php.net/rfc/curl-file-upload">CURLOPT_SAFE_UPLOAD</a></code>                                       will be set to <code>TRUE</code>.</p><p>For lower PHP versions, files will be uploaded the <em>old</em> way and the file's                                       mime type should be explicitly specified by following the filename with the                                       type in the format <code>';type=mimetype'</code> as most of the times cURL will send the                                       wrong mime type...</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'https://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_3'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'@absolute/path/to/file.ext'</span><span class="src-sym">,</span></div></li>
@@ -1089,16 +1074,15 @@ void
 </ol><p class="highlight">If any data is sent, the &quot;Content-Type&quot; header will be set to                                       &quot;multipart/form-data&quot;</p></td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodproxy"></a>
-<h4 class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 1767]</span></h4>
+<h4 id="methodproxy" class="method"><span><em>method</em></span> proxy() <span class="smalllinenumber">[line 1767]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -1165,33 +1149,32 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$proxy</strong></td>
-<td valign="top"><p>The HTTP proxy to tunnel requests through.</p><p>Can be an URL or an IP address.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXY</code> to the desired value.</em></p><p>Setting this argument to <code>FALSE</code> will unset all the proxy-related options.</p></td>
+<td><em>string</em></td>
+<td><strong>$proxy</strong></td>
+<td><p>The HTTP proxy to tunnel requests through.</p><p>Can be an URL or an IP address.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXY</code> to the desired value.</em></p><p>Setting this argument to <code>FALSE</code> will unset all the proxy-related options.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$port</strong></td>
-<td valign="top"><p>(Optional) The port number of the proxy to connect to.</p><p>Default is <code>80</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXYPORT</code> to the desired value.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$port</strong></td>
+<td><p>(Optional) The port number of the proxy to connect to.</p><p>Default is <code>80</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXYPORT</code> to the desired value.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$username</strong></td>
-<td valign="top"><p>(Optional) The username to be used for the connection to the proxy (if required                                   by the proxy)</p><p>Default is <code>&quot;&quot;</code> (an empty string)</p><p><em>The username and the password can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method                                   and setting <code>CURLOPT_PROXYUSERPWD</code> to the desired value formatted like                                   <code>[username]:[password]</code>.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$username</strong></td>
+<td><p>(Optional) The username to be used for the connection to the proxy (if required                                   by the proxy)</p><p>Default is <code>&quot;&quot;</code> (an empty string)</p><p><em>The username and the password can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method                                   and setting <code>CURLOPT_PROXYUSERPWD</code> to the desired value formatted like                                   <code>[username]:[password]</code>.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$password</strong></td>
-<td valign="top"><p>(Optional) The password to be used for the connection to the proxy (if required                                   by the proxy)</p><p>Default is <code>&quot;&quot;</code> (an empty string)</p><p><em>The username and the password can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method                                   and setting <code>CURLOPT_PROXYUSERPWD</code> to the desired value formatted like                                   <code>[username]:[password]</code>.</em></p></td>
+<td><em>string</em></td>
+<td><strong>$password</strong></td>
+<td><p>(Optional) The password to be used for the connection to the proxy (if required                                   by the proxy)</p><p>Default is <code>&quot;&quot;</code> (an empty string)</p><p><em>The username and the password can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method                                   and setting <code>CURLOPT_PROXYUSERPWD</code> to the desired value formatted like                                   <code>[username]:[password]</code>.</em></p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodput"></a>
-<h4 class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 1877]</span></h4>
+<h4 id="methodput" class="method"><span><em>method</em></span> put() <span class="smalllinenumber">[line 1877]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -1208,7 +1191,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>PUT</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PUT</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PUT</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -1249,30 +1232,29 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$urls</strong></td>
-<td valign="top"><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>callable</em></td>
-<td valign="top"><strong>$callback</strong></td>
-<td valign="top"><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 </table>
 <h5>Tags</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
-<td valign="top">1.3.3</td>
+<td><strong>since:</strong>&nbsp;&nbsp;</td>
+<td>1.3.3</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodqueue"></a>
-<h4 class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 1997]</span></h4>
+<h4 id="methodqueue" class="method"><span><em>method</em></span> queue() <span class="smalllinenumber">[line 1997]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -1280,7 +1262,7 @@ void
 ()
 </p>
 <p>Instructs the library to queue requests rather than processing them right away. Useful for grouping different   types of requests and treat them as a single request.</p>
-<p>Until <a href="../Zebra_cURL/Zebra_cURL.html#methodstart">start</a> method is called, all calls to <a href="../Zebra_cURL/Zebra_cURL.html#methoddelete">delete</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a>,   <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodheader">header</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> and <a href="../Zebra_cURL/Zebra_cURL.html#methodput">put</a> methods will queue up rather than being executed right   away. Once the <a href="../Zebra_cURL/Zebra_cURL.html#methodstart">start</a> method is called, all queued requests will be processed while values of   <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> and <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> properties will still apply.</p><p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;to&nbsp;be&nbsp;executed&nbsp;for&nbsp;each&nbsp;and&nbsp;every</span></div></li>
+<p>Until <a href="../Zebra_cURL/Zebra_cURL.html#methodstart">start</a> method is called, all calls to <a href="../Zebra_cURL/Zebra_cURL.html#methoddelete">delete</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a>,   <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodheader">header</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> and <a href="../Zebra_cURL/Zebra_cURL.html#methodput">put</a> methods will queue up rather than being executed right   away. Once the <a href="../Zebra_cURL/Zebra_cURL.html#methodstart">start</a> method is called, all queued requests will be processed while values of   <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> and <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> properties will still apply.</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;to&nbsp;be&nbsp;executed&nbsp;for&nbsp;each&nbsp;and&nbsp;every</span></div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;request,&nbsp;as&nbsp;soon&nbsp;as&nbsp;the&nbsp;request&nbsp;finishes</span></div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;receives&nbsp;as&nbsp;argument&nbsp;an&nbsp;object&nbsp;with&nbsp;4&nbsp;properties</span></div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;(info,&nbsp;header,&nbsp;body&nbsp;and&nbsp;response)</span></div></li>
@@ -1339,17 +1321,16 @@ void
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodstart">start</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Tags</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
-<td valign="top">1.3.0</td>
+<td><strong>since:</strong>&nbsp;&nbsp;</td>
+<td>1.3.0</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodscrap"></a>
-<h4 class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2049]</span></h4>
+<h4 id="methodscrap" class="method"><span><em>method</em></span> scrap() <span class="smalllinenumber">[line 2049]</span></h4>
 <div class="doc_block">
 <p class="code">
 mixed
@@ -1388,34 +1369,33 @@ mixed
 <li><div class="src-line"><a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$content</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>string</em></td>
-<td valign="top"><strong>$url</strong></td>
-<td valign="top"><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                   at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><em>string</em></td>
+<td><strong>$url</strong></td>
+<td><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                   at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>boolean</em></td>
-<td valign="top"><strong>$body_only</strong></td>
-<td valign="top"><p>(Optional) When set to <code>TRUE</code>, will instruct the method to return <em>only</em> the page's                                   content, without info, headers, responses, etc.</p><p>When set to <code>FALSE</code>, will instruct the method to return everything it can about                                   the scrapped page, as an object with properties as described for the <em>$callback</em>                                   argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p>Default is <code>TRUE</code>.</p></td>
+<td><em>boolean</em></td>
+<td><strong>$body_only</strong></td>
+<td><p>(Optional) When set to <code>TRUE</code>, will instruct the method to return <em>only</em> the page's                                   content, without info, headers, responses, etc.</p><p>When set to <code>FALSE</code>, will instruct the method to return everything it can about                                   the scrapped page, as an object with properties as described for the <em>$callback</em>                                   argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p>Default is <code>TRUE</code>.</p></td>
 </tr>
 </table>
 <h5>Tags</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><strong>return:</strong>&nbsp;&nbsp;</td>
-<td valign="top">Returns the scrapped page's content, when <em>$body_only</em> is set to <code>TRUE</code>, or an object with properties                   as described for the <em>$callback</em> argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</td>
+<td><strong>return:</strong>&nbsp;&nbsp;</td>
+<td>Returns the scrapped page's content, when <em>$body_only</em> is set to <code>TRUE</code>, or an object with properties                   as described for the <em>$callback</em> argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</td>
 </tr>
 <tr>
-<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
-<td valign="top">1.3.3</td>
+<td><strong>since:</strong>&nbsp;&nbsp;</td>
+<td>1.3.3</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodssl"></a>
-<h4 class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2137]</span></h4>
+<h4 id="methodssl" class="method"><span><em>method</em></span> ssl() <span class="smalllinenumber">[line 2137]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -1462,36 +1442,35 @@ void
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><em>boolean</em></td>
-<td valign="top"><strong>$verify_peer</strong></td>
-<td valign="top"><p>(Optional) Should the peer's certificate be verified by cURL?</p><p>Default is <code>TRUE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and                                           setting <code>CURLOPT_SSL_VERIFYPEER</code> to the desired value.</em></p><p>When you are communicating over HTTPS (or any other protocol that                                           uses TLS), it will, by default, verify that the server is signed by a                                           trusted Certificate Authority (CA) and it will most likely fail.</p><p>When it does fail, instead of disabling this check, better                                           <a href="https://curl.haxx.se/docs/caextract.html">download the CA bundle
+<td><em>boolean</em></td>
+<td><strong>$verify_peer</strong></td>
+<td><p>(Optional) Should the peer's certificate be verified by cURL?</p><p>Default is <code>TRUE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and                                           setting <code>CURLOPT_SSL_VERIFYPEER</code> to the desired value.</em></p><p>When you are communicating over HTTPS (or any other protocol that                                           uses TLS), it will, by default, verify that the server is signed by a                                           trusted Certificate Authority (CA) and it will most likely fail.</p><p>When it does fail, instead of disabling this check, better                                           <a href="https://curl.haxx.se/docs/caextract.html">download the CA bundle
 from Mozilla</a> and reference it through the <em>$file</em> argument below.</p></td>
 </tr>
 <tr>
-<td valign="top"><em>integer</em></td>
-<td valign="top"><strong>$verify_host</strong></td>
-<td valign="top"><p>(Optional) Specifies whether to check the existence of a common name in                                           the SSL peer certificate and that it matches with the provided hostname.</p><p><ul><li><code>1</code> to check the existence of a common name in the SSL peer certificate</li><li><code>2</code> to check the existence of a common name and also verify that it
+<td><em>integer</em></td>
+<td><strong>$verify_host</strong></td>
+<td><p>(Optional) Specifies whether to check the existence of a common name in                                           the SSL peer certificate and that it matches with the provided hostname.</p><p><ul><li><code>1</code> to check the existence of a common name in the SSL peer certificate</li><li><code>2</code> to check the existence of a common name and also verify that it
 matches the hostname provided; in production environments the value
 of this option should be kept at <code>2</code>;</li></ul><p>                                           Default is <code>2</code></p><p class="highlight">Support for value 1 removed in cURL 7.28.1</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                           <code>CURLOPT_SSL_VERIFYHOST</code> to the desired value.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$file</strong></td>
-<td valign="top"><p>(Optional) An absolute path to a file holding the certificates to verify                                           the peer with. This only makes sense if <code>CURLOPT_SSL_VERIFYPEER</code> is set                                           to <code>TRUE</code>.</p><p>Default is <code>FALSE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                           <code>CURLOPT_CAINFO</code> to the desired value.</em></p></td>
+<td><em>mixed</em></td>
+<td><strong>$file</strong></td>
+<td><p>(Optional) An absolute path to a file holding the certificates to verify                                           the peer with. This only makes sense if <code>CURLOPT_SSL_VERIFYPEER</code> is set                                           to <code>TRUE</code>.</p><p>Default is <code>FALSE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                           <code>CURLOPT_CAINFO</code> to the desired value.</em></p></td>
 </tr>
 <tr>
-<td valign="top"><em>mixed</em></td>
-<td valign="top"><strong>$path</strong></td>
-<td valign="top"><p>(Optional) An absolute path to a directory that holds multiple CA                                           certificates. This only makes sense if <code>CURLOPT_SSL_VERIFYPEER</code> is set                                           to <code>TRUE</code>.</p><p>Default is <code>FALSE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                           <code>CURLOPT_CAPATH</code> to the desired value.</em></p></td>
+<td><em>mixed</em></td>
+<td><strong>$path</strong></td>
+<td><p>(Optional) An absolute path to a directory that holds multiple CA                                           certificates. This only makes sense if <code>CURLOPT_SSL_VERIFYPEER</code> is set                                           to <code>TRUE</code>.</p><p>Default is <code>FALSE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                           <code>CURLOPT_CAPATH</code> to the desired value.</em></p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<a name="methodstart"></a>
-<h4 class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2174]</span></h4>
+<h4 id="methodstart" class="method"><span><em>method</em></span> start() <span class="smalllinenumber">[line 2174]</span></h4>
 <div class="doc_block">
 <p class="code">
 void
@@ -1501,10 +1480,10 @@ void
 <p>Executes queued requests.</p>
 <p>See <a href="../Zebra_cURL/Zebra_cURL.html#methodqueue">queue</a> method.</p>
 <h5>Tags</h5>
-<table cellspacing="0" cellpadding="0">
+<table>
 <tr>
-<td valign="top"><strong>since:</strong>&nbsp;&nbsp;</td>
-<td valign="top">1.3.0</td>
+<td><strong>since:</strong>&nbsp;&nbsp;</td>
+<td>1.3.0</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>

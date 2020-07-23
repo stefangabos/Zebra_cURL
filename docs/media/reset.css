@@ -86,3 +86,8 @@ ul.float li ,
 ol.float li {
     float: left;
 }
+
+table tr td,
+table tr th {
+    vertical-align: top;
+}
