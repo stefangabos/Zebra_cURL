@@ -132,10 +132,6 @@ h4.method {
     padding-bottom: 0;
 }
 
-.smalllinenumber {
-    display: none;
-}
-
 h4.variable-static {
     background: #eae9da;
 }
