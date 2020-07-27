@@ -6,7 +6,7 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.5.0 (last revision: July 23, 2020)
+ *  @version    1.5.0 (last revision: July 28, 2020)
  *  @copyright  © 2013 - 2020 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2312,51 +2312,8 @@ class Zebra_cURL {
             // iterate over the entries in the array
             foreach ($urls as $key => $values) {
 
-                // if urls are defined like
-                // array(
-                //     array('https://www.url1.com' => array('foo' => 'bar')),
-                // )
-                // or like
-                // array(
-                //     array('https://www.url1.com' => array(
-                //         'data' => array('foo' => 'bar'),
-                //     )),
-                // )
-                if (is_array($values) && empty(array_filter(array_keys($values), function($value) { return is_numeric($value); }))) {
-
-                    // if urls are defined like
-                    // array(
-                    //     array('https://www.url1.com' => array('foo' => 'bar')),
-                    // )
-                    if (empty(array_intersect(array('url', 'options', 'data'), array_keys(current($values))))) {
-
-                        // normalize format
-                        $values = array(
-                            'url'   =>  key($values),
-                            'data'  =>  current($values),
-                        );
-
-                    // if urls are defined like
-                    // array(
-                    //     array('https://www.url1.com' => array(
-                    //         'data' => array('foo' => 'bar'),
-                    //     )),
-                    // )
-                    } else {
-
-                        // normalize format
-                        $values = array_merge(array('url' => key($values)), current($values));
-
-                    }
-
-                }
-
-                // if key is numeric, as in
-                // array('https://address.com')
-                // array(array(
-                //      'url'       =>  'https://address.com',
-                //      'options'   =>  array(...)
-                // ))
+                // if key is numeric
+                // we take it that everything we need is inside $values
                 if (is_numeric($key)) {
 
                     // if $values is an associative array containing one of "url", "options" and "data" entries, like
@@ -2366,11 +2323,29 @@ class Zebra_cURL {
                     // )
                     if (is_array($values) && !empty(array_intersect(array('url', 'options', 'data'), array_keys($values)))) {
 
-                        // since "url" is mandatory, stop if not present
-                        if (!isset($values['url'])) trigger_error('<strong>url</strong> key is missing from argument', E_USER_ERROR);
-
                         // keep everything as it is
                         $result[] = $values;
+
+                    // if $values is an array containing an associative array where the key is the URL and the value is
+                    // another array containing at least one of "url", "options" or "data" entries, like
+                    // array('https://address.com' => array(
+                    //      'options'   =>  array(...),
+                    // ))
+                    } elseif (is_array($values) && !is_numeric(key($values)) && is_array(current($values)) && !empty(array_intersect(array('url', 'options', 'data'), array_keys(current($values))))) {
+
+                        // normalize values
+                        $result[] = array_merge(array('url' => key($values)), current($values));
+
+                    // if $values is an associative array where the key is the URL and the value is
+                    // another array of POST values
+                    // array('https://address.com' => array('foo' => 'bar'))
+                    } elseif (is_array($values)) {
+
+                        // normalize values
+                        $result[] = array(
+                            'url'   =>  key($values),
+                            'data'  =>  current($values)
+                        );
 
                     // if $values is not an array or not an associative array containing one of "url", "options" and "data" entries, like
                     // 'https://address.com'
@@ -2381,12 +2356,28 @@ class Zebra_cURL {
 
                     }
 
-                // if key is not numeric, as in
-                // 'https://address.com' => array(...)
+                // if key is not numeric
+                // we take it that key is the URL
                 } else {
 
-                    // the value has to be the "data"
-                    $result[] = array('url' => $key, 'data' => $values);
+                    // if $values is an associative array containing one of "url", "options" and "data" entries, like
+                    // array(
+                    //      'url'       =>  'https://address.com',
+                    //      'options'   =>  array(...)
+                    // )
+                    if (is_array($values) && !empty(array_intersect(array('url', 'options', 'data'), array_keys($values)))) {
+
+                        // normalize values
+                        $result[] = array_merge(array('url' => $key), $values);
+
+                    // if $values is an associative array with POST values, like
+                    // array('foo' => 'bar'))
+                    } else {
+
+                        // the values have to be the POST values
+                        $result[] = array('url' => $key, 'data' => $values);
+
+                    }
 
                 }
 
