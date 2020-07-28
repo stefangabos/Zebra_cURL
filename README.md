@@ -1,12 +1,12 @@
-<img src="https://github.com/stefangabos/zebrajs/blob/master/docs/images/logo.png" alt="zebrajs" align="right">
+<img src="https://github.com/stefangabos/zebrajs/blob/master/docs/images/logo.png" alt="zebra-curl-logo" align="right">
 
-# Zebra_cURL
+# Zebra cURL
 
 *A high performance PHP cURL library allowing the running of multiple asynchronous requests at once*
 
 [![Latest Stable Version](https://poser.pugx.org/stefangabos/zebra_curl/v/stable)](https://packagist.org/packages/stefangabos/zebra_curl) [![Total Downloads](https://poser.pugx.org/stefangabos/zebra_curl/downloads)](https://packagist.org/packages/stefangabos/zebra_curl) [![Monthly Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/monthly)](https://packagist.org/packages/stefangabos/zebra_curl) [![Daily Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/daily)](https://packagist.org/packages/stefangabos/zebra_curl) [![License](https://poser.pugx.org/stefangabos/zebra_curl/license)](https://packagist.org/packages/stefangabos/zebra_curl)
 
-**Zebra_cURL** is a high performance cURL PHP library which not only allows the running of multiple asynchronous requests at once, but also finished threads can be processed right away without having to wait for the other threads in the queue to finish.
+**Zebra cURL** is a high performance cURL PHP library which not only allows the running of multiple asynchronous requests at once, but also finished threads can be processed right away without having to wait for the other threads in the queue to finish.
 
 Also, each time a request is completed another one is added to the queue, thus keeping a constant number of threads running at all times and eliminating wasted CPU cycles from busy waiting. This result is a faster and more efficient way of processing large quantities of cURL requests (like fetching thousands of RSS feeds at once), drastically reducing processing time.
 
@@ -43,7 +43,7 @@ PHP 5.3.0+ with the [cURL extension](https://www.php.net/manual/en/curl.installa
 
 ## Installation
 
-You can install Zebra_cURL via [Composer](https://packagist.org/packages/stefangabos/zebra_curl)
+You can install via [Composer](https://packagist.org/packages/stefangabos/zebra_curl)
 
 ```bash
 # get the latest stable release
@@ -72,7 +72,7 @@ require_once 'path/to/Zebra_cURL.php';
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
-// instantiate the Zebra_cURL class
+// instantiate the Zebra cURL class
 $curl = new Zebra_cURL();
 
 // cache results 3600 seconds
@@ -140,7 +140,7 @@ function callback($result, $feeds) {
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
-// instantiate the Zebra_cURL class
+// instantiate the Zebra cURL class
 $curl = new Zebra_cURL();
 
 // cache results 3600 seconds
@@ -170,7 +170,7 @@ $curl->get(array_keys($feeds), 'callback', $feeds);
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
-// instantiate the Zebra_cURL class
+// instantiate the Zebra cURL class
 $curl = new Zebra_cURL();
 
 // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
@@ -189,7 +189,7 @@ $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bir
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
-// instantiate the Zebra_cURL class
+// instantiate the Zebra cURL class
 $curl = new Zebra_cURL;
 
 // set custom HTTP headers
