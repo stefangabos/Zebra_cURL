@@ -1,6 +1,6 @@
 ## version 1.5.0 (TBA)
 
-- fixed bug when URLs were given in a certain format
+- fixed bug where not all the formats for URLs described in the documentation were actually supported
 - documentation overhaul
 
 ## version 1.4.0 (May 8, 2019)
