@@ -6,7 +6,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/stefangabos/zebra_curl/v/stable)](https://packagist.org/packages/stefangabos/zebra_curl) [![Total Downloads](https://poser.pugx.org/stefangabos/zebra_curl/downloads)](https://packagist.org/packages/stefangabos/zebra_curl) [![Monthly Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/monthly)](https://packagist.org/packages/stefangabos/zebra_curl) [![Daily Downloads](https://poser.pugx.org/stefangabos/zebra_curl/d/daily)](https://packagist.org/packages/stefangabos/zebra_curl) [![License](https://poser.pugx.org/stefangabos/zebra_curl/license)](https://packagist.org/packages/stefangabos/zebra_curl)
 
-**Zebra_cURL** is a high performance PHP cURL which not only allows the running of multiple asynchronous requests at once, but also finished threads can be processed right away without having to wait for the other threads in the queue to finish.
+**Zebra_cURL** is a high performance cURL PHP library which not only allows the running of multiple asynchronous requests at once, but also finished threads can be processed right away without having to wait for the other threads in the queue to finish.
 
 Also, each time a request is completed another one is added to the queue, thus keeping a constant number of threads running at all times and eliminating wasted CPU cycles from busy waiting. This result is a faster and more efficient way of processing large quantities of cURL requests (like fetching thousands of RSS feeds at once), drastically reducing processing time.
 
@@ -20,14 +20,19 @@ The code is heavily commented and generates no warnings/errors/notices when PHP'
 
 ## Support the development of this library
 
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64)
+If you like this project please [star it](https://github.com/stefangabos/Zebra_cURL) on GitHub.<br>
+If you are feeling very generous, you can also buy me a coffee by donating through PayPal.
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64)
+
+Thank you!
 
 ## Features
 
 - supports GET (with caching), POST, HEADER, PUT, DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
 - allows the running of multiple requests at once, asynchronously, and as soon as one thread finishes it can be processed right away without having to wait for the other threads in the queue to finish
 - downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from the server of having to read files into memory first, and then writing them to disk
-- provides a very detailed information about the made requests
+- provides detailed information about the made requests
 - has [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)
 - code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php)
 
@@ -53,7 +58,7 @@ Or you can install it manually by downloading the latest version, unpacking it, 
 ```php
 <?php
 
-require_once 'Zebra_cURL.php';
+require_once 'path/to/Zebra_cURL.php';
 ```
 
 ## How to use
