@@ -20,10 +20,8 @@ The code is heavily commented and generates no warnings/errors/notices when PHP'
 
 ## Support the development of this library
 
-If you like this project please [star it](https://github.com/stefangabos/Zebra_cURL) on GitHub.<br>
-If you are feeling very generous, you can also buy me a coffee by donating through PayPal.
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64)
+If you like this project please [<img src="https://img.shields.io/github/stars/stefangabos/zebra_curl?color=green&label=star%20it%20on%20GitHub" width="132" height="20" alt="Star it on GitHub">](https://github.com/stefangabos/Zebra_cURL)<br>
+If you are feeling very generous, you can also buy me a coffee [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64)
 
 Thank you!
 
