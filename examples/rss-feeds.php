@@ -54,7 +54,34 @@
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
-    function callback($result, $feeds) {
+    // make sure cache folder exists and is writable
+    if (!is_dir('cache') || !is_writable('cache')) trigger_error('the "cache" folder must be present and be writable in the "examples" folder', E_USER_ERROR);
+
+    // make sure CA bundle exists
+    elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not found', E_USER_ERROR);
+
+    // include the library
+    require '../Zebra_cURL.php';
+
+    // instantiate the Zebra_cURL class
+    $curl = new Zebra_cURL();
+
+    // cache results 3600 seconds
+    $curl->cache('cache', 3600);
+
+    // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+    // so we don't get CURLE_SSL_CACERT response from cURL
+    // you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+    $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
+
+    $feeds = array(
+        'https://www.smashingmagazine.com/feed/'    =>  'Smashing Magazine',
+        'https://code.tutsplus.com/posts.atom'      =>  'TutsPlus',
+        'https://alistapart.com/main/feed/'         =>  'A List Apart',
+    );
+
+    // get RSS feeds of some popular tech websites
+    $curl->get(array_keys($feeds), function($result) use ($feeds) {
 
         // everything went well at cURL level
         if ($result->response[1] == CURLE_OK) {
@@ -95,42 +122,13 @@
                     }
 
             // show the server's response code
-            } else die('Server responded with code ' . $result->info['http_code']);
+            } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
 
         // something went wrong
         // ($result still contains all data that could be gathered)
-        } else die('cURL responded with: ' . $result->response[0]);
+        } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
 
-    }
-
-    // make sure cache folder exists and is writable
-    if (!is_dir('cache') || !is_writable('cache')) trigger_error('the "cache" folder must be present and be writable in the "examples" folder', E_USER_ERROR);
-
-    // make sure CA bundle exists
-    elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not found', E_USER_ERROR);
-
-    // include the library
-    require '../Zebra_cURL.php';
-
-    // instantiate the Zebra_cURL class
-    $curl = new Zebra_cURL();
-
-    // cache results 3600 seconds
-    $curl->cache('cache', 3600);
-
-    // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
-    // so we don't get CURLE_SSL_CACERT response from cURL
-    // you can always update this bundle from https://curl.haxx.se/docs/caextract.html
-    $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
-
-    $feeds = array(
-        'https://www.smashingmagazine.com/feed/'    =>  'Smashing Magazine',
-        'https://code.tutsplus.com/posts.atom'      =>  'TutsPlus',
-        'https://alistapart.com/main/feed/'         =>  'A List Apart',
-    );
-
-    // get RSS feeds of some popular tech websites
-    $curl->get(array_keys($feeds), 'callback', $feeds);
+    });
 
     ?>
 

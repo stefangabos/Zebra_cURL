@@ -92,7 +92,29 @@ echo $curl->scrap('https://github.com/', true);
 ```php
 <?php
 
-function callback($result, $feeds) {
+// include the library
+// (you don't need this if you installed the library via Composer)
+require 'path/to/Zebra_cURL.php';
+
+// instantiate the Zebra cURL class
+$curl = new Zebra_cURL();
+
+// cache results 3600 seconds
+$curl->cache('path/to/cache', 3600);
+
+// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+// so we don't get CURLE_SSL_CACERT response from cURL
+// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
+
+$feeds = array(
+    'https://rss1.smashingmagazine.com/feed/'       =>  'Smashing Magazine',
+    'https://feeds.feedburner.com/nettuts'          =>  'TutsPlus',
+    'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
+);
+
+// get RSS feeds of some popular tech websites
+$curl->get(array_keys($feeds), function($result) use ($feeds) {
 
     // everything went well at cURL level
     if ($result->response[1] == CURLE_OK) {
@@ -127,37 +149,32 @@ function callback($result, $feeds) {
                 }
 
         // show the server's response code
-        } else die('Server responded with code ' . $result->info['http_code']);
+        } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
 
     // something went wrong
     // ($result still contains all data that could be gathered)
-    } else die('cURL responded with: ' . $result->response[0]);
+    } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
 
-}
+});
+```
 
+**Use custom HTTP headers**
+
+```php
 // include the library
 // (you don't need this if you installed the library via Composer)
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra cURL class
-$curl = new Zebra_cURL();
+$curl = new Zebra_cURL;
 
-// cache results 3600 seconds
-$curl->cache('path/to/cache', 3600);
+// set custom HTTP headers
+$curl->option(CURLOPT_HTTPHEADER, [
+    'accept: application/json',
+    'X-Token-Foo-Bar: ABC123'   // Pass keys to APIs, for example
+]);
 
-// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
-// so we don't get CURLE_SSL_CACERT response from cURL
-// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
-$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
-
-$feeds = array(
-    'https://rss1.smashingmagazine.com/feed/'       =>  'Smashing Magazine',
-    'https://feeds.feedburner.com/nettuts'          =>  'TutsPlus',
-    'http://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
-);
-
-// get RSS feeds of some popular tech websites
-$curl->get(array_keys($feeds), 'callback', $feeds);
+echo $curl->scrap('https://httpbin.org/get') . PHP_EOL;
 ```
 
 **Download an image**
@@ -181,23 +198,5 @@ $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
 ```
 
-**Use custom HTTP headers**
-
-```php
-// include the library
-// (you don't need this if you installed the library via Composer)
-require 'path/to/Zebra_cURL.php';
-
-// instantiate the Zebra cURL class
-$curl = new Zebra_cURL;
-
-// set custom HTTP headers
-$curl->option(CURLOPT_HTTPHEADER, [
-    'accept: application/json',
-    'X-Token-Foo-Bar: ABC123'   // Pass keys to APIs, for example
-]);
-
-echo $curl->scrap('https://httpbin.org/get') . PHP_EOL;
-```
 
 :books: Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
