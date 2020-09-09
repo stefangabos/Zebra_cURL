@@ -604,7 +604,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2),
+                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -781,7 +781,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 3),
+                'arguments'         =>  array_slice(func_get_args(), 3, null, true),
 
             );
 
@@ -990,7 +990,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 5),
+                'arguments'         =>  array_slice(func_get_args(), 5, null, true),
 
             );
 
@@ -1199,7 +1199,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2),
+                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -1313,7 +1313,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2),
+                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -1671,7 +1671,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2),
+                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -1906,7 +1906,7 @@ class Zebra_cURL {
                 'callback'          =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2),
+                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
