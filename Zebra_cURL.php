@@ -1107,6 +1107,12 @@ class Zebra_cURL {
      *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
      *                                                          ),
      *
+     *                                          // optional, you can pass arguments this way also
+     *                                          'data'      =>  array(
+     *                                                              'data_1'  =>  'value 1',
+     *                                                              'data_2'  =>  'value 2',
+     *                                                          ),
+     *
      *                                      ), 'callback');
      *                                      </code>
      *
@@ -1179,7 +1185,7 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
+                'url'               =>  $values['url'] . (isset($values['data']) ? '?' . (is_array($values['data']) ? http_build_query($values['data']) : $values['data']) : ''),
 
                 // merge any custom options with the default ones
                 'options'           =>
