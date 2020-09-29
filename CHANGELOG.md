@@ -1,4 +1,4 @@
-## version 1.5.0 (TBA)
+## version 1.5.0 (September 29, 2020)
 
 - the `get` method now allows passing of query strings in a nicer way
 - fixed bug where when passing an associative array as an extra argument to any of the main methods, it would be incorrectly passed forward to the callback function
