@@ -118,6 +118,23 @@ h6 {
     margin-right: 2em;
 }
 
+.doc_toc h4 {
+    font-size: 130%;
+    font-weight: normal;
+}
+
+.doc_toc dt {
+    font-weight: normal;
+}
+
+.doc_toc dl {
+    margin-left: 20px;
+}
+
+.doc_toc dd:empty {
+    display: none;
+}
+
 .doc_index h3,
 h4.variable,
 h4.method {
@@ -130,6 +147,7 @@ h4.method {
 h4.method {
     border-bottom: none;
     padding-bottom: 0;
+    margin-bottom: 1em;
 }
 
 h4.variable-static {
