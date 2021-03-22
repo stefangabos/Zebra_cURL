@@ -16,11 +16,14 @@ require '../Zebra_cURL.php';
 // instantiate the Zebra_cURL class
 $curl = new Zebra_cURL();
 
-// set custom HTTP headers
-$curl->option(CURLOPT_HTTPHEADER, [
-    'accept: application/json',
-    'X-Token-Foo-Bar: ABC123'   // Pass keys to APIs, for example
-]);
+// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+// so we don't get CURLE_SSL_CACERT response from cURL
+// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
-echo '<pre>';
-echo $curl->scrap('http://httpbin.org/get') . PHP_EOL;
+$curl->get('https://postman-echo.com/get?foo=bar1', function() use (&$curl) {
+    echo "Call 1 finished.\n";
+    // $curl->get('https://postman-echo.com/get?foo=bar2', function () {
+    //     echo "Call 2 finished.\n";
+    // });
+});
