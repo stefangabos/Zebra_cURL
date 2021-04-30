@@ -1,3 +1,6 @@
+## version 1.5.1 (May 01, 2021)
+
+- fixed compatibility with PHP 8
 ## version 1.5.0 (September 29, 2020)
 
 - the `get` method now allows passing of query strings in a nicer way
