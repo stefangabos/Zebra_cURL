@@ -98,6 +98,15 @@ class Zebra_cURL {
     private $_running;
 
     /**
+     *  As of PHP 8 we use an extra map as a helper.
+     *
+     *  @var array
+     *
+     *  @access private
+     */
+    private $_running_map;
+
+    /**
      *  Possible values of the "result" attribute in the object passed to the callback function.
      *
      *  @var array
@@ -273,7 +282,7 @@ class Zebra_cURL {
 
         // initialize some private properties
         $this->_multi_handle = $this->_queue = false;
-        $this->_running = $this->_requests = array();
+        $this->_running = $this->_running_map = $this->_requests = array();
 
         // the default number of seconds to wait between processing batches of requests
         // 0 means no waiting, process all requests at once
@@ -2519,8 +2528,11 @@ class Zebra_cURL {
                     // get content associated with the handle
                     $content = curl_multi_getcontent($handle);
 
-                    // get the handle's ID
-                    $resource_number = preg_replace('/Resource id #/', '', $handle);
+                    // if PHP 8+, the we know the handle's ID because we stored a randomly generated one in this map when we called curl_init
+                    if (PHP_MAJOR_VERSION >= 8) $resource_number = key(array_filter($this->_running_map, function($value) use ($handle) { return $value === $handle; }));
+
+                    // for PHP 7 and below, get the handle's ID
+                    else $resource_number = preg_replace('/Resource id #/', '', $handle);
 
                     // get the information associated with the request
                     $request = $this->_running[$resource_number];
@@ -2660,6 +2672,7 @@ class Zebra_cURL {
 
                     // we don't need the information associated with this request anymore
                     unset($this->_running[$resource_number]);
+                    unset($this->_running_map[$resource_number]);
 
                 }
 
@@ -2730,7 +2743,8 @@ class Zebra_cURL {
             $handle = curl_init($request['url']);
 
             // get the handle's ID
-            $resource_number = preg_replace('/Resource id #/', '', $handle);
+            // (if PHP 8+ we generate a random one because $handle is no longer a "Resource" but a "CurlHandle")
+            $resource_number = PHP_MAJOR_VERSION < 8 ? preg_replace('/Resource id #/', '', $handle) : uniqid('', true);
 
             // if we're downloading something
             if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER]) {
@@ -2778,6 +2792,9 @@ class Zebra_cURL {
 
             // add the normal handle to the multi handle
             curl_multi_add_handle($this->_multi_handle, $handle);
+
+            // if PHP 8+ this is how we keep track of the running requests
+            if (PHP_MAJOR_VERSION >= 8) $this->_running_map[$resource_number] = $handle;
 
             // add request to the list of running requests
             $this->_running[$resource_number] = $request;
