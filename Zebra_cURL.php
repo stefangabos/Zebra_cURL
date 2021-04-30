@@ -2523,7 +2523,7 @@ class Zebra_cURL {
                     $resource_number = preg_replace('/Resource id #/', '', $handle);
 
                     // get the information associated with the request
-                    $request = $this->_running['fh' . $resource_number];
+                    $request = $this->_running[$resource_number];
 
                     // create a new object in which we will store all the data associated with the handle,
                     // as properties of this object
@@ -2617,7 +2617,7 @@ class Zebra_cURL {
 
                             // make available the name we saved the file with
                             // (we need to merge the first 2 elements, our new array and the rest of the elements)
-                            $arguments[0]->info = array_merge($tmp_array, array('downloaded_filename' => $this->_running['fh' . $resource_number]['file_name']), $arguments[0]->info);
+                            $arguments[0]->info = array_merge($tmp_array, array('downloaded_filename' => $this->_running[$resource_number]['file_name']), $arguments[0]->info);
 
                         }
 
@@ -2656,10 +2656,10 @@ class Zebra_cURL {
                     if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER])
 
                         // close the associated file pointer
-                        fclose($this->_running['fh' . $resource_number]['file_handler']);
+                        fclose($this->_running[$resource_number]['file_handler']);
 
                     // we don't need the information associated with this request anymore
-                    unset($this->_running['fh' . $resource_number]);
+                    unset($this->_running[$resource_number]);
 
                 }
 
@@ -2780,7 +2780,7 @@ class Zebra_cURL {
             curl_multi_add_handle($this->_multi_handle, $handle);
 
             // add request to the list of running requests
-            $this->_running['fh' . $resource_number] = $request;
+            $this->_running[$resource_number] = $request;
 
         }
 
