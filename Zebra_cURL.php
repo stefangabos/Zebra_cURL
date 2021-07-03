@@ -2528,7 +2528,7 @@ class Zebra_cURL {
                     // get content associated with the handle
                     $content = curl_multi_getcontent($handle);
 
-                    // if PHP 8+, the we know the handle's ID because we stored a randomly generated one in this map when we called curl_init
+                    // if PHP 8+, we know the handle's ID because we stored a randomly generated one in this map when we called curl_init
                     if (PHP_MAJOR_VERSION >= 8) $resource_number = key(array_filter($this->_running_map, function($value) use ($handle) { return $value === $handle; }));
 
                     // for PHP 7 and below, get the handle's ID
