@@ -6,7 +6,7 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.5.1 (last revision: May 01, 2021)
+ *  @version    1.5.2 (last revision: July 03, 2021)
  *  @copyright  © 2013 - 2021 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2640,8 +2640,8 @@ class Zebra_cURL {
                     // if no callback function, we assume the response is TRUE
                     } else $callback_response = true;
 
-                    // if caching is enabled and the callback function did not return FALSE
-                    if ($this->cache !== false && $callback_response !== false) {
+                    // if caching is enabled and the callback function did not return FALSE nor did the cURL request returned an error
+                    if ($this->cache !== false && ($callback_response !== false || $result->response[0] > 0)) {
 
                         // get the name of the cache file associated with the request
                         $cache_file = $this->_get_cache_file_name($request);
