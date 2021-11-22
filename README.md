@@ -29,7 +29,7 @@ Either way - **Thank you!** 🎉
 
 [<img src="https://img.shields.io/github/stars/stefangabos/zebra_curl?color=green&label=star%20it%20on%20GitHub" width="132" height="20" alt="Star it on GitHub">](https://github.com/stefangabos/Zebra_cURL) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64) [<img src="https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors">](https://github.com/sponsors/stefangabos)
 
-## Features
+## 🎁 Features
 
 - supports GET (with caching), POST, HEADER, PUT, DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
 - allows the running of multiple requests at once, asynchronously, and as soon as one thread finishes it can be processed right away without having to wait for the other threads in the queue to finish
@@ -39,11 +39,11 @@ Either way - **Thank you!** 🎉
 - code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php)
 
 
-## Requirements
+## ✔️ Requirements
 
 PHP 5.3.0+ with the [cURL extension](https://www.php.net/manual/en/curl.installation.php) enabled.
 
-## Installation
+## 🎬 Installation
 
 You can install via [Composer](https://packagist.org/packages/stefangabos/zebra_curl)
 
@@ -63,7 +63,7 @@ Or you can install it manually by downloading the latest version, unpacking it, 
 require_once 'path/to/Zebra_cURL.php';
 ```
 
-## How to use
+## ☝️ How to use
 
 **Scrap a page**
 
@@ -200,6 +200,3 @@ $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 // download one of the official twitter image
 $curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
 ```
-
-
-:books: Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
