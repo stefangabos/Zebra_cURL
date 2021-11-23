@@ -16,10 +16,6 @@ For maximum efficiency downloads are streamed (bytes downloaded are directly wri
 
 The code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php).
 
-## :notebook_with_decorative_cover: Documentation
-
-Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
-
 ## Features
 
 - supports GET (with caching), POST, HEADER, PUT, DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
@@ -28,6 +24,10 @@ Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Z
 - provides detailed information about the made requests
 - has [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)
 - code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php)
+
+## :notebook_with_decorative_cover: Documentation
+
+Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)!
 
 ## 🎂 Support the development of this project
 
