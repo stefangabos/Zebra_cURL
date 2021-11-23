@@ -1,6 +1,6 @@
 <img src="https://github.com/stefangabos/zebrajs/blob/master/docs/images/logo.png" alt="zebra-curl-logo" align="right" width="90">
 
-# Zebra cURL &nbsp;[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=A+high+performance+cURL+PHP+library+allowing+the+running+of+multiple+requests+at+once,+asynchronously&url=https://github.com/stefangabos/Zebra_cURL&via=stefangabos)
+# Zebra cURL &nbsp;[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=A+high+performance+cURL+PHP+library+allowing+the+running+of+multiple+requests+at+once,+asynchronously+%23php&url=https://github.com/stefangabos/Zebra_cURL&via=stefangabos)
 
 *A high performance cURL PHP library allowing the running of multiple requests at once, asynchronously*
 
