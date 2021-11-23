@@ -29,7 +29,7 @@ Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Z
 - has [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html)
 - code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php)
 
-## 🎂 Support the development of this library
+## 🎂 Support the development of this project
 
 Your support means a lot and it keeps me motivated to keep working on open source projects.<br>
 If you like this project please ⭐ it by clicking on the star button at the top of the page.<br>
