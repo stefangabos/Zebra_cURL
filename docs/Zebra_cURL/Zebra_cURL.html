@@ -65,7 +65,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Version:</h4>
 <ul>
-<li>1.5.1 (last revision: May 01, 2021)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
+<li>1.6.0 (last revision: March 17, 2022)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
 </ul>
 <h4>License:</h4>
 <ul>
@@ -73,7 +73,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Copyright:</h4>
 <ul>
-<li>© 2013 - 2021 Stefan Gabos</li>
+<li>© 2013 - 2022 Stefan Gabos</li>
 </ul>
 <div id="top" class="doc_toc">
 <div class="left">
@@ -98,6 +98,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 <li><a href="#methodheader">header</a></li>
 <li><a href="#methodhttp_authentication">http_authentication</a></li>
 <li><a href="#methodoption">option</a></li>
+<li><a href="#methodpatch">patch</a></li>
 <li><a href="#methodpost">post</a></li>
 <li><a href="#methodproxy">proxy</a></li>
 <li><a href="#methodput">put</a></li>
@@ -973,6 +974,87 @@ void
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
+<h4 id="methodpatch" class="method"><span><em>method</em></span> patch()</h4>
+<p>Performs an HTTP <code>PATCH</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PATCH</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;so&nbsp;we&nbsp;don't&nbsp;get&nbsp;CURLE_SSL_CACERT&nbsp;response&nbsp;from&nbsp;cURL</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;you&nbsp;can&nbsp;get&nbsp;this&nbsp;bundle&nbsp;from&nbsp;https://curl.haxx.se/docs/caextract.html</span></div></li>
+<li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">,&nbsp;</span><span class="src-num">2</span><span class="src-sym">,&nbsp;</span><span class="src-str">'path/to/cacert.pem'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;do&nbsp;a&nbsp;PATCH&nbsp;request&nbsp;and&nbsp;execute&nbsp;a&nbsp;callback&nbsp;function&nbsp;for&nbsp;each&nbsp;request,&nbsp;as&nbsp;soon&nbsp;as&nbsp;it&nbsp;finishes</span></div></li>
+<li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpatch">patch</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://www.somewebsite.com'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;the&nbsp;callback&nbsp;function&nbsp;receives&nbsp;as&nbsp;argument&nbsp;an&nbsp;object&nbsp;with&nbsp;4&nbsp;properties</span></div></li>
+<li><div class="src-line"><span class="src-comm">//&nbsp;(info,&nbsp;header,&nbsp;body&nbsp;and&nbsp;response)</span></div></li>
+<li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-key">function</span><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;everything&nbsp;went&nbsp;well&nbsp;at&nbsp;cURL&nbsp;level</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">1</span><span class="src-sym">]&nbsp;</span>==&nbsp;<span class="src-id">CURLE_OK</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;if&nbsp;server&nbsp;responded&nbsp;with&nbsp;code&nbsp;200&nbsp;(meaning&nbsp;that&nbsp;everything&nbsp;went&nbsp;well)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;see&nbsp;https://httpstatus.es/&nbsp;for&nbsp;a&nbsp;list&nbsp;of&nbsp;possible&nbsp;response&nbsp;codes</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]&nbsp;</span>==&nbsp;<span class="src-num">200</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;see&nbsp;all&nbsp;the&nbsp;returned&nbsp;data</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-str">'&lt;pre&gt;'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol>
+<div class="doc_block">
+<p class="code">
+void
+<span class="src-var">patch</span>
+(
+<span class="src-key">mixed</span>
+<span class="src-var">$urls</span>
+, 
+[ 
+<span class="src-key">callable</span>
+<span class="src-var">$callback</span>
+=
+<span class="src-str">''</span>
+]
+) 
+</p>
+<h5>Arguments</h5>
+<table>
+<tr>
+<td><em>mixed</em></td>
+<td><strong>$urls</strong></td>
+<td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
+</tr>
+<tr>
+<td><em>callable</em></td>
+<td><strong>$callback</strong></td>
+<td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>since:</strong>&nbsp;&nbsp;</td>
+<td>1.6.0</td>
+</tr>
+</table>
+<a href="#top" class="top">top</a>
+<div class="clear"></div>
+</div>
 <h4 id="methodpost" class="method"><span><em>method</em></span> post()</h4>
 <p>Performs an HTTP <code>POST</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
 <p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>TRUE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
@@ -1530,7 +1612,7 @@ void
 </tr>
 </table>
 <div id="doc_footer">
-Documentation generated on <span>Fri, 30 Apr 21</span>
+Documentation generated on <span>Thu, 17 Mar 22</span>
 </div>
 </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
