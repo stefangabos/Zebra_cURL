@@ -6,8 +6,8 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.5.2 (last revision: July 03, 2021)
- *  @copyright  © 2013 - 2021 Stefan Gabos
+ *  @version    1.6.0 (last revision: March 17, 2022)
+ *  @copyright  © 2013 - 2022 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -1480,6 +1480,133 @@ class Zebra_cURL {
 
         // set the value for the option otherwise
         else $this->options[$option] = $value;
+
+    }
+
+    /**
+     *  Performs an HTTP `PATCH` request to one or more URLs and executes the callback function specified by the *$callback*
+     *  argument for each and every request, as soon as the request finishes.
+     *
+     *  This method will automatically set the following options:
+     *
+     *  - `CURLINFO_HEADER_OUT` - `TRUE`
+     *  - `CURLOPT_CUSTOMREQUEST` - `PATCH`
+     *  - `CURLOPT_HEADER` - `TRUE`
+     *  - `CURLOPT_NOBODY` - `FALSE`
+     *  - `CURLOPT_POST` - `FALSE`
+     *  - `CURLOPT_POSTFIELDS` - the POST data
+     *
+     *  ...and will unset the following options:
+     *
+     *  - `CURLOPT_BINARYTRANSFER`
+     *  - `CURLOPT_HTTPGET` = `TRUE`
+     *  - `CURLOPT_FILE`
+     *
+     *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
+     *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
+     *  is set through the {@link threads} property. See also {@link pause_interval}.
+     *
+     *  >   Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in
+     *      the order in which they were initiated!
+     *
+     *  <code>
+     *  // instantiate the class
+     *  $curl = new Zebra_cURL();
+     *
+     *  // if making requests over HTTPS we need to load a CA bundle
+     *  // so we don't get CURLE_SSL_CACERT response from cURL
+     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  $curl->ssl(true, 2, 'path/to/cacert.pem');
+     *
+     *  // do a PATCH request and execute a callback function for each request, as soon as it finishes
+     *  $curl->patch(array(
+     *
+     *      'https://www.somewebsite.com'  =>  array(
+     *          'data_1'  =>  'value 1',
+     *          'data_2'  =>  'value 2',
+     *      ),
+     *
+     *  // the callback function receives as argument an object with 4 properties
+     *  // (info, header, body and response)
+     *  ), function($result) {
+     *
+     *      // everything went well at cURL level
+     *      if ($result->response[1] == CURLE_OK) {
+     *
+     *          // if server responded with code 200 (meaning that everything went well)
+     *          // see https://httpstatus.es/ for a list of possible response codes
+     *          if ($result->info['http_code'] == 200) {
+     *
+     *              // see all the returned data
+     *              print_r('<pre>');
+     *              print_r($result);
+     *
+     *          // show the server's response code
+     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *
+     *      // something went wrong
+     *      // ($result still contains all data that could be gathered)
+     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *
+     *  });
+     *  </code>
+     *
+     *  @param  mixed       $urls           URL(s) to send the request(s) to.
+     *
+     *                                      Read full description of the argument at the {@link post} method.
+     *
+     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *
+     *                                      Read full description of the argument at the {@link get} method.
+     *
+     *  @since 1.6.0
+     *
+     *  @return void
+     */
+    public function patch($urls, $callback = '') {
+
+        // normalize URLs
+        // (transforms every allowed combination to the same type of array)
+        $urls = $this->_prepare_urls($urls);
+
+        // iterate through the list of URLs to process
+        foreach ($urls as $values)
+
+            // add each URL and associated properties to the "_requests" property
+            $this->_requests[] = array(
+
+                'url'               =>  $values['url'],
+
+                // merge any custom options with the default ones
+                'options'           =>
+                    (isset($values['options']) ? $values['options'] : array()) +
+                    array(
+                        CURLINFO_HEADER_OUT     =>  1,
+                        CURLOPT_CUSTOMREQUEST   =>  'PATCH',
+                        CURLOPT_HEADER          =>  1,
+                        CURLOPT_NOBODY          =>  0,
+                        CURLOPT_POST            =>  0,
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
+                        CURLOPT_BINARYTRANSFER  =>  null,
+                        CURLOPT_HTTPGET         =>  null,
+                        CURLOPT_FILE            =>  null,
+                    ),
+
+                'callback'          =>  $callback,
+
+                // additional arguments to pass to the callback function, if any
+                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+
+            );
+
+        // if we're just queuing requests for now, do not execute the next lines
+        if ($this->_queue) return;
+
+        // if we have to pause between batches of requests, process them sequentially, in batches
+        if ($this->pause_interval > 0) $this->_process_paused();
+
+        // if we don't have to pause between batches of requests, process them all at once
+        else $this->_process();
 
     }
 
