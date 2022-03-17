@@ -1,6 +1,8 @@
-## version 1.5.2 (TBA)
+## version 1.6.0 (March 17, 2022)
 
+- added support for PATCH requests
 - the library will not cache results in case the cURL requst returns an error; thanks to **George Adrian** for suggesting
+
 ## version 1.5.1 (May 01, 2021)
 
 - fixed compatibility with PHP 8
