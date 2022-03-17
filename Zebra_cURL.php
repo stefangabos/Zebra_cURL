@@ -1499,7 +1499,7 @@ class Zebra_cURL {
      *  ...and will unset the following options:
      *
      *  - `CURLOPT_BINARYTRANSFER`
-     *  - `CURLOPT_HTTPGET` = `TRUE`
+     *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
@@ -1626,7 +1626,7 @@ class Zebra_cURL {
      *
      *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_CUSTOMREQUEST`
-     *  - `CURLOPT_HTTPGET` = `TRUE`
+     *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
@@ -1952,7 +1952,7 @@ class Zebra_cURL {
      *  ...and will unset the following options:
      *
      *  - `CURLOPT_BINARYTRANSFER`
-     *  - `CURLOPT_HTTPGET` = `TRUE`
+     *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
