@@ -1,4 +1,4 @@
-## version 1.7.0 (March 30, 2022)
+## version 1.6.1 (March 30, 2022)
 
 - updated list of possible curl response messages; see [#44](https://github.com/stefangabos/Zebra_cURL/issues/44); thanks [Burak BOZ](https://github.com/BurakBoz)!
 ## version 1.6.0 (March 17, 2022)
