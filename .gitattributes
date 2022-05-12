@@ -5,4 +5,4 @@
 .gitattributes export-ignore
 .gitignore export-ignore
 composer.json export-ignore
-/.github/FUNDING.yml export-ignore
+/.github export-ignore
