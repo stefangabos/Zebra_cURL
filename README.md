@@ -80,7 +80,7 @@ $curl->cache('path/to/cache', 3600);
 
 // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
 // so we don't get CURLE_SSL_CACERT response from cURL
-// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+// you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
 // a simple way of scrapping a page
@@ -105,7 +105,7 @@ $curl->cache('path/to/cache', 3600);
 
 // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
 // so we don't get CURLE_SSL_CACERT response from cURL
-// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+// you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
 $feeds = array(
@@ -169,6 +169,11 @@ require 'path/to/Zebra_cURL.php';
 // instantiate the Zebra cURL class
 $curl = new Zebra_cURL;
 
+// since we are communicating over HTTPS, we load the CA bundle from the examples folder,
+// so we don't get CURLE_SSL_CACERT response from cURL
+// you can always update this bundle from https://curl.se/docs/caextract.html
+$curl->ssl(true, 2, __DIR__ . '/cacert.pem');
+
 // set custom HTTP headers
 $curl->option(CURLOPT_HTTPHEADER, [
     'accept: application/json',
@@ -192,7 +197,7 @@ $curl = new Zebra_cURL();
 
 // since we are communicating over HTTPS, we load the CA bundle from the examples folder,
 // so we don't get CURLE_SSL_CACERT response from cURL
-// you can always update this bundle from https://curl.haxx.se/docs/caextract.html
+// you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
 // download one of the official twitter image

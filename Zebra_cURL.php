@@ -387,7 +387,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // cache results in the "cache" folder and for 86400 seconds (24 hours)
@@ -555,7 +555,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // do a DELETE request
@@ -694,7 +694,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // download 2 images from 2 different websites
@@ -869,7 +869,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // connect to the FTP server using the given credential, download a file to a given location
@@ -1069,7 +1069,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // cache results in the "cache" folder and for 3600 seconds (one hour)
@@ -1378,7 +1378,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // get content from a page that requires prior HTTP authentication
@@ -1538,7 +1538,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // do a PATCH request and execute a callback function for each request, as soon as it finishes
@@ -1665,7 +1665,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // do a POST request and execute a callback function for each request, as soon as it finishes
@@ -1860,7 +1860,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // connect to a proxy server
@@ -1991,7 +1991,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // do a PUT request and execute a callback function for each request, as soon as it finishes
@@ -2127,7 +2127,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // queue requests - useful for grouping different types of requests
@@ -2175,7 +2175,7 @@ class Zebra_cURL {
      *
      *  // if making requests over HTTPS we need to load a CA bundle
      *  // so we don't get CURLE_SSL_CACERT response from cURL
-     *  // you can get this bundle from https://curl.haxx.se/docs/caextract.html
+     *  // you can get this bundle from https://curl.se/docs/caextract.html
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // get page's content only
@@ -2261,7 +2261,7 @@ class Zebra_cURL {
      *                                          trusted Certificate Authority (CA) and it will most likely fail.
      *
      *                                          When it does fail, instead of disabling this check, better
-     *                                          {@link https://curl.haxx.se/docs/caextract.html download the CA bundle
+     *                                          {@link https://curl.se/docs/caextract.html download the CA bundle
      *                                          from Mozilla} and reference it through the *$file* argument below.
      *
      *  @param  integer     $verify_host        (Optional) Specifies whether to check the existence of a common name in
