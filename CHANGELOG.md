@@ -1,3 +1,7 @@
+## version 1.6.2 (TBA)
+
+- Proxy related information is now available when a proxy is used; thanks to **Dave Gee** for suggesting
+
 ## version 1.6.1 (May 13, 2022)
 
 - updated list of possible curl response messages; see [#44](https://github.com/stefangabos/Zebra_cURL/issues/44); thanks [Burak BOZ](https://github.com/BurakBoz)!
