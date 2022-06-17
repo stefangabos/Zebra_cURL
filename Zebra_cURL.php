@@ -6,7 +6,7 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.1 (last revision: June 09, 2022)
+ *  @version    1.6.2 (last revision: June 17, 2022)
  *  @copyright  © 2013 - 2022 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2694,8 +2694,20 @@ class Zebra_cURL {
                     // get information about the request
                     $result->info = curl_getinfo($handle);
 
+                    $append = array('original_url' => $request['url']);
+
+                    // if a proxy was used
+                    if (isset($this->options[CURLOPT_HTTPPROXYTUNNEL]) && $this->options[CURLOPT_HTTPPROXYTUNNEL]) {
+
+                        // add proxy related information
+                        $append['proxy'] = $this->options[CURLOPT_PROXY];
+                        if (isset($this->options[CURLOPT_PROXYPORT]))
+                            $append['proxy_port'] = $this->options[CURLOPT_PROXYPORT];
+
+                    }
+
                     // extend the "info" property with the original URL
-                    $result->info = array('original_url' => $request['url']) + $result->info;
+                    $result->info = $append + $result->info;
 
                     // if request was a POST
                     if (isset($request['options'][CURLOPT_POSTFIELDS]) && $request['options'][CURLOPT_POSTFIELDS])
