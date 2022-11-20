@@ -1,6 +1,7 @@
 ## version 1.6.2 (TBA)
 
-- Proxy related information is now available when a proxy is used; thanks to **Dave Gee** for suggesting
+- fixed issue where in case of multiple headers with the same name only the last one would be returned; thanks **Dave Gee** for reporting!
+- proxy related information is now available when a proxy is used; thanks to **Dave Gee** for suggesting
 
 ## version 1.6.1 (May 13, 2022)
 
