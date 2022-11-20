@@ -6,7 +6,7 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.2 (last revision: June 17, 2022)
+ *  @version    1.6.2 (last revision: November 20, 2022)
  *  @copyright  © 2013 - 2022 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -2437,7 +2437,21 @@ class Zebra_cURL {
                 // save results
                 foreach ($matches[0] as $key => $value)
 
-                    $result[$index][$matches[1][$key]] = trim($matches[2][$key]);
+                    // if don't yet have this headers
+                    if (!isset($result[$index][$matches[1][$key]]))
+
+                        $result[$index][$matches[1][$key]] = trim($matches[2][$key]);
+
+                    // if we already have this header
+                    else {
+
+                        // first, turn it into an array
+                        if (!is_array($result[$index][$matches[1][$key]])) $result[$index][$matches[1][$key]] = array($result[$index][$matches[1][$key]]);
+
+                        // add value to array
+                        $result[$index][$matches[1][$key]][] = trim($matches[2][$key]);
+
+                    }
 
             }
 
