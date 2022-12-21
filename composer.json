@@ -1,7 +1,7 @@
 {
     "name": "stefangabos/zebra_curl",
     "type": "library",
-    "description": "A high performance cURL PHP library allowing the running of multiple requests at once, asynchronously",
+    "description": "A high performance solution for making multiple HTTP requests concurrently, asynchronously from your PHP projects using cURL",
     "keywords": ["php", "curl", "libcurl", "wrapper", "asynchronous", "request"],
     "homepage": "https://github.com/stefangabos/Zebra_cURL",
     "license": "LGPL-3.0",
