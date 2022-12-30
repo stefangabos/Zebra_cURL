@@ -1,12 +1,13 @@
 <?php
 
 /**
- *  A high-performance solution for making HTTP requests from your PHP projects. It allows you to run multiple requests
- *  concurrently, asynchronously, and supports a wide range of HTTP methods, including GET, POST, HEADER, PUT, PATCH, and
- *  DELETE. In addition to basic requests, this library also offers support for caching, FTP downloads, HTTP authentication,
- *  and proxy requests. This makes it a versatile tool for a wide range of applications and environments. Whether you're
- *  working on a simple script or a complex system, Zebra cURL can help you streamline your workflow and improve your
- *  application's performance.
+ *  A high-performance solution for making HTTP requests from your PHP projects.
+ *
+ *  Zebra cURL allows you to run multiple requests concurrently, asynchronously, and supports a wide range of HTTP methods,
+ *  including GET, POST, HEADER, PUT, PATCH, and DELETE. In addition to basic requests, this library also offers support
+ *  for caching, FTP downloads, HTTP authentication, and proxy requests. This makes it a versatile tool for a wide range
+ *  of applications and environments. Whether you're working on a simple script or a complex system, Zebra cURL can help
+ *  you streamline your workflow and improve your application's performance.
  *
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
