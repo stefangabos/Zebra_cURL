@@ -31,10 +31,8 @@ Check out the [awesome documentation](https://stefangabos.github.io/Zebra_cURL/Z
 
 ## 🎂 Support the development of this project
 
-Your support means a lot and it keeps me motivated to keep working on open source projects.<br>
-If you like this project please ⭐ it by clicking on the star button at the top of the page.<br>
-If you are feeling generous, you can buy me a coffee by donating through PayPal, or you can become a sponsor.<br>
-Either way - **Thank you!** 🎉
+Your support is greatly appreciated and it keeps me motivated continue working on open source projects. If you enjoy this project please star it by clicking on the star button at the top of the page. If you're feeling generous, you can also buy me a coffee through PayPal or become a sponsor.
+**Thank you for your support!** 🎉
 
 [<img src="https://img.shields.io/github/stars/stefangabos/zebra_curl?color=green&label=star%20it%20on%20GitHub" width="132" height="20" alt="Star it on GitHub">](https://github.com/stefangabos/Zebra_cURL) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W6MCFT65DRN64) [<img src="https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors">](https://github.com/sponsors/stefangabos)
 
