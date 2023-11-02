@@ -12,8 +12,8 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.2 (last revision: November 20, 2022)
- *  @copyright  © 2013 - 2022 Stefan Gabos
+ *  @version    1.6.2 (last revision: November 02, 2023)
+ *  @copyright  © 2013 - 2023 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -58,21 +58,36 @@ class Zebra_cURL {
     public $threads;
 
     /**
+     *  Used by the {@cache} method to cache request details
+     *
+     *  @var array<mixed>|boolean
+     *  @access private
+     */
+    private $cache;
+
+    /**
+     *  Used by the {@link option} method to store the cURL options.
+     *
+     *  @var array<int>
+     *  @access private
+     */
+    private $options;
+
+    /**
      * Used by the {@link _process} method to determine whether to run processed requests' bodies through PHP's
      * {@link https://php.net/manual/en/function.htmlentities.php htmlentities} function.
      *
      * Default is TRUE. Can be changed by instantiating the library with the FALSE argument.
      *
+     * @var boolean
      * @access private
-     *
      */
     private $_htmlentities;
 
     /**
      *  Used to tell the library whether to queue requests or to process them right away
      *
-     *  @var resource
-     *
+     *  @var boolean
      *  @access private
      */
     private $_queue;
@@ -80,8 +95,7 @@ class Zebra_cURL {
     /**
      *  The cURL multi handle
      *
-     *  @var resource
-     *
+     *  @var resource|boolean
      *  @access private
      */
     private $_multi_handle;
@@ -89,6 +103,7 @@ class Zebra_cURL {
     /**
      *  Used to keep track of all the requests that need to be processed.
      *
+     *  @var array<mixed>
      *  @access private
      */
     private $_requests;
@@ -97,8 +112,7 @@ class Zebra_cURL {
      *  An associative array linked with all the resources, used to store original URL and file pointer resources, used
      *  for streaming downloads.
      *
-     *  @var array
-     *
+     *  @var array<mixed>
      *  @access private
      */
     private $_running;
@@ -106,8 +120,7 @@ class Zebra_cURL {
     /**
      *  As of PHP 8 we use an extra map as a helper.
      *
-     *  @var array
-     *
+     *  @var array<string>
      *  @access private
      */
     private $_running_map;
@@ -116,8 +129,7 @@ class Zebra_cURL {
      *  Possible values of the "result" attribute in the object passed to the callback function.
      *  List is kept up to date with the {@link https://github.com/curl/curl/blob/master/include/curl/curl.h source code of curl}
      *
-     *  @var array
-     *
+     *  @var array<string>
      *  @access private
      */
     private $_response_messages = array(
@@ -432,7 +444,7 @@ class Zebra_cURL {
      *  });
      *  </code>
      *
-     *  @param  string      $path       Path where cache files to be stored.
+     *  @param  mixed       $path       Path where cache files to be stored.
      *
      *                                  Setting this to `FALSE` will disable caching.
      *
@@ -451,7 +463,7 @@ class Zebra_cURL {
      *
      *                                  Default is `TRUE`.
      *
-     *  @param  octal       $chmod      (Optional) The file system permissions to be set for newly created cache files.
+     *  @param  integer     $chmod      (Optional) The file system permissions to be set for newly created cache files.
      *
      *                                  I suggest using the value `0755` but, if you know what you are doing, here is how
      *                                  you can calculate the permission levels:
@@ -598,13 +610,13 @@ class Zebra_cURL {
      *  });
      *  </code>
      *
-     *  @param  mixed       $urls           URL(s) to send the request(s) to.
+     *  @param  mixed   $urls       URL(s) to send the request(s) to.
      *
-     *                                      Read full description of the argument at the {@link post} method.
+     *                              Read full description of the argument at the {@link post} method.
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed   $callback   (Optional) Callback function to be called as soon as the request finishes.
      *
-     *                                      Read full description of the argument at the {@link get} method.
+     *                              Read full description of the argument at the {@link get} method.
      *
      *  @since 1.3.3
      *
@@ -633,7 +645,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], null, '&') : $values['data']) : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], '', '&') : $values['data']) : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
@@ -777,7 +789,7 @@ class Zebra_cURL {
      *                                      *If path is not pointing to a directory or the directory is not writable, the
      *                                      library will trigger an error.*
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
@@ -985,7 +997,7 @@ class Zebra_cURL {
      *
      *  @param  string      $password       (Optional) The password to be used to connect to the FTP server (if required).
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
@@ -1154,7 +1166,7 @@ class Zebra_cURL {
      *                                      ), 'callback');
      *                                      </code>
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      May be given as a string representing the name of an existing function, or
      *                                      as an {@link https://php.net/manual/en/functions.anonymous.php anonymous function}.
@@ -1187,14 +1199,14 @@ class Zebra_cURL {
      *                                      -   `body`      -   the response of the request (the content of the page at
      *                                                          the URL).<br><br>
      *                                                          >   Unless disabled via the {@link __construct() constructor},
-     *                                                          all applicable characters will be converted to HTML entities
-     *                                                          via PHP's {@link https://php.net/manual/en/function.htmlentities.php htmlentities}
-     *                                                          function, so remember to use PHP's
-     *                                                          {@link https://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode}
-     *                                                          function in case you need the decoded values<br>
-     *                                                          if explicitly disabled by setting `CURLOPT_NOBODY` to `0`
-     *                                                          or `FALSE` through the {@link option} method, this will
-     *                                                          be an empty string
+     *                                                              all applicable characters will be converted to HTML entities
+     *                                                              via PHP's {@link https://php.net/manual/en/function.htmlentities.php htmlentities}
+     *                                                              function, so remember to use PHP's
+     *                                                              {@link https://www.php.net/manual/en/function.html-entity-decode.php html_entity_decode}
+     *                                                              function in case you need the decoded values<br>
+     *                                                              if explicitly disabled by setting `CURLOPT_NOBODY` to `0`
+     *                                                              or `FALSE` through the {@link option} method, this will
+     *                                                              be an empty string
      *
      *                                      -   `response`  -   the {@link https://www.php.net/manual/en/function.curl-errno.php#103128 response}
      *                                                          given by the cURL library as an array with 2 items:<br>
@@ -1207,7 +1219,7 @@ class Zebra_cURL {
      *                                                          </li></ul></li></ul>
      *
      *  >   If the callback function returns FALSE  while {@link cache caching} is enabled, the library will not cache
-     *  the respective request, making it easy to retry failed requests without having to clear all cache.
+     *      the respective request, making it easy to retry failed requests without having to clear all cache.
      *
      *  @return void
      */
@@ -1319,7 +1331,7 @@ class Zebra_cURL {
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
@@ -1423,7 +1435,7 @@ class Zebra_cURL {
      *
      *  @param  string      $password       Password to be used for authentication.
      *
-     *  @param  string      $type           (Optional) The HTTP authentication method(s) to use. The options are:
+     *  @param  integer     $type           (Optional) The HTTP authentication method(s) to use. The options are:
      *
      *                                      -   `CURLAUTH_BASIC`
      *                                      -   `CURLAUTH_DIGEST`
@@ -1449,7 +1461,7 @@ class Zebra_cURL {
     public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY) {
 
         // set the required options
-		$this->option(array(
+        $this->option(array(
             CURLOPT_HTTPAUTH    =>  ($username == '' && $password == '' ? null : $type),
             CURLOPT_USERPWD     =>  ($username == '' && $password == '' ? null : ($username . ':' . $password)),
         ));
@@ -1492,10 +1504,10 @@ class Zebra_cURL {
     public function option($option, $value = '') {
 
         // if $options is given as an array
-        if (is_array($option))
+        if (is_array($option)) {
 
             // iterate through each of the values
-            foreach ($option as $name => $value)
+            foreach ($option as $name => $value) {
 
                 // if we need to "unset" an option, unset it
                 if (is_null($value)) unset($this->options[$name]);
@@ -1503,9 +1515,11 @@ class Zebra_cURL {
                 // set the value for the option otherwise
                 else $this->options[$name] = $value;
 
+            }
+
         // if option is not given as an array,
         // if we need to "unset" an option, unset it
-        elseif (is_null($value)) unset($this->options[$option]);
+        } elseif (is_null($value)) unset($this->options[$option]);
 
         // set the value for the option otherwise
         else $this->options[$option] = $value;
@@ -1584,7 +1598,7 @@ class Zebra_cURL {
      *
      *                                      Read full description of the argument at the {@link post} method.
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
@@ -1803,9 +1817,9 @@ class Zebra_cURL {
      *                                      </code>
      *
      *                                      >   If any data is sent, the "Content-Type" header will be set to
-     *                                      "multipart/form-data"
+     *                                          "multipart/form-data"
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
@@ -1908,7 +1922,7 @@ class Zebra_cURL {
      *
      *                                  Setting this argument to `FALSE` will unset all the proxy-related options.
      *
-     *  @param  string      $port       (Optional) The port number of the proxy to connect to.
+     *  @param  integer     $port       (Optional) The port number of the proxy to connect to.
      *
      *                                  Default is `80`.
      *
@@ -2037,7 +2051,7 @@ class Zebra_cURL {
      *
      *                                      Read full description of the argument at the {@link post} method.
      *
-     *  @param  callable    $callback       (Optional) Callback function to be called as soon as the request finishes.
+     *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
      *
@@ -2198,10 +2212,10 @@ class Zebra_cURL {
      *  print_r($content);
      *  </code>
      *
-     *  @param  string      $url        An URL to fetch.
+     *  @param  mixed       $url        An URL to fetch.
      *
      *                                  >   Note that this method only supports a single URL. For processing multiple URLs
-     *                                  at once, see the {@link get() get} method.
+     *                                      at once, see the {@link get() get} method.
      *
      *  @param  boolean     $body_only  (Optional) When set to `TRUE`, will instruct the method to return *only* the page's
      *                                  content, without info, headers, responses, etc.
@@ -2309,12 +2323,12 @@ class Zebra_cURL {
 
         // set default options
         $this->option(array(
-        	CURLOPT_SSL_VERIFYPEER => $verify_peer,
-        	CURLOPT_SSL_VERIFYHOST => $verify_host,
+            CURLOPT_SSL_VERIFYPEER => $verify_peer,
+            CURLOPT_SSL_VERIFYHOST => $verify_host,
         ));
 
         // if a path to a file holding one or more certificates to verify the peer with was given
-        if ($file !== false)
+        if ($file !== false) {
 
             // if file could be found, use it
             if (is_file($file)) $this->option(CURLOPT_CAINFO, $file);
@@ -2322,14 +2336,18 @@ class Zebra_cURL {
             // if file was not found, trigger an error
             else trigger_error('File "' . $file . '", holding one or more certificates to verify the peer with, was not found', E_USER_ERROR);
 
+        }
+
         // if a directory holding multiple CA certificates was given
-        if ($path !== false)
+        if ($path !== false) {
 
             // if folder could be found, use it
             if (is_dir($path)) $this->option(CURLOPT_CAPATH, $path);
 
             // if folder was not found, trigger an error
             else trigger_error('Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found', E_USER_ERROR);
+
+        }
 
     }
 
@@ -2382,6 +2400,8 @@ class Zebra_cURL {
 
     /**
      *  Returns the cache file name associated with a specific request.
+     *
+     *  @param  array<mixed>    $request    The request for which to return the associated cache file name.
      *
      *  @return string  Returns the set options in "human-readable" format.
      *
@@ -2441,7 +2461,7 @@ class Zebra_cURL {
                 preg_match_all('/^(.*?)\:\s(.*)$/m', ($arguments_count == 2 ? 'Request Method: ' : 'Status: ') . trim($header), $matches);
 
                 // save results
-                foreach ($matches[0] as $key => $value)
+                foreach ($matches[0] as $key => $value) {
 
                     // if don't yet have this headers
                     if (!isset($result[$index][$matches[1][$key]]))
@@ -2459,6 +2479,8 @@ class Zebra_cURL {
 
                     }
 
+                }
+
             }
 
         }
@@ -2474,8 +2496,9 @@ class Zebra_cURL {
      *  Since URLs can be given as a string, an array of URLs, one associative array or an array of associative arrays,
      *  this method normalizes all of those into an array of associative arrays.
      *
-     *  @return array
+     *  @param  string|array<mixed> $urls   The URLs to normalize.
      *
+     *  @return array<mixed>
      *  @access private
      */
     private function _prepare_urls($urls) {
@@ -2584,7 +2607,7 @@ class Zebra_cURL {
         array_walk_recursive($urls, function(&$value) {
 
             // if we have to upload a file
-            if (strpos($value, '@') === 0)
+            if (strpos($value, '@') === 0) {
 
                 // if PHP version is 5.5+
                 if (version_compare(PHP_VERSION, '5.5') >= 0) {
@@ -2596,6 +2619,8 @@ class Zebra_cURL {
                     $value = new CURLFile($file);
 
                 }
+
+            }
 
         });
 
@@ -2779,7 +2804,7 @@ class Zebra_cURL {
                         // since PHP 5.3.0, htmlentities will return an empty string if the input string contains an
                         // invalid code unit sequence within the given encoding (utf-8 in our case)
                         // so take care of that
-                        if (defined(ENT_IGNORE)) $result->body = htmlentities($result->body, ENT_IGNORE, 'utf-8');
+                        if (defined('ENT_IGNORE')) $result->body = htmlentities($result->body, ENT_IGNORE, 'utf-8');
 
                         // for PHP versions lower than 5.3.0
                         else htmlentities($result->body);
@@ -2956,7 +2981,7 @@ class Zebra_cURL {
             $options_to_be_set_last = array(10005, 107);
 
             // iterate through all the options
-            foreach ($this->options as $key => $value)
+            foreach ($this->options as $key => $value) {
 
                 // if this option is one of those to be set at the end
                 if (in_array($key, $options_to_be_set_last)) {
@@ -2968,6 +2993,8 @@ class Zebra_cURL {
                     $this->options[$key] = $value;
 
                 }
+
+            }
 
             // set options for the handle
             curl_setopt_array($handle, $this->options);
@@ -2991,8 +3018,7 @@ class Zebra_cURL {
      *
      *  Some web services will not respond unless a valid user-agent string is provided.
      *
-     *  @return void
-     *
+     *  @return string
      *  @access private
      */
     private function _user_agent() {
@@ -3009,7 +3035,7 @@ class Zebra_cURL {
         $minor_version =
 
             // for IE9 Windows can have "0", "1" or "2" as minor version number
-            $version == 8 || $version == 9 ? rand(0, 2) :
+            $version == 9 ? rand(0, 2) :
 
             // for IE10 Windows will have "2" as major version number
             2;
