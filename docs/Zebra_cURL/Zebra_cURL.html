@@ -65,7 +65,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Version:</h4>
 <ul>
-<li>1.6.2 (last revision: November 20, 2022)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
+<li>1.6.2 (last revision: November 02, 2023)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
 </ul>
 <h4>License:</h4>
 <ul>
@@ -73,7 +73,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Copyright:</h4>
 <ul>
-<li>© 2013 - 2022 Stefan Gabos</li>
+<li>© 2013 - 2023 Stefan Gabos</li>
 </ul>
 <div id="top" class="doc_toc">
 <div class="left">
@@ -197,7 +197,7 @@ a valid user-agent string is provided</li></ul>
 void
 <span class="src-var">cache</span>
 (
-<span class="src-key">string</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$path</span>
 , 
 [ 
@@ -215,7 +215,7 @@ void
 ]
 , 
 [ 
-<span class="src-key">octal</span>
+<span class="src-key">integer</span>
 <span class="src-var">$chmod</span>
 =
 <span class="src-num">0755</span>
@@ -269,7 +269,7 @@ void
 <h5>Arguments</h5>
 <table>
 <tr>
-<td><em>string</em></td>
+<td><em>mixed</em></td>
 <td><strong>$path</strong></td>
 <td><p>Path where cache files to be stored.</p><p>Setting this to <code>FALSE</code> will disable caching.</p><p><em>If set to a non-existing path, the library will try to create the folder                                   and will trigger an error if, for whatever reasons, it is unable to do so. If the                                   folder can be created, its permissions will be set to the value of the $chmod                                   argument.</em></p></td>
 </tr>
@@ -284,7 +284,7 @@ void
 <td><p>(Optional) If set to <code>TRUE</code>, cache files will be                                   <a href="https://php.net/manual/en/function.gzcompress.php">gzcompress</a>-ed so that                                   they occupy less disk space.</p><p>Default is <code>TRUE</code>.</p></td>
 </tr>
 <tr>
-<td><em>octal</em></td>
+<td><em>integer</em></td>
 <td><strong>$chmod</strong></td>
 <td><p>(Optional) The file system permissions to be set for newly created cache files.</p><p>I suggest using the value <code>0755</code> but, if you know what you are doing, here is how                                   you can calculate the permission levels:</p><ul><li>400 Owner Read</li><li>200 Owner Write</li><li>100 Owner Execute</li><li>40 Group Read</li><li>20 Group Write</li><li>10 Group Execute</li><li>4 Global Read</li><li>2 Global Write</li><li>1 Global Execute</li></ul><p>                                   Default is <code>0755</code>.</p></td>
 </tr>
@@ -325,7 +325,7 @@ void
 <span class="src-var">$urls</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -382,7 +382,7 @@ void
 <td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -410,7 +410,7 @@ void
 <span class="src-var">$path</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -494,7 +494,7 @@ void
 <td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or the directory is not writable, the                                       library will trigger an error.</em></p></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -529,7 +529,7 @@ void
 ]
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -644,7 +644,7 @@ void
 <td>(Optional) The password to be used to connect to the FTP server (if required).</td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -662,7 +662,7 @@ void
 <span class="src-var">$urls</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -748,7 +748,7 @@ void
 </ol></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>May be given as a string representing the name of an existing function, or                                       as an <a href="https://php.net/manual/en/functions.anonymous.php">anonymous function</a>.</p><p>The callback function receives as first argument <strong>an object</strong> with <strong>4 properties</strong>                                       as described below. Any extra arguments passed to the <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method                                       will be passed as extra arguments to the callback function:</p><p><ul><li><code>info</code>      -   an associative array containing information about the request
 that just finished, as returned by PHP's <a href="https://php.net/manual/en/function.curl-getinfo.php">curl_getinfo()</a>
@@ -770,7 +770,7 @@ function in case you need the decoded values</div><br>
 if explicitly disabled by setting <code>CURLOPT_NOBODY</code> to <code>0</code>
 or <code>FALSE</code> through the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method, this will
 be an empty string</li></ul> <ul><li><code>response</code>  -   the <a href="https://www.php.net/manual/en/function.curl-errno.php#103128">response</a>
-given by the cURL library as an array with 2 items:<br></li></ul>                                                           <ul><li class="secondary"><ul><li>the textual representation of the result's code (i.e. <code>CURLE_OK</code>)</li></ul></li></ul>                                                           <ul><li class="secondary"><ul><li>the result's code (i.e. <code>0</code>)</li></ul></li></ul><p class="highlight">If the callback function returns FALSE  while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, the library will not cache   the respective request, making it easy to retry failed requests without having to clear all cache.</p></td>
+given by the cURL library as an array with 2 items:<br></li></ul>                                                           <ul><li class="secondary"><ul><li>the textual representation of the result's code (i.e. <code>CURLE_OK</code>)</li></ul></li></ul>                                                           <ul><li class="secondary"><ul><li>the result's code (i.e. <code>0</code>)</li></ul></li></ul><p class="highlight">If the callback function returns FALSE  while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, the library will not cache       the respective request, making it easy to retry failed requests without having to clear all cache.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -786,7 +786,7 @@ void
 <span class="src-var">$urls</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -831,7 +831,7 @@ void
 <td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -860,7 +860,7 @@ void
 ]
 , 
 [ 
-<span class="src-key">string</span>
+<span class="src-key">integer</span>
 <span class="src-var">$type</span>
 =
 CURLAUTH_ANY
@@ -918,7 +918,7 @@ CURLAUTH_ANY
 <td>Password to be used for authentication.</td>
 </tr>
 <tr>
-<td><em>string</em></td>
+<td><em>integer</em></td>
 <td><strong>$type</strong></td>
 <td><p>(Optional) The HTTP authentication method(s) to use. The options are:</p><p><ul><li><code>CURLAUTH_BASIC</code></li><li><code>CURLAUTH_DIGEST</code></li><li><code>CURLAUTH_GSSNEGOTIATE</code></li><li><code>CURLAUTH_NTLM</code></li><li><code>CURLAUTH_ANY</code></li><li><code>CURLAUTH_ANYSAFE</code></li></ul><p>                                       The bitwise <code>|</code> (or) operator can be used to combine more than one method. If                                       this is done, cURL will poll the server to see what methods it supports and                                       pick the best one.</p><p><code>CURLAUTH_ANY</code> is an alias for<br>                                       <code>CURLAUTH_BASIC | CURLAUTH_DIGEST | CURLAUTH_GSSNEGOTIATE | CURLAUTH_NTLM</code></p><p><code>CURLAUTH_ANYSAFE</code> is an alias for<br>                                       <code>CURLAUTH_DIGEST | CURLAUTH_GSSNEGOTIATE | CURLAUTH_NTLM</code></p><p>Default is <code>CURLAUTH_ANY</code></p></td>
 </tr>
@@ -984,7 +984,7 @@ void
 <span class="src-var">$urls</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -1040,7 +1040,7 @@ void
 <td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -1065,7 +1065,7 @@ void
 <span class="src-var">$urls</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -1181,10 +1181,10 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_3'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'@absolute/path/to/file.ext'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)))</span><span class="src-sym">;</span></div></li>
-</ol><p class="highlight">If any data is sent, the &quot;Content-Type&quot; header will be set to                                       &quot;multipart/form-data&quot;</p></td>
+</ol><p class="highlight">If any data is sent, the &quot;Content-Type&quot; header will be set to                                           &quot;multipart/form-data&quot;</p></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -1202,7 +1202,7 @@ void
 <span class="src-var">$proxy</span>
 , 
 [ 
-<span class="src-key">string</span>
+<span class="src-key">integer</span>
 <span class="src-var">$port</span>
 =
 <span class="src-num">80</span>
@@ -1269,7 +1269,7 @@ void
 <td><p>The HTTP proxy to tunnel requests through.</p><p>Can be an URL or an IP address.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXY</code> to the desired value.</em></p><p>Setting this argument to <code>FALSE</code> will unset all the proxy-related options.</p></td>
 </tr>
 <tr>
-<td><em>string</em></td>
+<td><em>integer</em></td>
 <td><strong>$port</strong></td>
 <td><p>(Optional) The port number of the proxy to connect to.</p><p>Default is <code>80</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXYPORT</code> to the desired value.</em></p></td>
 </tr>
@@ -1297,7 +1297,7 @@ void
 <span class="src-var">$urls</span>
 , 
 [ 
-<span class="src-key">callable</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$callback</span>
 =
 <span class="src-str">''</span>
@@ -1353,7 +1353,7 @@ void
 <td><p>URL(s) to send the request(s) to.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> method.</p></td>
 </tr>
 <tr>
-<td><em>callable</em></td>
+<td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
 <td><p>(Optional) Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
@@ -1450,7 +1450,7 @@ void
 mixed
 <span class="src-var">scrap</span>
 (
-<span class="src-key">string</span>
+<span class="src-key">mixed</span>
 <span class="src-var">$url</span>
 , 
 [ 
@@ -1486,9 +1486,9 @@ mixed
 <h5>Arguments</h5>
 <table>
 <tr>
-<td><em>string</em></td>
+<td><em>mixed</em></td>
 <td><strong>$url</strong></td>
-<td><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                   at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                       at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
 </tr>
 <tr>
 <td><em>boolean</em></td>
@@ -1612,7 +1612,7 @@ void
 </tr>
 </table>
 <div id="doc_footer">
-Documentation generated on <span>Fri, 30 Dec 22</span>
+Documentation generated on <span>Thu, 02 Nov 23</span>
 </div>
 </div>
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0301ZD47Q7"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0301ZD47Q7');</script></body>
