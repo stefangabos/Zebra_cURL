@@ -20,5 +20,9 @@
         "classmap": [
             "Zebra_cURL.php"
         ]
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.8",
+        "squizlabs/php_codesniffer": "*"
     }
 }

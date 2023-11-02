@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<!-- in command line, use -s to find out what rule was applied for each error -->
+
+<ruleset name="zebra">
+
+    <description>Coding standards</description>
+
+    <file>Zebra_cURL.php</file>
+
+    <ini name="memory_limit" value="64M"/>
+    <arg name="report-width" value="130"/>
+
+    <rule ref="PSR12">
+
+        <!-- Let the Git manage the EOL cross the platforms. -->
+        <exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+
+        <!-- Don't warn about lines being too long -->
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+
+        <!-- Allow inline controls -->
+        <exclude name="Generic.ControlStructures.InlineControlStructure"/>
+
+        <!-- Allow class names to be written in snake_case -->
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+
+        <!-- Don't force braces being on the same line as the function's declaration -->
+        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine" />
+        <exclude name="Squiz.Classes.ClassDeclaration.OpenBraceNewLine" />
+        <exclude name="PEAR.Functions.FunctionDeclaration.BraceOnSameLine" />
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
+
+        <!-- Allow method names to be written in snake_case -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps" />
+
+        <!-- Allow blank line before the closing brace of a class -->
+        <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody" />
+
+        <!-- Allow blank line after the CASE and DEFAULT keywords -->
+        <exclude name="PSR2.ControlStructures.SwitchDeclaration.BodyOnNextLineCASE" />
+        <exclude name="PSR2.ControlStructures.SwitchDeclaration.BodyOnNextLineDEFAULT" />
+
+        <!-- I write queries as multiline but the first thing after the opening  parenthesis is the opening quote -->
+        <exclude name="PSR2.Methods.FunctionCallSignature.ContentAfterOpenBracket" />
+
+        <!-- Allow blank line before the closing brace of a function -->
+        <exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />
+
+        <!-- Allow private methods to have underscore as their name's first character -->
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore" />
+
+        <!-- Allow blank line after the opening brace of a class -->
+        <exclude name="PSR12.Classes.OpeningBraceSpace.Found" />
+
+        <!-- In multi-line control structures, the first expression can be on the next line -->
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine" />
+
+        <!-- In multi-line control structures, the parenthesis after the last expression can be on the next line -->
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.CloseParenthesisLine" />
+
+        <!-- Allow blank lines at the start/end of control structures -->
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen" />
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingBeforeClose" />
+
+    </rule>
+
+    <!-- Function declarations follow the "Kernighan/Ritchie style". The function brace is on the same line as the
+    function declaration. One space is required between the closing parenthesis and the brace. -->
+    <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+
+</ruleset>
