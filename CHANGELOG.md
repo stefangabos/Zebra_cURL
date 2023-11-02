@@ -2,6 +2,7 @@
 
 - fixed issue where in case of multiple headers with the same name only the last one would be returned; thanks **Dave Gee** for reporting!
 - proxy related information is now available when a proxy is used; thanks to **Dave Gee** for suggesting
+- minor bug fixes and source code formatting because we are now using [PHPStan](https://github.com/phpstan/phpstan) for static code analysis and [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) for detecting coding standards violations, which are now [PSR12](https://www.php-fig.org/psr/psr-12/)-ish with a few of the rules excluded; this also fixes [#48](https://github.com/stefangabos/Zebra_cURL/issues/48); thanks [MoontoC](https://github.com/MoontoC)!
 
 ## version 1.6.1 (May 13, 2022)
 
