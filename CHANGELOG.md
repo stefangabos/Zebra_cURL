@@ -1,4 +1,4 @@
-## version 1.6.2 (TBA)
+## version 1.6.2 (November 25, 2023)
 
 - fixed issue where in case of multiple headers with the same name only the last one would be returned; thanks **Dave Gee** for reporting!
 - proxy related information is now available when a proxy is used; thanks to **Dave Gee** for suggesting
