@@ -2259,7 +2259,7 @@ class Zebra_cURL {
      *  @access private
      */
     public function scrap($url, $body_only = true) {
-        $this->scrape($url, $body_only);
+        return $this->scrape($url, $body_only);
     }
 
     /**
