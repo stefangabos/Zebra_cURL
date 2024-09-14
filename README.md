@@ -109,7 +109,7 @@ $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 $feeds = array(
     'https://rss1.smashingmagazine.com/feed/'       =>  'Smashing Magazine',
     'https://feeds.feedburner.com/nettuts'          =>  'TutsPlus',
-    'https://feeds.feedburner.com/alistapart/main'   =>  'A List Apart',
+    'https://feeds.feedburner.com/alistapart/main'  =>  'A List Apart',
 );
 
 // get RSS feeds of some popular tech websites
