@@ -65,7 +65,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Version:</h4>
 <ul>
-<li>1.6.2 (last revision: November 25, 2023)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
+<li>1.6.3 (last revision: September 14, 2024)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
 </ul>
 <h4>License:</h4>
 <ul>
@@ -73,8 +73,10 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Copyright:</h4>
 <ul>
-<li>© 2013 - 2023 Stefan Gabos</li>
+<li>© 2013 - 2024 Stefan Gabos</li>
 </ul>
+<div id="top" class="doc_toc">
+</div>
 <div id="top" class="doc_toc">
 <div class="left">
 <h3>Properties</h3>
@@ -103,7 +105,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 <li><a href="#methodproxy">proxy</a></li>
 <li><a href="#methodput">put</a></li>
 <li><a href="#methodqueue">queue</a></li>
-<li><a href="#methodscrap">scrap</a></li>
+<li><a href="#methodscrape">scrape</a></li>
 <li><a href="#methodssl">ssl</a></li>
 <li><a href="#methodstart">start</a></li>
 </ul>
@@ -482,7 +484,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;used&nbsp;to&nbsp;set&nbsp;any&nbsp;cURL&nbsp;option</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;in&nbsp;the&nbsp;same&nbsp;way&nbsp;you&nbsp;would&nbsp;set&nbsp;with&nbsp;the&nbsp;options()&nbsp;method</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scrapper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scraper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
@@ -608,7 +610,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;used&nbsp;to&nbsp;set&nbsp;any&nbsp;cURL&nbsp;option</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;in&nbsp;the&nbsp;same&nbsp;way&nbsp;you&nbsp;would&nbsp;set&nbsp;with&nbsp;the&nbsp;options()&nbsp;method</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scrapper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scraper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'destination/path'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'username'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'password'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'callback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
@@ -735,7 +737,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;used&nbsp;to&nbsp;set&nbsp;any&nbsp;cURL&nbsp;option</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;in&nbsp;the&nbsp;same&nbsp;way&nbsp;you&nbsp;would&nbsp;set&nbsp;with&nbsp;the&nbsp;options()&nbsp;method</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scrapper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scraper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;you&nbsp;can&nbsp;pass&nbsp;arguments&nbsp;this&nbsp;way&nbsp;also</span></div></li>
@@ -1165,7 +1167,7 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;used&nbsp;to&nbsp;set&nbsp;any&nbsp;cURL&nbsp;option</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;in&nbsp;the&nbsp;same&nbsp;way&nbsp;you&nbsp;would&nbsp;set&nbsp;with&nbsp;the&nbsp;options()&nbsp;method</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'options'&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scrapper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">CURLOPT_USERAGENT&nbsp;&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'Dummy&nbsp;scraper&nbsp;1.0'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;optional,&nbsp;if&nbsp;you&nbsp;need&nbsp;to&nbsp;pass&nbsp;any&nbsp;arguments</span></div></li>
@@ -1444,11 +1446,11 @@ void
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
-<h4 id="methodscrap" class="method"><span><em>method</em></span> scrap()</h4>
+<h4 id="methodscrape" class="method"><span><em>method</em></span> scrape()</h4>
 <div class="doc_block">
 <p class="code">
 mixed
-<span class="src-var">scrap</span>
+<span class="src-var">scrape</span>
 (
 <span class="src-key">mixed</span>
 <span class="src-var">$url</span>
@@ -1471,18 +1473,18 @@ mixed
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">,&nbsp;</span><span class="src-num">2</span><span class="src-sym">,&nbsp;</span><span class="src-str">'path/to/cacert.pem'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;get&nbsp;page's&nbsp;content&nbsp;only</span></div></li>
-<li><div class="src-line"><span class="src-var">$content&nbsp;</span>=&nbsp;<span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodscrap">scrap</a><span class="src-sym">(</span><span class="src-str">'https://www.somewebsite.com/'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><span class="src-var">$content&nbsp;</span>=&nbsp;<span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodscrape">scrape</a><span class="src-sym">(</span><span class="src-str">'https://www.somewebsite.com/'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;print&nbsp;that&nbsp;to&nbsp;screen</span></div></li>
 <li><div class="src-line">echo&nbsp;<span class="src-var">$content</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;also&nbsp;get&nbsp;extra&nbsp;information&nbsp;about&nbsp;the&nbsp;page</span></div></li>
-<li><div class="src-line"><span class="src-var">$content&nbsp;</span>=&nbsp;<span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodscrap">scrap</a><span class="src-sym">(</span><span class="src-str">'https://www.somewebsite.com/'</span><span class="src-sym">,&nbsp;</span><span class="src-id">false</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><span class="src-var">$content&nbsp;</span>=&nbsp;<span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodscrape">scrape</a><span class="src-sym">(</span><span class="src-str">'https://www.somewebsite.com/'</span><span class="src-sym">,&nbsp;</span><span class="src-id">false</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;print&nbsp;that&nbsp;to&nbsp;screen</span></div></li>
 <li><div class="src-line"><a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-str">'&lt;pre&gt;'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line"><a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$content</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol>
+</ol><p class="highlight">Prior to <code>1.6.3</code> this method's name was incorrectly <code>scrap</code>. For backward compatibility purposes that variant       is also available to use but highly discouraged as it will be removed in the future.</p>
 <h5>Arguments</h5>
 <table>
 <tr>
@@ -1493,14 +1495,14 @@ mixed
 <tr>
 <td><em>boolean</em></td>
 <td><strong>$body_only</strong></td>
-<td><p>(Optional) When set to <code>TRUE</code>, will instruct the method to return <em>only</em> the page's                                   content, without info, headers, responses, etc.</p><p>When set to <code>FALSE</code>, will instruct the method to return everything it can about                                   the scrapped page, as an object with properties as described for the <em>$callback</em>                                   argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p>Default is <code>TRUE</code>.</p></td>
+<td><p>(Optional) When set to <code>TRUE</code>, will instruct the method to return <em>only</em> the page's                                   content, without info, headers, responses, etc.</p><p>When set to <code>FALSE</code>, will instruct the method to return everything it can about                                   the scraped page, as an object with properties as described for the <em>$callback</em>                                   argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p>Default is <code>TRUE</code>.</p></td>
 </tr>
 </table>
 <h5>Tags</h5>
 <table>
 <tr>
 <td><strong>return:</strong>&nbsp;&nbsp;</td>
-<td>Returns the scrapped page's content, when <em>$body_only</em> is set to <code>TRUE</code>, or an object with properties                   as described for the <em>$callback</em> argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</td>
+<td>Returns the scraped page's content, when <em>$body_only</em> is set to <code>TRUE</code>, or an object with properties                   as described for the <em>$callback</em> argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</td>
 </tr>
 <tr>
 <td><strong>since:</strong>&nbsp;&nbsp;</td>
@@ -1612,7 +1614,7 @@ void
 </tr>
 </table>
 <div id="doc_footer">
-Documentation generated on <span>Sat, 25 Nov 23</span>
+Documentation generated on <span>Sat, 14 September 2024</span>
 </div>
 </div>
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0301ZD47Q7"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0301ZD47Q7');</script></body>
