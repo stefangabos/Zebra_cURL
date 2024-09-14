@@ -61,7 +61,7 @@ require_once 'path/to/Zebra_cURL.php';
 
 ## How to use
 
-**Scrap a page**
+**Scrape a page**
 
 ```php
 <?php
@@ -81,9 +81,9 @@ $curl->cache('path/to/cache', 3600);
 // you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
-// a simple way of scrapping a page
+// a simple way of scraping a page
 // (you can do more with the "get" method and callback functions)
-echo $curl->scrap('https://github.com/', true);
+echo $curl->scrape('https://github.com/', true);
 ```
 
 **Fetch RSS feeds**
@@ -178,7 +178,7 @@ $curl->option(CURLOPT_HTTPHEADER, [
     'X-Token-Foo-Bar: ABC123'   // Pass keys to APIs, for example
 ]);
 
-echo $curl->scrap('https://httpbin.org/get') . PHP_EOL;
+echo $curl->scrape('https://httpbin.org/get') . PHP_EOL;
 ```
 
 **Download an image**
