@@ -2256,6 +2256,22 @@ class Zebra_cURL {
      *  Same as the {@link scrape()} method but with incorrect name.
      *  Kept for backward compatibility purposes.
      *
+     *  @param  mixed       $url        An URL to fetch.
+     *
+     *                                  >   Note that this method only supports a single URL. For processing multiple URLs
+     *                                      at once, see the {@link get() get} method.
+     *
+     *  @param  boolean     $body_only  (Optional) When set to `TRUE`, will instruct the method to return *only* the page's
+     *                                  content, without info, headers, responses, etc.
+     *
+     *                                  When set to `FALSE`, will instruct the method to return everything it can about
+     *                                  the scraped page, as an object with properties as described for the *$callback*
+     *                                  argument of the {@link get} method.
+     *
+     *                                  Default is `TRUE`.
+     *
+     *  @return mixed   Returns the scraped page's content, when *$body_only* is set to `TRUE`, or an object with properties
+     *                  as described for the *$callback* argument of the {@link get} method.
      *  @access private
      */
     public function scrap($url, $body_only = true) {
@@ -2398,7 +2414,7 @@ class Zebra_cURL {
         $result = '';
 
         // iterate through the defined constants
-        foreach(get_defined_constants() as $name => $number)
+        foreach (get_defined_constants() as $name => $number)
 
             // iterate through the set options
             foreach ($this->options as $index => $value)
