@@ -12,8 +12,8 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.2 (last revision: November 25, 2023)
- *  @copyright  © 2013 - 2023 Stefan Gabos
+ *  @version    1.6.3 (last revision: September 14, 2024)
+ *  @copyright  © 2013 - 2024 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -235,13 +235,13 @@ class Zebra_cURL {
     );
 
     /**
-     *  Stores the result of a call to the {@link scrap} method
+     *  Stores the result of a call to the {@link scrape} method
      *
      *  @var mixed
      *
      *  @access private
      */
-    private $_scrap_result;
+    private $_scrape_result;
 
     /**
      *  Constructor of the class.
@@ -778,7 +778,7 @@ class Zebra_cURL {
      *                                          // optional, used to set any cURL option
      *                                          // in the same way you would set with the options() method
      *                                          'options'   =>  array(
-     *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                              CURLOPT_USERAGENT   =>  'Dummy scraper 1.0',
      *                                                          ),
      *
      *                                      ), 'path', 'callback');
@@ -960,7 +960,7 @@ class Zebra_cURL {
      *                                          // optional, used to set any cURL option
      *                                          // in the same way you would set with the options() method
      *                                          'options'   =>  array(
-     *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                              CURLOPT_USERAGENT   =>  'Dummy scraper 1.0',
      *                                                          ),
      *
      *                                      ), 'destination/path', 'username', 'password', 'callback');
@@ -1154,7 +1154,7 @@ class Zebra_cURL {
      *                                          // optional, used to set any cURL option
      *                                          // in the same way you would set with the options() method
      *                                          'options'   =>  array(
-     *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                              CURLOPT_USERAGENT   =>  'Dummy scraper 1.0',
      *                                                          ),
      *
      *                                          // optional, you can pass arguments this way also
@@ -1784,7 +1784,7 @@ class Zebra_cURL {
      *                                          // optional, used to set any cURL option
      *                                          // in the same way you would set with the options() method
      *                                          'options'   =>  array(
-     *                                                              CURLOPT_USERAGENT   =>  'Dummy scrapper 1.0',
+     *                                                              CURLOPT_USERAGENT   =>  'Dummy scraper 1.0',
      *                                                          ),
      *
      *                                          // optional, if you need to pass any arguments
@@ -2199,18 +2199,21 @@ class Zebra_cURL {
      *  $curl->ssl(true, 2, 'path/to/cacert.pem');
      *
      *  // get page's content only
-     *  $content = $curl->scrap('https://www.somewebsite.com/');
+     *  $content = $curl->scrape('https://www.somewebsite.com/');
      *
      *  // print that to screen
      *  echo $content;
      *
      *  // also get extra information about the page
-     *  $content = $curl->scrap('https://www.somewebsite.com/', false);
+     *  $content = $curl->scrape('https://www.somewebsite.com/', false);
      *
      *  // print that to screen
      *  print_r('<pre>');
      *  print_r($content);
      *  </code>
+     *
+     *  >   Prior to `1.6.3` this method's name was incorrectly `scrap`. For backward compatibility purposes that variant
+     *      is also available to use but highly discouraged as it will be removed in the future.
      *
      *  @param  mixed       $url        An URL to fetch.
      *
@@ -2221,17 +2224,17 @@ class Zebra_cURL {
      *                                  content, without info, headers, responses, etc.
      *
      *                                  When set to `FALSE`, will instruct the method to return everything it can about
-     *                                  the scrapped page, as an object with properties as described for the *$callback*
+     *                                  the scraped page, as an object with properties as described for the *$callback*
      *                                  argument of the {@link get} method.
      *
      *                                  Default is `TRUE`.
      *
      *  @since 1.3.3
      *
-     *  @return mixed   Returns the scrapped page's content, when *$body_only* is set to `TRUE`, or an object with properties
+     *  @return mixed   Returns the scraped page's content, when *$body_only* is set to `TRUE`, or an object with properties
      *                  as described for the *$callback* argument of the {@link get} method.
      */
-    public function scrap($url, $body_only = true) {
+    public function scrape($url, $body_only = true) {
 
         // this method requires the $url argument to be a string
         if (is_array($url)) trigger_error('URL must be a string', E_USER_ERROR);
@@ -2240,13 +2243,23 @@ class Zebra_cURL {
         $this->get($url, function($result) {
 
             // store result in this private property of the library
-            $this->_scrap_result = $result;
+            $this->_scrape_result = $result;
 
         });
 
         // return result
-        return $body_only ? $this->_scrap_result->body : $this->_scrap_result;
+        return $body_only ? $this->_scrape_result->body : $this->_scrape_result;
 
+    }
+
+    /**
+     *  Same as the {@link scrape()} method but with incorrect name.
+     *  Kept for backward compatibility purposes.
+     *
+     *  @access private
+     */
+    public function scrap($url, $body_only = true) {
+        $this->scrape($url, $body_only);
     }
 
     /**
