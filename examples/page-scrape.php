@@ -24,6 +24,6 @@ $curl->cache('cache', 3600);
 // you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
-// a simple way of scrapping a page
+// a simple way of scraping a page
 // (you can do more with the "get" method and callback functions)
-echo $curl->scrap('https://github.com/', true);
+echo $curl->scrape('https://github.com/', true);
