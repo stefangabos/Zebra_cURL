@@ -1,3 +1,7 @@
+## version 1.6.3 (TBA)
+
+- method `scrap` was renamed to `scrape`; see [#51](https://github.com/stefangabos/Zebra_cURL/issues/51), thanks to [n0nag0n](https://github.com/n0nag0n) for reporting it!
+
 ## version 1.6.2 (November 25, 2023)
 
 - fixed issue where in case of multiple headers with the same name only the last one would be returned; thanks **Dave Gee** for reporting!
