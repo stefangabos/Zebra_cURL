@@ -54,10 +54,10 @@
 - fixed a bug which broke the [ftp_download](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodftp_download) method
 - fixed an issue where SSL certificate checking (CURLOPT_SSL_VERIFYPEER) was disabled by default; now it is enabled by default; thanks **Daniel Stenberg**
 - added [delete](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methoddelete) and [put](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodput) methods for making DELETE and PUT requests
-- added [scrap](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodscrap) method for quickly making a single [get](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodget) request without the need of a callback function; thanks **Alexey Dorokhov**
+- added [scrap](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodscrape) method for quickly making a single [get](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodget) request without the need of a callback function; thanks **Alexey Dorokhov**
 - if caching is enabled but the cache folder doesn't exist, the library will now try and create it before triggering an error; thanks **Alexey Dorokhov**
 - removed unused argument for the cookies method; thanks **Székely Dániel**
-- updated existing examples and added a new one for scrapping a page
+- updated existing examples and added a new one for scraping a page
 - losts of cleanup in the documentation
 
 ## version 1.3.2 (January 12, 2016)
