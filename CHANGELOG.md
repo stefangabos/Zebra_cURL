@@ -1,6 +1,7 @@
 ## version 1.6.3 (TBA)
 
 - method `scrap` was renamed to `scrape`; see [#51](https://github.com/stefangabos/Zebra_cURL/issues/51), thanks to [n0nag0n](https://github.com/n0nag0n) for reporting it!
+- updated list of possible curl response messages (as per curl version 8.10.1);
 - updated CA certificats used in the `examples` folder to their latest version (at the time of writing) of July 2, 2024
 
 ## version 1.6.2 (November 25, 2023)
