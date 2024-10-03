@@ -232,6 +232,9 @@ class Zebra_cURL {
         96  =>  'CURLE_QUIC_CONNECT_ERROR',
         97  =>  'CURLE_PROXY',
         98  =>  'CURLE_SSL_CLIENTCERT',
+        99  =>  'CURLE_UNRECOVERABLE_POLL',
+        100 =>  'CURLE_TOO_LARGE',
+        101 =>  'CURLE_ECH_REQUIRED',
     );
 
     /**
