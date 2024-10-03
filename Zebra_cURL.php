@@ -208,8 +208,8 @@ class Zebra_cURL {
         72  =>  'CURLE_TFTP_UNKNOWNID',
         73  =>  'CURLE_REMOTE_FILE_EXISTS',
         74  =>  'CURLE_TFTP_NOSUCHUSER',
-        75  =>  'CURLE_CONV_FAILED',               // NOT USED SINCE curl 7.82.0
-        76  =>  'CURLE_OBSOLETE76',
+        75  =>  'CURLE_OBSOLETE75',                 // NOT USED since 7.82.0
+        76  =>  'CURLE_OBSOLETE76',                 // NOT USED since 7.82.0
         77  =>  'CURLE_SSL_CACERT_BADFILE',
         78  =>  'CURLE_REMOTE_FILE_NOT_FOUND',
         79  =>  'CURLE_SSH',
