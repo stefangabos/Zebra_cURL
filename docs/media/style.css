@@ -167,6 +167,24 @@ h4.variable span.value {
     color: #C40000;
 }
 
+h4.variable span.access {
+    position: absolute;
+    right: 0;
+    font-size: 70%;
+    padding: 2px .5em;
+    border: 1px solid #fafafa;
+    color: #FFF;
+    border-radius: 5px;
+}
+
+h4.variable span.access.public {
+    background: #009688;
+}
+
+h4.variable span.access.protected {
+    background: #3f51b5;
+}
+
 .doc_block,
 .doc_index {
     /* padding: 1em; */
@@ -296,6 +314,12 @@ a.top:before:hover {
 }
 
 .clear { clear: both }
+
+.access-icon {
+    position: relative;
+    top: 2px;
+    opacity: .5;
+}
 
 /* SYNTAX HIGHLIGHTING */
 .src-code {
