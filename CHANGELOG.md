@@ -1,4 +1,4 @@
-## version 1.6.3 (TBA)
+## version 1.6.3 (December 04, 2024)
 
 - fixed issue when `POST` data was given as a nested array for [post](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodpost), [patch](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodpatch) and [put](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodput) methods
 - method `scrap` was renamed to `scrape` (the previous method will still work for backwards compatibility); see [#51](https://github.com/stefangabos/Zebra_cURL/issues/51), thanks to [n0nag0n](https://github.com/n0nag0n) for reporting it!
