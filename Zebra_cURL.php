@@ -12,7 +12,7 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.3 (last revision: October 03, 2024)
+ *  @version    1.6.4 (last revision: December 04, 2024)
  *  @copyright  © 2013 - 2024 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
@@ -1632,7 +1632,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], '', '&') : $values['data']) : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
@@ -1849,7 +1849,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  1,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], '', '&') : $values['data']) : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
@@ -2085,7 +2085,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], '', '&') : $values['data']) : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
