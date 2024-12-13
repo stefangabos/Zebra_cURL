@@ -648,7 +648,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) ? http_build_query($values['data'], '', '&') : $values['data']) : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
@@ -1632,7 +1632,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) && count(array_filter($values['data'], 'is_array')) > 0 ? http_build_query($values['data'], '', '&') : $values['data']) : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
@@ -1849,7 +1849,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  1,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) && count(array_filter($values['data'], 'is_array')) > 0 ? http_build_query($values['data'], '', '&') : $values['data']) : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
@@ -2085,7 +2085,7 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
-                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? (is_array($values['data']) && count(array_filter($values['data'], 'is_array')) > 0 ? http_build_query($values['data'], '', '&') : $values['data']) : '',
+                        CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
                         CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
@@ -3027,6 +3027,12 @@ class Zebra_cURL {
                 }
 
             }
+
+            // make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
+            if (isset($this->options[CURLOPT_POSTFIELDS]) && is_array($this->options[CURLOPT_POSTFIELDS]))
+                foreach ($this->options[CURLOPT_POSTFIELDS] as $key => $value)
+                    if (is_array($value))
+                        $this->options[CURLOPT_POSTFIELDS][$key] = http_build_query($value, '', '&');
 
             // set options for the handle
             curl_setopt_array($handle, $this->options);
