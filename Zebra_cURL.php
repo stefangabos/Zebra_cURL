@@ -18,7 +18,8 @@
  *  @package    Zebra_cURL
  */
 
-class Zebra_cURL {
+class Zebra_cURL
+{
 
     /**
      *  The number of seconds to wait between processing batches of requests.
@@ -83,6 +84,17 @@ class Zebra_cURL {
      * @access private
      */
     private $_htmlentities;
+
+    /**
+     * Used to determine if the deprecated CURLOPT_BINARYTRANSFER option should be used.
+     *
+     * Will be set to TRUE only if running on PHP versions older than 5.4 and if CURLOPT_BINARYTRANSFER is defined.
+     * For newer PHP versions (5.4 and above), will remain FALSE, thus avoiding deprecated behavior.
+     *
+     * @var boolean
+     * @access private
+     */
+    private $_use_binarytransfer;
 
     /**
      *  Used to tell the library whether to queue requests or to process them right away
@@ -319,7 +331,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function __construct($htmlentities = true) {
+    public function __construct($htmlentities = true)
+    {
 
         // if the cURL extension is not available, trigger an error and stop execution
         if (!extension_loaded('curl')) trigger_error('php_curl extension is not loaded', E_USER_ERROR);
@@ -339,6 +352,9 @@ class Zebra_cURL {
 
         // set the user's preference on whether to run htmlentities() on the response body or not
         $this->_htmlentities = $htmlentities;
+
+        // set the value of the CURLOPT_BINARYTRANSFER option
+        $this->_use_binarytransfer = (version_compare(PHP_VERSION, '5.4', '<') && defined('CURLOPT_BINARYTRANSFER'));
 
         // set defaults for libcurl
         // set defaults
@@ -394,7 +410,6 @@ class Zebra_cURL {
 
         // caching is disabled by default
         $this->cache(false);
-
     }
 
     /**
@@ -485,7 +500,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755) {
+    public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755)
+    {
 
         // if caching is not explicitly disabled
         if ($path !== false) {
@@ -501,9 +517,8 @@ class Zebra_cURL {
                 'compress'  =>  $compress,
             );
 
-        // if caching is explicitly disabled, set this property to FALSE
+            // if caching is explicitly disabled, set this property to FALSE
         } else $this->cache = false;
-
     }
 
     /**
@@ -520,7 +535,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function cookies($path) {
+    public function cookies($path)
+    {
 
         // file does not exist
         if (!is_file($path)) {
@@ -533,7 +549,6 @@ class Zebra_cURL {
 
             // if file could be create, release handle
             fclose($handle);
-
         }
 
         // set these options
@@ -541,7 +556,6 @@ class Zebra_cURL {
             CURLOPT_COOKIEJAR   =>  $path,  //  for writing
             CURLOPT_COOKIEFILE  =>  $path,  //  for reading
         ));
-
     }
 
     /**
@@ -625,7 +639,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function delete($urls, $callback = '') {
+    public function delete($urls, $callback = '')
+    {
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -640,8 +655,8 @@ class Zebra_cURL {
                 'url'               =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options' => (isset($values['options']) ? $values['options'] : array()) +
+                    ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => null) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_CUSTOMREQUEST   =>  'DELETE',
@@ -649,7 +664,6 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
                     ),
@@ -669,7 +683,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -798,7 +811,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function download($urls, $path, $callback = '') {
+    public function download($urls, $path, $callback = '')
+    {
 
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
@@ -818,11 +832,9 @@ class Zebra_cURL {
                 'path'              =>  rtrim($path, '/\\') . '/',
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options'           => (isset($values['options']) ? $values['options'] : array()) + ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => 1) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
-                        CURLOPT_BINARYTRANSFER  =>  1,
                         CURLOPT_HEADER          =>  0,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
@@ -846,7 +858,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -1006,7 +1017,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function ftp_download($urls, $path, $username = '', $password = '', $callback = '') {
+    public function ftp_download($urls, $path, $username = '', $password = '', $callback = '')
+    {
 
         // if destination path is not a directory or is not writable, trigger an error message
         if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
@@ -1026,11 +1038,9 @@ class Zebra_cURL {
                 'path'              =>  rtrim($path, '/\\') . '/',
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options'           => (isset($values['options']) ? $values['options'] : array()) + ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => 1) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
-                        CURLOPT_BINARYTRANSFER  =>  1,
                         CURLOPT_HEADER          =>  0,
                         CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
@@ -1055,7 +1065,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -1226,7 +1235,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function get($urls, $callback = '') {
+    public function get($urls, $callback = '')
+    {
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -1241,14 +1251,12 @@ class Zebra_cURL {
                 'url'               =>  $values['url'] . (isset($values['data']) ? '?' . (is_array($values['data']) ? http_build_query($values['data']) : $values['data']) : ''),
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options'           => (isset($values['options']) ? $values['options'] : array()) + ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => null) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_HTTPGET         =>  1,
                         CURLOPT_NOBODY          =>  0,
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_FILE            =>  null,
                         CURLOPT_POST            =>  null,
@@ -1270,7 +1278,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -1340,7 +1347,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function header($urls, $callback = '') {
+    public function header($urls, $callback = '')
+    {
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -1355,14 +1363,12 @@ class Zebra_cURL {
                 'url'               =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options'           => (isset($values['options']) ? $values['options'] : array()) + ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => null) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_HTTPGET         =>  1,
                         CURLOPT_NOBODY          =>  1,
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_FILE            =>  null,
                         CURLOPT_POST            =>  null,
@@ -1384,7 +1390,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -1461,14 +1466,14 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY) {
+    public function http_authentication($username = '', $password = '', $type = CURLAUTH_ANY)
+    {
 
         // set the required options
         $this->option(array(
-            CURLOPT_HTTPAUTH    =>  ($username == '' && $password == '' ? null : $type),
-            CURLOPT_USERPWD     =>  ($username == '' && $password == '' ? null : ($username . ':' . $password)),
+            CURLOPT_HTTPAUTH    => ($username == '' && $password == '' ? null : $type),
+            CURLOPT_USERPWD     => ($username == '' && $password == '' ? null : ($username . ':' . $password)),
         ));
-
     }
 
     /**
@@ -1504,7 +1509,8 @@ class Zebra_cURL {
      *  @return void
      *
      */
-    public function option($option, $value = '') {
+    public function option($option, $value = '')
+    {
 
         // if $options is given as an array
         if (is_array($option)) {
@@ -1517,16 +1523,14 @@ class Zebra_cURL {
 
                 // set the value for the option otherwise
                 else $this->options[$name] = $value;
-
             }
 
-        // if option is not given as an array,
-        // if we need to "unset" an option, unset it
+            // if option is not given as an array,
+            // if we need to "unset" an option, unset it
         } elseif (is_null($value)) unset($this->options[$option]);
 
         // set the value for the option otherwise
         else $this->options[$option] = $value;
-
     }
 
     /**
@@ -1609,7 +1613,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function patch($urls, $callback = '') {
+    public function patch($urls, $callback = '')
+    {
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -1624,8 +1629,8 @@ class Zebra_cURL {
                 'url'               =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options' => (isset($values['options']) ? $values['options'] : array()) +
+                    ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => null) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_CUSTOMREQUEST   =>  'PATCH',
@@ -1633,7 +1638,6 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
                     ),
@@ -1653,7 +1657,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -1828,7 +1831,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function post($urls, $callback = '') {
+    public function post($urls, $callback = '')
+    {
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -1842,15 +1846,14 @@ class Zebra_cURL {
 
                 'url'               =>  $values['url'],
 
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options' => (isset($values['options']) ? $values['options'] : array()) +
+                    ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => null) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  1,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
@@ -1871,7 +1874,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -1952,7 +1954,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function proxy($proxy, $port = 80, $username = '', $password = '') {
+    public function proxy($proxy, $port = 80, $username = '', $password = '')
+    {
 
         // if not disabled
         if ($proxy) {
@@ -1970,7 +1973,7 @@ class Zebra_cURL {
                 // set authentication values
                 $this->option(CURLOPT_PROXYUSERPWD, $username . ':' . $password);
 
-        // if disabled
+            // if disabled
         } else
 
             // unset proxy-related options
@@ -1979,7 +1982,6 @@ class Zebra_cURL {
                 CURLOPT_PROXY               =>  null,
                 CURLOPT_PROXYPORT           =>  null,
             ));
-
     }
 
     /**
@@ -2062,7 +2064,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function put($urls, $callback = '') {
+    public function put($urls, $callback = '')
+    {
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -2077,8 +2080,8 @@ class Zebra_cURL {
                 'url'               =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
-                    (isset($values['options']) ? $values['options'] : array()) +
+                'options' => (isset($values['options']) ? $values['options'] : array()) +
+                    ($this->_use_binarytransfer ? array(CURLOPT_BINARYTRANSFER => null) : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_CUSTOMREQUEST   =>  'PUT',
@@ -2086,7 +2089,6 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
                     ),
@@ -2106,7 +2108,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -2182,11 +2183,11 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function queue() {
+    public function queue()
+    {
 
         // set a flag indicating the library to queue requests rather than executing them right away
         $this->_queue = true;
-
     }
 
     /**
@@ -2237,22 +2238,21 @@ class Zebra_cURL {
      *  @return mixed   Returns the scraped page's content, when *$body_only* is set to `TRUE`, or an object with properties
      *                  as described for the *$callback* argument of the {@link get} method.
      */
-    public function scrape($url, $body_only = true) {
+    public function scrape($url, $body_only = true)
+    {
 
         // this method requires the $url argument to be a string
         if (is_array($url)) trigger_error('URL must be a string', E_USER_ERROR);
 
         // make the request
-        $this->get($url, function($result) {
+        $this->get($url, function ($result) {
 
             // store result in this private property of the library
             $this->_scrape_result = $result;
-
         });
 
         // return result
         return $body_only ? $this->_scrape_result->body : $this->_scrape_result;
-
     }
 
     /**
@@ -2277,7 +2277,8 @@ class Zebra_cURL {
      *                  as described for the *$callback* argument of the {@link get} method.
      *  @access private
      */
-    public function scrap($url, $body_only = true) {
+    public function scrap($url, $body_only = true)
+    {
         return $this->scrape($url, $body_only);
     }
 
@@ -2351,7 +2352,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function ssl($verify_peer = true, $verify_host = 2, $file = false, $path = false) {
+    public function ssl($verify_peer = true, $verify_host = 2, $file = false, $path = false)
+    {
 
         // set default options
         $this->option(array(
@@ -2367,7 +2369,6 @@ class Zebra_cURL {
 
             // if file was not found, trigger an error
             else trigger_error('File "' . $file . '", holding one or more certificates to verify the peer with, was not found', E_USER_ERROR);
-
         }
 
         // if a directory holding multiple CA certificates was given
@@ -2378,9 +2379,7 @@ class Zebra_cURL {
 
             // if folder was not found, trigger an error
             else trigger_error('Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found', E_USER_ERROR);
-
         }
-
     }
 
     /**
@@ -2392,7 +2391,8 @@ class Zebra_cURL {
      *
      *  @return void
      */
-    public function start() {
+    public function start()
+    {
 
         // indicate the library that it should execute queued requests
         $this->_queue = false;
@@ -2402,7 +2402,6 @@ class Zebra_cURL {
 
         // if we don't have to pause between batches of requests, process them all at once
         else $this->_process();
-
     }
 
     /**
@@ -2412,7 +2411,8 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _debug() {
+    private function _debug()
+    {
 
         $result = '';
 
@@ -2427,7 +2427,6 @@ class Zebra_cURL {
 
         // return the result
         return $result;
-
     }
 
     /**
@@ -2439,7 +2438,8 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _get_cache_file_name($request) {
+    private function _get_cache_file_name($request)
+    {
 
         // iterate through the options associated with the request
         foreach ($request['options'] as $key => $value)
@@ -2453,7 +2453,6 @@ class Zebra_cURL {
 
         // return the path and name of the file name associated with the request
         return rtrim($this->cache['path'], '/') . '/' . md5(serialize($request));
-
     }
 
     /**
@@ -2472,7 +2471,8 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _parse_headers($headers) {
+    private function _parse_headers($headers)
+    {
 
         $result = array();
 
@@ -2483,7 +2483,7 @@ class Zebra_cURL {
             $headers = preg_split('/^\s*$/m', trim($headers));
 
             // iterate through the headers
-            foreach($headers as $index => $header) {
+            foreach ($headers as $index => $header) {
 
                 $arguments_count = func_num_args();
 
@@ -2508,18 +2508,13 @@ class Zebra_cURL {
 
                         // add value to array
                         $result[$index][$matches[1][$key]][] = trim($matches[2][$key]);
-
                     }
-
                 }
-
             }
-
         }
 
         // return headers as an array
         return $result;
-
     }
 
     /**
@@ -2533,7 +2528,8 @@ class Zebra_cURL {
      *  @return array<mixed>
      *  @access private
      */
-    private function _prepare_urls($urls) {
+    private function _prepare_urls($urls)
+    {
 
         // if $urls is *one* associative array containing one of "url", "options" and "data" entries
         if (is_array($urls) && !empty(array_intersect(array('url', 'options', 'data'), array_keys($urls)))) {
@@ -2544,7 +2540,7 @@ class Zebra_cURL {
             // return as an array of arrays
             return array($urls);
 
-        // if $urls is an array
+            // if $urls is an array
         } elseif (is_array($urls)) {
 
             $result = array();
@@ -2566,19 +2562,19 @@ class Zebra_cURL {
                         // keep everything as it is
                         $result[] = $values;
 
-                    // if $values is an array containing an associative array where the key is the URL and the value is
-                    // another array containing at least one of "url", "options" or "data" entries, like
-                    // array('https://address.com' => array(
-                    //      'options'   =>  array(...),
-                    // ))
+                        // if $values is an array containing an associative array where the key is the URL and the value is
+                        // another array containing at least one of "url", "options" or "data" entries, like
+                        // array('https://address.com' => array(
+                        //      'options'   =>  array(...),
+                        // ))
                     } elseif (is_array($values) && !is_numeric(key($values)) && is_array(current($values)) && !empty(array_intersect(array('url', 'options', 'data'), array_keys(current($values))))) {
 
                         // normalize values
                         $result[] = array_merge(array('url' => key($values)), current($values));
 
-                    // if $values is an associative array where the key is the URL and the value is
-                    // another array of POST values
-                    // array('https://address.com' => array('foo' => 'bar'))
+                        // if $values is an associative array where the key is the URL and the value is
+                        // another array of POST values
+                        // array('https://address.com' => array('foo' => 'bar'))
                     } elseif (is_array($values)) {
 
                         // normalize values
@@ -2587,17 +2583,16 @@ class Zebra_cURL {
                             'data'  =>  current($values)
                         );
 
-                    // if $values is not an array or not an associative array containing one of "url", "options" and "data" entries, like
-                    // 'https://address.com'
+                        // if $values is not an array or not an associative array containing one of "url", "options" and "data" entries, like
+                        // 'https://address.com'
                     } else {
 
                         // it has to be the URL
                         $result[] = array('url' => $values);
-
                     }
 
-                // if key is not numeric
-                // we take it that key is the URL
+                    // if key is not numeric
+                    // we take it that key is the URL
                 } else {
 
                     // if $values is an associative array containing one of "url", "options" and "data" entries, like
@@ -2610,33 +2605,29 @@ class Zebra_cURL {
                         // normalize values
                         $result[] = array_merge(array('url' => $key), $values);
 
-                    // if $values is an associative array with POST values, like
-                    // array('foo' => 'bar'))
+                        // if $values is an associative array with POST values, like
+                        // array('foo' => 'bar'))
                     } else {
 
                         // the values have to be the POST values
                         $result[] = array('url' => $key, 'data' => $values);
-
                     }
-
                 }
-
             }
 
             // update the values
             $urls = $result;
 
-        // if $urls is not an array, as in
-        // 'https://address.com'
+            // if $urls is not an array, as in
+            // 'https://address.com'
         } else {
 
             // it has to be the URL, and make it an array of arrays
             $urls = array(array('url' => $urls));
-
         }
 
         // walk recursively through the array
-        array_walk_recursive($urls, function(&$value) {
+        array_walk_recursive($urls, function (&$value) {
 
             // if we have to upload a file
             if (strpos($value, '@') === 0) {
@@ -2649,16 +2640,12 @@ class Zebra_cURL {
 
                     // use CURLFile to prepare the file
                     $value = new CURLFile($file);
-
                 }
-
             }
-
         });
 
         // return the normalized array
         return $urls;
-
     }
 
     /**
@@ -2668,7 +2655,8 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _process() {
+    private function _process()
+    {
 
         // if caching is enabled but path doesn't exist, or is not writable
         if ($this->cache !== false && (!is_dir($this->cache['path']) || !is_writable($this->cache['path'])))
@@ -2714,13 +2702,9 @@ class Zebra_cURL {
 
                         // remove this request from the list so it doesn't get processed
                         unset($this->_requests[$index]);
-
                     }
-
                 }
-
             }
-
         }
 
         // if there are any requests to process
@@ -2756,7 +2740,9 @@ class Zebra_cURL {
                     $content = curl_multi_getcontent($handle);
 
                     // if PHP 8+, we know the handle's ID because we stored a randomly generated one in this map when we called curl_init
-                    if (PHP_MAJOR_VERSION >= 8) $resource_number = key(array_filter($this->_running_map, function($value) use ($handle) { return $value === $handle; }));
+                    if (PHP_MAJOR_VERSION >= 8) $resource_number = key(array_filter($this->_running_map, function ($value) use ($handle) {
+                        return $value === $handle;
+                    }));
 
                     // for PHP 7 and below, get the handle's ID
                     else $resource_number = preg_replace('/Resource id #/', '', $handle);
@@ -2780,7 +2766,6 @@ class Zebra_cURL {
                         $append['proxy'] = $this->options[CURLOPT_PROXY];
                         if (isset($this->options[CURLOPT_PROXYPORT]))
                             $append['proxy_port'] = $this->options[CURLOPT_PROXYPORT];
-
                     }
 
                     // extend the "info" property with the original URL
@@ -2806,7 +2791,7 @@ class Zebra_cURL {
                             // if we actually have this information
                             isset($result->info['request_header'])
 
-                        // extract request headers
+                            // extract request headers
                         ) ? $this->_parse_headers($result->info['request_header'], true) : '';
 
                     // remove request headers information from its previous location
@@ -2824,9 +2809,9 @@ class Zebra_cURL {
 
                         (isset($request['options'][CURLOPT_HEADER]) && $request['options'][CURLOPT_HEADER] == 1 ?
 
-                        substr($content, $result->info['header_size']) :
+                            substr($content, $result->info['header_size']) :
 
-                        $content) :
+                            $content) :
 
                         '';
 
@@ -2840,7 +2825,6 @@ class Zebra_cURL {
 
                         // for PHP versions lower than 5.3.0
                         else htmlentities($result->body);
-
                     }
 
                     // get CURLs response code and associated message
@@ -2869,14 +2853,13 @@ class Zebra_cURL {
                             // make available the name we saved the file with
                             // (we need to merge the first 2 elements, our new array and the rest of the elements)
                             $arguments[0]->info = array_merge($tmp_array, array('downloaded_filename' => $this->_running[$resource_number]['file_name']), $arguments[0]->info);
-
                         }
 
                         // feed them as arguments to the callback function
                         // and save the callback's response, if any
                         $callback_response = call_user_func_array($request['callback'], $arguments);
 
-                    // if no callback function, we assume the response is TRUE
+                        // if no callback function, we assume the response is TRUE
                     } else $callback_response = true;
 
                     // if caching is enabled and the callback function did not return FALSE nor did the cURL request returned an error
@@ -2890,7 +2873,6 @@ class Zebra_cURL {
 
                         // set rights on the file
                         chmod($cache_file, intval($this->cache['chmod'], 8));
-
                     }
 
                     // if there are more URLs to process and we're don't pause between batches of requests, queue the next one(s)
@@ -2912,21 +2894,18 @@ class Zebra_cURL {
                     // we don't need the information associated with this request anymore
                     unset($this->_running[$resource_number]);
                     unset($this->_running_map[$resource_number]);
-
                 }
 
                 // waits until curl_multi_exec() returns CURLM_CALL_MULTI_PERFORM or until the timeout, whatever happens first
                 // call usleep() if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
                 if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(100);
 
-            // as long as there are threads running or requests waiting in the queue
+                // as long as there are threads running or requests waiting in the queue
             } while ($running || !empty($this->_running));
 
             // close the multi curl handle
             curl_multi_close($this->_multi_handle);
-
         }
-
     }
 
     /**
@@ -2937,7 +2916,8 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _process_paused() {
+    private function _process_paused()
+    {
 
         // copy all requests to another variable
         $urls = $this->_requests;
@@ -2953,9 +2933,7 @@ class Zebra_cURL {
 
             // wait for as many seconds as specified by the "pause_interval" property
             if (!empty($urls)) sleep($this->pause_interval);
-
         }
-
     }
 
     /**
@@ -2967,7 +2945,8 @@ class Zebra_cURL {
      *
      *  @access private
      */
-    private function _queue_requests() {
+    private function _queue_requests()
+    {
 
         // get the number of remaining urls
         $requests_count = count($this->_requests);
@@ -3003,7 +2982,6 @@ class Zebra_cURL {
 
                 // tell libcurl to use the file for streaming the download
                 $this->option(CURLOPT_FILE, $request['file_handler']);
-
             }
 
             // set request's options
@@ -3023,9 +3001,7 @@ class Zebra_cURL {
 
                     // add option at the end
                     $this->options[$key] = $value;
-
                 }
-
             }
 
             // make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
@@ -3045,9 +3021,7 @@ class Zebra_cURL {
 
             // add request to the list of running requests
             $this->_running[$resource_number] = $request;
-
         }
-
     }
 
     /**
@@ -3059,7 +3033,8 @@ class Zebra_cURL {
      *  @return string
      *  @access private
      */
-    private function _user_agent() {
+    private function _user_agent()
+    {
 
         // browser version: 9 or 10
         $version = rand(9, 10);
@@ -3083,7 +3058,5 @@ class Zebra_cURL {
 
         // return the random user agent string
         return 'Mozilla/5.0 (compatible; MSIE ' . $version . '.0; Windows NT ' . $major_version . '.' . $minor_version . ($extras == 1 ? '; WOW64' : ($extras == 2 ? '; Win64; IA64' : ($extras == 3 ? '; Win64; x64' : ''))) . ')';
-
     }
-
 }
