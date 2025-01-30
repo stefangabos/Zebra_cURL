@@ -32,19 +32,23 @@ h6 {
 
 #phpdoc > table {
     height: 100%;
-    border: 1px solid #e1e4e8;
+    border-left: 1px solid #d0d9e0;
+    border-bottom: 1px solid #d0d9e0;
+    border-right: 1px solid #d0d9e0;
 }
 
 #doc_header {
-    color: #fff;
-    background: #24292e;
-    padding: 20px 1em 20px 75px;
+    color: #000;
+    background: #f6f8fa;
+    padding: 21px 1em 21px 75px;
+    border-bottom: 1px solid #d0d9e0;
 }
 
 #doc_header a.projects-homepage {
-    color: #FFF;
+    color: #000;
     text-decoration: none;
     position: relative;
+    font-weight: bold;
 }
 
 #doc_header a.projects-homepage img {
@@ -61,6 +65,7 @@ h6 {
 
 #doc_header ul li {
     margin-left: 1em;
+    margin-right: 1em;
     padding-right: 1em;
     border-right: 1px solid #FFF;
 }
@@ -71,7 +76,7 @@ h6 {
 }
 
 #doc_header ul a {
-    color: #fff;
+    color: #000;
 }
 
 #doc_content {
@@ -88,6 +93,15 @@ h6 {
     border-right: 1px solid #e1e4e8;
     border-bottom: 1px solid #e1e4e8;
     white-space: nowrap;
+}
+
+.sidebar p.subpackage {
+    margin: 0 0 0 1.2em;
+    top: -0.5em;
+}
+
+.sidebar li.subpackage {
+    margin-left: 1.2em;
 }
 
 .hello-separator {
@@ -145,15 +159,15 @@ h4.method {
 }
 
 h4.method {
+    border: 1px solid #dedede;
+    padding: 15px 15px;
+    margin-bottom: 0;
     border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 1em;
 }
 
 h4.variable-static {
     background: #eae9da;
 }
-
 
 h4.variable span,
 h4.method span {
@@ -169,6 +183,8 @@ h4.variable span.value {
 
 h4.variable span.access {
     position: absolute;
+    text-align: center;
+    min-width: 80px;
     right: 0;
     font-size: 70%;
     padding: 2px .5em;
@@ -182,6 +198,10 @@ h4.variable span.access.public {
 }
 
 h4.variable span.access.protected {
+    background: #c40000;
+}
+
+h4.variable span.access.static {
     background: #3f51b5;
 }
 
@@ -220,9 +240,13 @@ h4.variable span.access.protected {
 .doc_block > .code:first-child {
     background: #fafafa;
     border: 1px solid #dedede;
-    padding: 1em;
+    padding: 7px 1em 5px;
     font-size: 100%;
-    margin: 1em 0;
+    margin: 0 0 1em;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-width: 3px;
 }
 
 .doc_index {
@@ -248,6 +272,38 @@ h4.variable span.access.protected {
 
 .doc_index dd span {
     display: block;
+}
+
+.implementation {
+    background: #fffef5;
+    padding: 1em 1em 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+}
+
+.implementation .notes {
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+.optional {
+    background: #0366d6;
+    display: inline-block;
+    padding: 0 8px;
+    border-radius: 5px;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 85%;
+}
+
+.var-static {
+    color: #3f51b5;
+}
+
+.var-protected {
+    color: #c40000;
 }
 
 .code {
@@ -314,12 +370,6 @@ a.top:before:hover {
 }
 
 .clear { clear: both }
-
-.access-icon {
-    position: relative;
-    top: 2px;
-    opacity: .5;
-}
 
 /* SYNTAX HIGHLIGHTING */
 .src-code {
