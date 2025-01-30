@@ -637,10 +637,11 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
+                'url'       =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -654,10 +655,10 @@ class Zebra_cURL {
                         CURLOPT_FILE            =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+                'arguments' =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -813,12 +814,12 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
-
-                'path'              =>  rtrim($path, '/\\') . '/',
+                'url'       =>  $values['url'],
+                'path'      =>  rtrim($path, '/\\') . '/',
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -831,10 +832,10 @@ class Zebra_cURL {
                         CURLOPT_POSTFIELDS      =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 3, null, true),
+                'arguments' =>  array_slice(func_get_args(), 3, null, true),
 
             );
 
@@ -1021,12 +1022,12 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
-
-                'path'              =>  rtrim($path, '/\\') . '/',
+                'url'       =>  $values['url'],
+                'path'      =>  rtrim($path, '/\\') . '/',
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -1040,10 +1041,10 @@ class Zebra_cURL {
                         CURLOPT_POSTFIELDS      =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 5, null, true),
+                'arguments' =>  array_slice(func_get_args(), 5, null, true),
 
             );
 
@@ -1238,10 +1239,11 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'] . (isset($values['data']) ? '?' . (is_array($values['data']) ? http_build_query($values['data']) : $values['data']) : ''),
+                'url'       =>  $values['url'] . (isset($values['data']) ? '?' . (is_array($values['data']) ? http_build_query($values['data']) : $values['data']) : ''),
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -1255,10 +1257,10 @@ class Zebra_cURL {
                         CURLOPT_POSTFIELDS      =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+                'arguments' =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -1352,10 +1354,11 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
+                'url'       =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -1369,10 +1372,10 @@ class Zebra_cURL {
                         CURLOPT_POSTFIELDS      =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+                'arguments' =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -1621,10 +1624,11 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
+                'url'       =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -1638,10 +1642,10 @@ class Zebra_cURL {
                         CURLOPT_FILE            =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+                'arguments' =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -1840,9 +1844,9 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
+                'url'       =>  $values['url'],
+                'options'   =>
 
-                'options'           =>
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -1856,10 +1860,10 @@ class Zebra_cURL {
                         CURLOPT_FILE            =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+                'arguments' =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
@@ -2074,10 +2078,11 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'               =>  $values['url'],
+                'url'       =>  $values['url'],
 
                 // merge any custom options with the default ones
-                'options'           =>
+                'options'   =>
+
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
@@ -2091,10 +2096,10 @@ class Zebra_cURL {
                         CURLOPT_FILE            =>  null,
                     ),
 
-                'callback'          =>  $callback,
+                'callback'  =>  $callback,
 
                 // additional arguments to pass to the callback function, if any
-                'arguments'         =>  array_slice(func_get_args(), 2, null, true),
+                'arguments' =>  array_slice(func_get_args(), 2, null, true),
 
             );
 
