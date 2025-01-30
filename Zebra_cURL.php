@@ -12,8 +12,8 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.4 (last revision: December 13, 2024)
- *  @copyright  © 2013 - 2024 Stefan Gabos
+ *  @version    1.7.0 (last revision: January 30, 2025)
+ *  @copyright  © 2013 - 2025 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -247,6 +247,17 @@ class Zebra_cURL {
     private $_scrape_result;
 
     /**
+     *  In PHP 8.4 CURLOPT_BINARYTRANSFER was deprecated and it had no effect since PHP 5.1.2
+     *  see https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *
+     *  We're going to use this flag to add/remove the option where appropriate.
+     *
+     *  @var boolean
+     *  @access private
+     */
+    private $_use_binarytransfer = false;
+
+    /**
      *  Constructor of the class.
      *
      *  Below is the list of default options set by the library when instantiated. Various methods of the library may
@@ -388,6 +399,13 @@ class Zebra_cURL {
             // disable usage of @ in POST arguments
             // see https://wiki.php.net/rfc/curl-file-upload
             $this->option(CURLOPT_SAFE_UPLOAD, true);
+
+        // for PHP versions lower than 5.1.2 we're still going to use CURLOPT_BINARYTRANSFER where appropriate.
+        // for versions of PHP newer than that, we're not going to use it at all
+        // see https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+        if (version_compare(PHP_VERSION, '5.1.2', '<') && defined('CURLOPT_BINARYTRANSFER')) {
+            $this->_use_binarytransfer = true;
+        }
 
         // set defaults for accessing HTTPS servers
         $this->ssl();
@@ -559,9 +577,12 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
-     *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -650,10 +671,10 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER => null] : []),
 
                 'callback'  =>  $callback,
 
@@ -691,7 +712,6 @@ class Zebra_cURL {
      *  This method will automatically set the following options:
      *
      *  - `CURLINFO_HEADER_OUT` = `TRUE`
-     *  - `CURLOPT_BINARYTRANSFER` = `TRUE`
      *  - `CURLOPT_HEADER` = `TRUE`
      *  - `CURLOPT_FILE`
      *
@@ -702,6 +722,10 @@ class Zebra_cURL {
      *  - `CURLOPT_NOBODY`
      *  - `CURLOPT_POST`
      *  - `CURLOPT_POSTFIELDS`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be set to `TRUE`.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -823,16 +847,19 @@ class Zebra_cURL {
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
-                        CURLOPT_BINARYTRANSFER  =>  1,
                         CURLOPT_HEADER          =>  0,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_NOBODY          =>  null,
                         CURLOPT_POST            =>  null,
                         CURLOPT_POSTFIELDS      =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER => 1] : []),
 
                 'callback'  =>  $callback,
+
+                // flag indicating that this is a download request
+                'download'  =>  true,
 
                 // additional arguments to pass to the callback function, if any
                 'arguments' =>  array_slice(func_get_args(), 3, null, true),
@@ -864,7 +891,6 @@ class Zebra_cURL {
      *  This method will automatically set the following options:
      *
      *  - `CURLINFO_HEADER_OUT` = `TRUE`
-     *  - `CURLOPT_BINARYTRANSFER` = `TRUE`
      *  - `CURLOPT_HEADER` = `TRUE`
      *  - `CURLOPT_FILE`
      *
@@ -875,6 +901,10 @@ class Zebra_cURL {
      *  - `CURLOPT_NOBODY`
      *  - `CURLOPT_POST`
      *  - `CURLOPT_POSTFIELDS`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be set to `TRUE`.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  >   If you are downloading multiple files with the same name the later ones will overwrite the previous ones.
      *
@@ -1031,7 +1061,6 @@ class Zebra_cURL {
                     (isset($values['options']) ? $values['options'] : array()) +
                     array(
                         CURLINFO_HEADER_OUT     =>  1,
-                        CURLOPT_BINARYTRANSFER  =>  1,
                         CURLOPT_HEADER          =>  0,
                         CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
@@ -1039,9 +1068,13 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  null,
                         CURLOPT_POST            =>  null,
                         CURLOPT_POSTFIELDS      =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER => 1] : []),
 
                 'callback'  =>  $callback,
+
+                // flag indicating that this is a download request
+                'download'  =>  true,
 
                 // additional arguments to pass to the callback function, if any
                 'arguments' =>  array_slice(func_get_args(), 5, null, true),
@@ -1072,11 +1105,14 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
-     *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_CUSTOMREQUEST`
      *  - `CURLOPT_FILE`
      *  - `CURLOPT_POST`
      *  - `CURLOPT_POSTFIELDS`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1250,12 +1286,12 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_HTTPGET         =>  1,
                         CURLOPT_NOBODY          =>  0,
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_FILE            =>  null,
                         CURLOPT_POST            =>  null,
                         CURLOPT_POSTFIELDS      =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER  =>  null] : []),
 
                 'callback'  =>  $callback,
 
@@ -1288,11 +1324,14 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
-     *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_CUSTOMREQUEST`
      *  - `CURLOPT_FILE`
      *  - `CURLOPT_POST`
      *  - `CURLOPT_POSTFIELDS`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1365,12 +1404,12 @@ class Zebra_cURL {
                         CURLOPT_HEADER          =>  1,
                         CURLOPT_HTTPGET         =>  1,
                         CURLOPT_NOBODY          =>  1,
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_FILE            =>  null,
                         CURLOPT_POST            =>  null,
                         CURLOPT_POSTFIELDS      =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER  =>  null] : []),
 
                 'callback'  =>  $callback,
 
@@ -1547,9 +1586,12 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
-     *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1637,10 +1679,10 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER  =>  null] : []),
 
                 'callback'  =>  $callback,
 
@@ -1674,10 +1716,13 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
-     *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_CUSTOMREQUEST`
      *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1854,11 +1899,11 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  1,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER  =>  null] : []),
 
                 'callback'  =>  $callback,
 
@@ -2001,9 +2046,12 @@ class Zebra_cURL {
      *
      *  ...and will unset the following options:
      *
-     *  - `CURLOPT_BINARYTRANSFER`
      *  - `CURLOPT_HTTPGET`
      *  - `CURLOPT_FILE`
+     *
+     *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+     *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+     *      it has no effect and has been deprecated starting with PHP 8.4}.
      *
      *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
      *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -2091,10 +2139,10 @@ class Zebra_cURL {
                         CURLOPT_NOBODY          =>  0,
                         CURLOPT_POST            =>  0,
                         CURLOPT_POSTFIELDS      =>  isset($values['data']) ? $values['data'] : '',
-                        CURLOPT_BINARYTRANSFER  =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_FILE            =>  null,
-                    ),
+                    ) +
+                    ($this->_use_binarytransfer ? [CURLOPT_BINARYTRANSFER  =>  null] : []),
 
                 'callback'  =>  $callback,
 
@@ -2836,7 +2884,7 @@ class Zebra_cURL {
                         '';
 
                     // if _htmlentities is set to TRUE, we're not doing a binary transfer and we have a body, run htmlentities() on it
-                    if ($this->_htmlentities && !isset($request['options'][CURLOPT_BINARYTRANSFER]) && $result->body != '') {
+                    if ($this->_htmlentities && (!isset($request['download']) || !$request['download']) && $result->body != '') {
 
                         // since PHP 5.3.0, htmlentities will return an empty string if the input string contains an
                         // invalid code unit sequence within the given encoding (utf-8 in our case)
@@ -2866,7 +2914,7 @@ class Zebra_cURL {
                         );
 
                         // if downloaded a file
-                        if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER]) {
+                        if (isset($request['download']) && $request['download']) {
 
                             // we make a dummy array with the first first 2 elements (which we also remove from the $arguments[0]->info array)
                             $tmp_array = array_splice($arguments[0]->info, 0, 2);
@@ -2909,7 +2957,7 @@ class Zebra_cURL {
                     curl_close($handle);
 
                     // if we downloaded a file
-                    if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER])
+                    if (isset($request['download']) && $request['download'])
 
                         // close the associated file pointer
                         fclose($this->_running[$resource_number]['file_handler']);
@@ -2991,7 +3039,7 @@ class Zebra_cURL {
             $resource_number = PHP_MAJOR_VERSION < 8 ? preg_replace('/Resource id #/', '', $handle) : uniqid('', true);
 
             // if we're downloading something
-            if (isset($request['options'][CURLOPT_BINARYTRANSFER]) && $request['options'][CURLOPT_BINARYTRANSFER]) {
+            if (isset($request['download']) && $request['download']) {
 
                 // use parse_url to analyze the string
                 // we use this so we won't have hashtags and/or query string in the file's name later on
