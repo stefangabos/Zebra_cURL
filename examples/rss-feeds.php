@@ -90,6 +90,10 @@
             // see http://httpstatus.es/ for a list of possible response codes
             if ($result->info['http_code'] == 200) {
 
+                // by default, results are passed through htmlentities()
+                // therefore we need to reverse that
+                $result->body = html_entity_decode($result->body);
+
                 // the content is an XML, process it
                 $xml = simplexml_load_string($result->body);
 
