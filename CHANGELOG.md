@@ -1,3 +1,7 @@
+## version 1.7.0 (January 30, 2025)
+
+- fixed [#54](https://github.com/stefangabos/Zebra_cURL/pull/54) about `CURLOPT_BINARYTRANSFER` being depreacted starting with PHP 8.4; thanks [Alisson Linneker](https://github.com/alissonlinneker) for reporting!
+
 ## version 1.6.4 (December 13, 2024)
 
 - correctly fixed issue when `POST` data was given as a nested array for [post](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodpost), [patch](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodpatch) and [put](https://stefangabos.github.io/Zebra_cURL/Zebra_cURL/Zebra_cURL.html#methodput) methods; see [#53](https://github.com/stefangabos/Zebra_cURL/issues/53) and thanks [frayer-enterprises](https://github.com/frayer-enterprises) for reporting it!
