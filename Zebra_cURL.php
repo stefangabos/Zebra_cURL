@@ -337,12 +337,14 @@ class Zebra_cURL {
      *
      *                                      Default is `FALSE`
      *
+     *  @throws RuntimeException            If the cURL extension is not loaded
+     *
      *  @return void
      */
     public function __construct($htmlentities = false) {
 
         // if the cURL extension is not available, trigger an error and stop execution
-        if (!extension_loaded('curl')) trigger_error('php_curl extension is not loaded', E_USER_ERROR);
+        if (!extension_loaded('curl')) throw new RuntimeException('php_curl extension is not loaded');
 
         // initialize some private properties
         $this->_multi_handle = $this->_queue = false;
@@ -482,11 +484,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -496,7 +498,7 @@ class Zebra_cURL {
      *                                  Setting this to `FALSE` will disable caching.
      *
      *                                  *If set to a non-existing path, the library will try to create the folder
-     *                                  and will trigger an error if, for whatever reasons, it is unable to do so. If the
+     *                                  and will throw an exception if, for whatever reasons, it is unable to do so. If the
      *                                  folder can be created, its permissions will be set to the value of the $chmod
      *                                  argument plus the execute bit wherever the read bit is set (i.e. `0644` gives
      *                                  `0755` for the folder), as folders need it to be traversable.*
@@ -566,7 +568,9 @@ class Zebra_cURL {
      *  @param  string      $path   The path to a file to save cookies to / retrieve cookies from.
      *
      *                              *If file does not exist the library will attempt to create it and, if it is unable to
-     *                              do so, it will trigger an error.*
+     *                              do so, it will throw an exception.*
+     *
+     *  @throws RuntimeException    If the file does not exist and cannot be created
      *
      *  @return void
      */
@@ -576,10 +580,10 @@ class Zebra_cURL {
         if (!is_file($path)) {
 
             // attempt to create it
-            if (!($handle = fopen($path, 'a')))
+            if (!($handle = @fopen($path, 'a')))
 
-                // if file could not be created, trigger an error
-                trigger_error('File "' . $path . '" for storing cookies could not be found nor could it automatically be created! Make sure either that the path to the file points to a writable directory, or create the file yourself and make it writable', E_USER_ERROR);
+                // if file could not be created
+                throw new RuntimeException('File "' . $path . '" for storing cookies could not be found nor could it automatically be created! Make sure either that the path to the file points to a writable directory, or create the file yourself and make it writable');
 
             // if file could be create, release handle
             fclose($handle);
@@ -660,11 +664,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -682,6 +686,9 @@ class Zebra_cURL {
      *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
+     *
+     *  @throws InvalidArgumentException    If a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If the cache path is not writable or the cURL multi handle fails
      *
      *  @return void
      */
@@ -809,11 +816,11 @@ class Zebra_cURL {
      *              $result->info['downloaded_filename'];
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -855,7 +862,7 @@ class Zebra_cURL {
      *  @param  string      $path           The path to where to save the file(s) to.
      *
      *                                      *If path is not pointing to a directory or the directory is not writable, the
-     *                                      library will trigger an error.*
+     *                                      library will throw an exception.*
      *
      *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
@@ -865,12 +872,15 @@ class Zebra_cURL {
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
      *
+     *  @throws InvalidArgumentException    If *$path* is not a writable directory, a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If a file cannot be created in *$path*, the cache path is not writable or the cURL multi handle fails
+     *
      *  @return void
      */
     public function download($urls, $path, $callback = '') {
 
         // if destination path is not a directory or is not writable, trigger an error message
-        if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
+        if (!is_dir($path) || !is_writable($path)) throw new InvalidArgumentException('"' . $path . '" is not a valid path or is not writable');
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -995,11 +1005,11 @@ class Zebra_cURL {
      *                  print_r($result);
      *
      *              // show the server's response code
-     *              } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *              } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *          // something went wrong
      *          // ($result still contains all data that could be gathered)
-     *          } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *          } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *      }
      *
@@ -1071,7 +1081,7 @@ class Zebra_cURL {
      *  @param  string      $path           The path to where to save the file(s) to.
      *
      *                                      *If path is not pointing to a directory or is not writable, the library will
-     *                                      trigger an error.*
+     *                                      throw an exception.*
      *
      *  @param  string      $username       (Optional) The username to be used to connect to the FTP server (if required).
      *
@@ -1085,12 +1095,15 @@ class Zebra_cURL {
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
      *
+     *  @throws InvalidArgumentException    If *$path* is not a writable directory, a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If a file cannot be created in *$path*, the cache path is not writable or the cURL multi handle fails
+     *
      *  @return void
      */
     public function ftp_download($urls, $path, $username = '', $password = '', $callback = '') {
 
         // if destination path is not a directory or is not writable, trigger an error message
-        if (!is_dir($path) || !is_writable($path)) trigger_error('"' . $path . '" is not a valid path or is not writable', E_USER_ERROR);
+        if (!is_dir($path) || !is_writable($path)) throw new InvalidArgumentException('"' . $path . '" is not a valid path or is not writable');
 
         // normalize URLs
         // (transforms every allowed combination to the same type of array)
@@ -1209,11 +1222,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -1319,6 +1332,9 @@ class Zebra_cURL {
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
      *
+     *  @throws InvalidArgumentException    If a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If the cache path is not writable or the cURL multi handle fails
+     *
      *  @return void
      */
     public function get($urls, $callback = '') {
@@ -1420,11 +1436,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -1440,6 +1456,9 @@ class Zebra_cURL {
      *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
+     *
+     *  @throws InvalidArgumentException    If a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If the cache path is not writable or the cURL multi handle fails
      *
      *  @return void
      */
@@ -1523,11 +1542,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -1695,11 +1714,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -1717,6 +1736,9 @@ class Zebra_cURL {
      *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
+     *
+     *  @throws InvalidArgumentException    If a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If the cache path is not writable or the cURL multi handle fails
      *
      *  @return void
      */
@@ -1830,11 +1852,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -1939,6 +1961,9 @@ class Zebra_cURL {
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
      *
+     *  @throws InvalidArgumentException    If a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If the cache path is not writable or the cURL multi handle fails
+     *
      *  @return void
      */
     public function post($urls, $callback = '') {
@@ -2020,11 +2045,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -2162,11 +2187,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  });
      *  </code>
@@ -2184,6 +2209,9 @@ class Zebra_cURL {
      *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
      *      for the request, the library will not cache the respective request, making it easy to retry failed requests
      *      without having to clear all cache.
+     *
+     *  @throws InvalidArgumentException    If a URL entry lacks the `url` key or a callback does not exist
+     *  @throws RuntimeException            If the cache path is not writable or the cURL multi handle fails
      *
      *  @return void
      */
@@ -2263,11 +2291,11 @@ class Zebra_cURL {
      *              print_r($result);
      *
      *          // show the server's response code
-     *          } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+     *          } else throw new Exception('Server responded with code ' . $result->info['http_code']);
      *
      *      // something went wrong
      *      // ($result still contains all data that could be gathered)
-     *      } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+     *      } else throw new Exception('cURL responded with: ' . $result->response[0]);
      *
      *  }
      *
@@ -2363,13 +2391,15 @@ class Zebra_cURL {
      *
      *  @since 1.3.3
      *
+     *  @throws InvalidArgumentException    If *$url* is not a string
+     *
      *  @return mixed   Returns the scraped page's content, when *$body_only* is set to `TRUE`, or an object with properties
      *                  as described for the *$callback* argument of the {@link get} method.
      */
     public function scrape($url, $body_only = true) {
 
         // this method requires the $url argument to be a string
-        if (is_array($url)) trigger_error('URL must be a string', E_USER_ERROR);
+        if (is_array($url)) throw new InvalidArgumentException('URL must be a string');
 
         // this method is synchronous by nature so the request is made right away even if queue() was called; queue mode
         // and any already queued requests are set aside and restored afterwards
@@ -2491,6 +2521,8 @@ class Zebra_cURL {
      *                                          *This option can also be set using the {@link option} method and setting
      *                                          `CURLOPT_CAPATH` to the desired value.*
      *
+     *  @throws InvalidArgumentException        If *$file* or *$path* do not exist
+     *
      *  @return void
      */
     public function ssl($verify_peer = true, $verify_host = 2, $file = false, $path = false) {
@@ -2508,7 +2540,7 @@ class Zebra_cURL {
             if (is_file($file)) $this->option(CURLOPT_CAINFO, $file);
 
             // if file was not found, trigger an error
-            else trigger_error('File "' . $file . '", holding one or more certificates to verify the peer with, was not found', E_USER_ERROR);
+            else throw new InvalidArgumentException('File "' . $file . '", holding one or more certificates to verify the peer with, was not found');
 
         }
 
@@ -2519,7 +2551,7 @@ class Zebra_cURL {
             if (is_dir($path)) $this->option(CURLOPT_CAPATH, $path);
 
             // if folder was not found, trigger an error
-            else trigger_error('Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found', E_USER_ERROR);
+            else throw new InvalidArgumentException('Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found');
 
         }
 
@@ -2723,7 +2755,7 @@ class Zebra_cURL {
         if (is_array($urls) && !empty(array_intersect(array('url', 'options', 'data'), array_keys($urls)))) {
 
             // since "url" is mandatory, stop if not present
-            if (!isset($urls['url'])) trigger_error('<strong>url</strong> key is missing from argument', E_USER_ERROR);
+            if (!isset($urls['url'])) throw new InvalidArgumentException('"url" key is missing from argument');
 
             // return as an array of arrays
             return array($urls);
@@ -2834,20 +2866,28 @@ class Zebra_cURL {
     private function _process() {
 
         // if caching is enabled but path doesn't exist, or is not writable
-        if ($this->cache !== false && (!is_dir($this->cache['path']) || !is_writable($this->cache['path'])))
+        if ($this->cache !== false && (!is_dir($this->cache['path']) || !is_writable($this->cache['path']))) {
 
-            // trigger an error and stop execution
-            trigger_error('Cache path does not exists or is not writable', E_USER_ERROR);
+            // empty the queue before throwing so that the offending requests do not linger until the next call
+            $this->_requests = array();
+
+            throw new RuntimeException('Cache path "' . $this->cache['path'] . '" does not exist or is not writable');
+
+        }
 
         // iterate through the requests to process
         foreach ($this->_requests as $index => $request) {
 
             // if callback function is defined but it doesn't exists
-            if ($request['callback'] != '' && !is_callable($request['callback']))
+            if ($request['callback'] != '' && !is_callable($request['callback'])) {
 
-                // trigger an error and stop execution
+                // empty the queue before throwing so that the offending requests do not linger until the next call
+                $this->_requests = array();
+
                 // the check is for when callback functions are defined as methods of a class
-                trigger_error('Callback function "' . (is_array($request['callback']) ? array_pop($request['callback']) : $request['callback']) . '" does not exist', E_USER_ERROR);
+                throw new InvalidArgumentException('Callback function "' . (is_array($request['callback']) ? array_pop($request['callback']) : $request['callback']) . '" does not exist');
+
+            }
 
             // if caching is enabled
             if ($this->cache !== false) {
@@ -2942,8 +2982,7 @@ class Zebra_cURL {
                     curl_multi_close($this->_multi_handle);
                     $this->_multi_handle = false;
 
-                    // trigger an error and stop execution
-                    trigger_error('cURL multi handle error: ' . (function_exists('curl_multi_strerror') ? curl_multi_strerror($status) : $status), E_USER_ERROR);
+                    throw new RuntimeException('cURL multi handle error: ' . (function_exists('curl_multi_strerror') ? curl_multi_strerror($status) : $status));
 
                 }
 
@@ -3211,7 +3250,14 @@ class Zebra_cURL {
                 // open a file and save the file pointer
                 $request['file_handler'] = fopen($request['file_name'], 'w');
 
-                if ($request['file_handler'] === false) trigger_error('File "' . $request['file_name'] . '" could not be created for writing', E_USER_ERROR);
+                if ($request['file_handler'] === false) {
+
+                    // empty the queue before throwing so that the offending requests do not linger until the next call
+                    $this->_requests = array();
+
+                    throw new RuntimeException('File "' . $request['file_name'] . '" could not be created for writing');
+
+                }
 
                 // tell libcurl to use the file for streaming the download
                 $request['options'][CURLOPT_FILE] = $request['file_handler'];
