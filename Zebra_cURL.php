@@ -1255,13 +1255,18 @@ class Zebra_cURL {
      *                                                              be an empty string
      *
      *                                      -   `response`  -   the {@link https://www.php.net/manual/en/function.curl-errno.php#103128 response}
-     *                                                          given by the cURL library as an array with 2 items:<br>
+     *                                                          given by the cURL library as an array with 3 items:<br>
      *
      *                                                          <ul><li><ul><li>
      *                                                          the textual representation of the result's code (i.e. `CURLE_OK`)
      *                                                          </li></ul></li></ul>
      *                                                          <ul><li><ul><li>
      *                                                          the result's code (i.e. `0`)
+     *                                                          </li></ul></li></ul>
+     *                                                          <ul><li><ul><li>
+     *                                                          the human readable error message as given by cURL
+     *                                                          (i.e. `Could not resolve host: example.invalid`), or an
+     *                                                          empty string if there was no error
      *                                                          </li></ul></li></ul>
      *
      *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
@@ -2966,8 +2971,13 @@ class Zebra_cURL {
 
                     }
 
-                    // get CURLs response code and associated message
-                    $result->response = array($this->_response_messages[$info['result']], $info['result']);
+                    // get cURL's response code, its name and the human readable error message (an empty string on success)
+                    // result codes newer than our list of names fall back to curl_strerror()
+                    $result->response = array(
+                        isset($this->_response_messages[$info['result']]) ? $this->_response_messages[$info['result']] : (function_exists('curl_strerror') ? curl_strerror($info['result']) : 'CURLE_UNKNOWN'),
+                        $info['result'],
+                        curl_error($handle),
+                    );
 
                     // if we have a callback
                     if (isset($request['callback']) && $request['callback'] != '') {
