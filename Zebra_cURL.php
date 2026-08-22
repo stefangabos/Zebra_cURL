@@ -2936,7 +2936,8 @@ class Zebra_cURL {
                     $handle = $info['handle'];
 
                     // get content associated with the handle
-                    $content = curl_multi_getcontent($handle);
+                    // (NULL when the transfer went to a file, as with downloads, so cast to keep "body" a string)
+                    $content = (string)curl_multi_getcontent($handle);
 
                     // get the handle's ID - the same way it was computed when the request was queued
                     $resource_number = PHP_MAJOR_VERSION < 8 ? (int)$handle : spl_object_id($handle);
