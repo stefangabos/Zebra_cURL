@@ -276,10 +276,11 @@ class Zebra_cURL {
      *  -   `CURLOPT_CONNECTTIMEOUT`    -   the number of seconds to wait while trying to connect<br>
      *                                      default: `10` (use `0` to wait indefinitely)
      *
-     *  -   `CURLOPT_ENCODING`          -   the contents of the "Accept-Encoding: " header. this enables decoding of the
-     *                                      response. supported encodings are *identity*, *deflate*, and *gzip*. if an
-     *                                      empty string is set, a header containing all supported encoding types is sent<br>
-     *                                      default: `gzip,deflate`
+     *  -   `CURLOPT_ENCODING`          -   the contents of the "Accept-Encoding: " header. this enables automatic decoding
+     *                                      of the response. an empty string lets libcurl advertise every encoding it
+     *                                      was built with (*gzip*, *deflate*, and, depending on the build, *br* and
+     *                                      *zstd*), so the most efficient one supported by both ends gets used<br>
+     *                                      default: `an empty string`
      *
      *  -   `CURLOPT_FOLLOWLOCATION`    -   TRUE to follow any *"Location:"* header that the server sends as part of the
      *                                      HTTP header (note this is recursive, PHP will follow as many *"Location:"*
@@ -370,8 +371,9 @@ class Zebra_cURL {
             // the number of seconds to wait while trying to connect
             CURLOPT_CONNECTTIMEOUT      =>  10,
 
-            // the contents of the "Accept-Encoding:" header; it enables decoding of the response
-            CURLOPT_ENCODING            =>  'gzip,deflate',
+            // the contents of the "Accept-Encoding:" header; it enables automatic decoding of the response
+            // an empty string lets libcurl advertise every encoding it supports (gzip, deflate, br, zstd, etc.)
+            CURLOPT_ENCODING            =>  '',
 
             // follow any "Location:" header that the server sends as part of the HTTP header - note this is recursive
             // and that PHP will follow as many "Location:" headers as specified by CURLOPT_MAXREDIRS
