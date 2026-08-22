@@ -293,6 +293,15 @@ class Zebra_cURL {
      *                                      `CURLOPT_FOLLOWLOCATION` - see above<br>
      *                                      default: `50`
      *
+     *  -   `CURLOPT_PROTOCOLS`         -   the protocols libcurl is allowed to use for the URLs given to the library.
+     *                                      any other scheme (`file://`, `gopher://`, `dict://`, etc.) is refused, which
+     *                                      matters when URLs come from user input. {@link ftp_download} adds `FTP` and
+     *                                      `FTPS` for its own requests<br>
+     *                                      default: `CURLPROTO_HTTP | CURLPROTO_HTTPS`
+     *
+     *  -   `CURLOPT_REDIR_PROTOCOLS`   -   the protocols libcurl is allowed to follow redirects to<br>
+     *                                      default: `CURLPROTO_HTTP | CURLPROTO_HTTPS`
+     *
      *  -   `CURLOPT_RETURNTRANSFER`    -   TRUE to return the transfer's body as a string instead of outputting it
      *                                      directly<br>
      *                                      default: `TRUE`
@@ -373,6 +382,11 @@ class Zebra_cURL {
 
             // the maximum amount of HTTP redirects to follow; used together with CURLOPT_FOLLOWLOCATION
             CURLOPT_MAXREDIRS           =>  50,
+
+            // this is an HTTP client: refuse any other scheme (file://, gopher://, dict://, etc.) both for the URLs given
+            // to the library and for the URLs it gets redirected to
+            CURLOPT_PROTOCOLS           =>  CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_REDIR_PROTOCOLS     =>  CURLPROTO_HTTP | CURLPROTO_HTTPS,
 
             // the maximum number of seconds to allow cURL functions to execute before timing out
             CURLOPT_TIMEOUT             =>  30,
@@ -895,6 +909,8 @@ class Zebra_cURL {
      *  - `CURLINFO_HEADER_OUT` = `TRUE`
      *  - `CURLOPT_HEADER` = `TRUE`
      *  - `CURLOPT_FILE`
+     *  - `CURLOPT_PROTOCOLS` = `CURLPROTO_FTP | CURLPROTO_FTPS`
+     *  - `CURLOPT_REDIR_PROTOCOLS` = `CURLPROTO_FTP | CURLPROTO_FTPS`
      *
      *  ...and will unset the following options:
      *
@@ -1069,6 +1085,8 @@ class Zebra_cURL {
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_HEADER          =>  0,
                         CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
+                        CURLOPT_PROTOCOLS       =>  CURLPROTO_FTP | CURLPROTO_FTPS,
+                        CURLOPT_REDIR_PROTOCOLS =>  CURLPROTO_FTP | CURLPROTO_FTPS,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_NOBODY          =>  null,
