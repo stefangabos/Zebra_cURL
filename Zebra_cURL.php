@@ -2792,17 +2792,25 @@ class Zebra_cURL {
                 // get the name to be used for the cache file associated with the request
                 $cache_file = $this->_get_cache_file_name($request);
 
-                // if cache file exists and is not expired
-                if (file_exists($cache_file) && filemtime($cache_file) + $this->cache['lifetime'] > time()) {
+                // if cache file exists, is not expired and we have a callback
+                if ($request['callback'] != '' && file_exists($cache_file) && filemtime($cache_file) + $this->cache['lifetime'] > time()) {
 
-                    // if we have a callback
-                    if ($request['callback'] != '') {
+                    $data = file_get_contents($cache_file);
+
+                    if ($data !== false && $this->cache['compress']) $data = @gzuncompress($data);
+
+                    // cached results are plain stdClass objects; refuse to instantiate anything else from the cache file
+                    if ($data !== false)
+                        $data = PHP_VERSION_ID >= 70000 ? unserialize($data, array('allowed_classes' => array('stdClass'))) : unserialize($data);
+
+                    // a corrupt/truncated cache file is treated as a cache miss and the request is made again
+                    if ($data instanceof stdClass) {
 
                         // prepare the arguments to pass to the callback function
                         $arguments = array_merge(
 
                             // made of the result from the cache file...
-                            array(unserialize($this->cache['compress'] ? gzuncompress(file_get_contents($cache_file)) : file_get_contents($cache_file))),
+                            array($data),
 
                             // ...and any additional arguments (minus the first 2)
                             (array)$request['arguments']
@@ -2985,11 +2993,17 @@ class Zebra_cURL {
                         // get the name of the cache file associated with the request
                         $cache_file = $this->_get_cache_file_name($request);
 
-                        // cache the result
-                        file_put_contents($cache_file, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result));
+                        // write to a temporary file and rename it into place so that concurrent readers never see a partially written cache file
+                        $temporary_file = $cache_file . '.' . getmypid() . '.tmp';
 
-                        // set rights on the file
-                        chmod($cache_file, intval($this->cache['chmod'], 8));
+                        // once file is written successfully
+                        if (file_put_contents($temporary_file, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result), LOCK_EX) !== false) {
+
+                            // set rights on the file and rename
+                            chmod($temporary_file, intval($this->cache['chmod'], 8));
+                            rename($temporary_file, $cache_file);
+
+                        }
 
                     }
 
