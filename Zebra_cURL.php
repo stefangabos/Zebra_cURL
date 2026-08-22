@@ -2504,6 +2504,47 @@ class Zebra_cURL {
     }
 
     /**
+     *  Returns the cURL options to use for a request: the instance-level options set via {@link option()} merged with
+     *  the request's own options, where request options win and a `null` value removes the option.
+     *
+     *  Instance-level options are left untouched so that a request's options do not leak into subsequent requests.
+     *
+     *  @param  array<mixed>    $request    A request, as stored in the internal queue.
+     *
+     *  @return array<mixed>
+     *
+     *  @access private
+     */
+    private function _get_request_options($request) {
+
+        $options = $this->options;
+
+        // request options override instance options; null removes an option
+        foreach ($request['options'] as $key => $value) {
+            if (is_null($value)) unset($options[$key]);
+            else $options[$key] = $value;
+        }
+
+        // in some cases, CURLOPT_HTTPAUTH and CURLOPT_USERPWD need to be set as last options in order to work
+        foreach (array(CURLOPT_USERPWD, CURLOPT_HTTPAUTH) as $key) {
+            if (array_key_exists($key, $options)) {
+                $value = $options[$key];
+                unset($options[$key]);
+                $options[$key] = $value;
+            }
+        }
+
+        // make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
+        if (isset($options[CURLOPT_POSTFIELDS]) && is_array($options[CURLOPT_POSTFIELDS]))
+            foreach ($options[CURLOPT_POSTFIELDS] as $key => $value)
+                if (is_array($value))
+                    $options[CURLOPT_POSTFIELDS][$key] = http_build_query($value, '', '&');
+
+        return $options;
+
+    }
+
+    /**
      *  Parse response headers.
      *
      *  It parses a string containing one or more HTTP headers and returns an array of headers where each entry also
@@ -3028,40 +3069,12 @@ class Zebra_cURL {
                 $request['file_handler'] = fopen($request['file_name'], 'w+');
 
                 // tell libcurl to use the file for streaming the download
-                $this->option(CURLOPT_FILE, $request['file_handler']);
+                $request['options'][CURLOPT_FILE] = $request['file_handler'];
 
             }
-
-            // set request's options
-            foreach ($request['options'] as $key => $value) $this->option($key, $value);
-
-            // in some cases, CURLOPT_HTTPAUTH and CURLOPT_USERPWD need to be set as last options in order to work
-            $options_to_be_set_last = array(10005, 107);
-
-            // iterate through all the options
-            foreach ($this->options as $key => $value) {
-
-                // if this option is one of those to be set at the end
-                if (in_array($key, $options_to_be_set_last)) {
-
-                    // remove the option from where it is
-                    unset($this->options[$key]);
-
-                    // add option at the end
-                    $this->options[$key] = $value;
-
-                }
-
-            }
-
-            // make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
-            if (isset($this->options[CURLOPT_POSTFIELDS]) && is_array($this->options[CURLOPT_POSTFIELDS]))
-                foreach ($this->options[CURLOPT_POSTFIELDS] as $key => $value)
-                    if (is_array($value))
-                        $this->options[CURLOPT_POSTFIELDS][$key] = http_build_query($value, '', '&');
 
             // set options for the handle
-            curl_setopt_array($handle, $this->options);
+            curl_setopt_array($handle, $this->_get_request_options($request));
 
             // add the normal handle to the multi handle
             curl_multi_add_handle($this->_multi_handle, $handle);
