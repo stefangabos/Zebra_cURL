@@ -2497,31 +2497,6 @@ class Zebra_cURL {
     }
 
     /**
-     *  Returns the currently set options in "human-readable" format.
-     *
-     *  @return string  Returns the set options in "human-readable" format.
-     *
-     *  @access private
-     */
-    private function _debug() {
-
-        $result = '';
-
-        // iterate through the defined constants
-        foreach (get_defined_constants() as $name => $number)
-
-            // iterate through the set options
-            foreach ($this->options as $index => $value)
-
-                // if this is a curl-related constant and it is one of the options that are set, add it to the result
-                if (substr($name, 0, 7) == 'CURLOPT' && $number == $index) $result .= str_pad($index, 5, ' ', STR_PAD_LEFT) . ' ' . $name . ' => ' . var_export($value, true) . '<br>';
-
-        // return the result
-        return $result;
-
-    }
-
-    /**
      *  Returns the cache file name associated with a specific request.
      *
      *  The name is derived from the URL and from the full set of cURL options the request is made with - instance-level
