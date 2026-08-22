@@ -2558,22 +2558,27 @@ class Zebra_cURL {
             else $options[$key] = $value;
         }
 
-        // in some cases, CURLOPT_HTTPAUTH and CURLOPT_USERPWD need to be set as last options in order to work
-        foreach (array(CURLOPT_USERPWD, CURLOPT_HTTPAUTH) as $key) {
-            if (array_key_exists($key, $options)) {
-                $value = $options[$key];
-                unset($options[$key]);
-                $options[$key] = $value;
-            }
-        }
-
         // make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
         if (isset($options[CURLOPT_POSTFIELDS]) && is_array($options[CURLOPT_POSTFIELDS]))
             foreach ($options[CURLOPT_POSTFIELDS] as $key => $value)
                 if (is_array($value))
                     $options[CURLOPT_POSTFIELDS][$key] = http_build_query($value, '', '&');
 
-        return $options;
+        // libcurl changes the request method as a side effect of each of these options (CURLOPT_POSTFIELDS switches to
+        // POST, CURLOPT_POST set to 0 switches back to GET, etc.) so they are applied first, in this exact order,
+        // regardless of the order they were given in
+        $first = array(CURLOPT_HTTPGET, CURLOPT_NOBODY, CURLOPT_POST, CURLOPT_POSTFIELDS);
+
+        // in some cases, CURLOPT_HTTPAUTH and CURLOPT_USERPWD need to be set as last options in order to work
+        $last = array(CURLOPT_USERPWD, CURLOPT_HTTPAUTH);
+
+        $result = array();
+
+        foreach ($first as $key) if (array_key_exists($key, $options)) $result[$key] = $options[$key];
+        foreach ($options as $key => $value) if (!in_array($key, $first) && !in_array($key, $last)) $result[$key] = $value;
+        foreach ($last as $key) if (array_key_exists($key, $options)) $result[$key] = $options[$key];
+
+        return $result;
 
     }
 
