@@ -644,6 +644,10 @@ class Zebra_cURL {
      *
      *  @since 1.3.3
      *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
+     *
      *  @return void
      */
     public function delete($urls, $callback = '') {
@@ -820,6 +824,10 @@ class Zebra_cURL {
      *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
+     *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
      *
      *  @return void
      */
@@ -1034,6 +1042,10 @@ class Zebra_cURL {
      *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
+     *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
      *
      *  @return void
      */
@@ -1258,8 +1270,9 @@ class Zebra_cURL {
      *                                                          the result's code (i.e. `0`)
      *                                                          </li></ul></li></ul>
      *
-     *  >   If the callback function returns FALSE  while {@link cache caching} is enabled, the library will not cache
-     *      the respective request, making it easy to retry failed requests without having to clear all cache.
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
      *
      *  @return void
      */
@@ -1378,6 +1391,10 @@ class Zebra_cURL {
      *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
+     *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
      *
      *  @return void
      */
@@ -1652,6 +1669,10 @@ class Zebra_cURL {
      *
      *  @since 1.6.0
      *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
+     *
      *  @return void
      */
     public function patch($urls, $callback = '') {
@@ -1868,6 +1889,10 @@ class Zebra_cURL {
      *  @param  mixed       $callback       (Optional) Callback function to be called as soon as the request finishes.
      *
      *                                      Read full description of the argument at the {@link get} method.
+     *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
      *
      *  @return void
      */
@@ -2105,6 +2130,10 @@ class Zebra_cURL {
      *                                      Read full description of the argument at the {@link get} method.
      *
      *  @since 1.3.3
+     *
+     *  >   If the callback function returns FALSE while {@link cache caching} is enabled, or if cURL reported an error
+     *      for the request, the library will not cache the respective request, making it easy to retry failed requests
+     *      without having to clear all cache.
      *
      *  @return void
      */
