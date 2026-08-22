@@ -2599,11 +2599,24 @@ class Zebra_cURL {
             else $options[$key] = $value;
         }
 
-        // make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
-        if (isset($options[CURLOPT_POSTFIELDS]) && is_array($options[CURLOPT_POSTFIELDS]))
-            foreach ($options[CURLOPT_POSTFIELDS] as $key => $value)
-                if (is_array($value))
-                    $options[CURLOPT_POSTFIELDS][$key] = http_build_query($value, '', '&');
+        // cURL cannot handle nested arrays in CURLOPT_POSTFIELDS, so we need to flatten them to PHP-style keys
+        // (i.e. 'a' => array('b' => 1, 'c' => array(2, 3)) becomes 'a[b]' => 1, 'a[c][0]' => 2, 'a[c][1]' => 3) which the
+        // receiving side turns back into the original nested array
+        if (isset($options[CURLOPT_POSTFIELDS]) && is_array($options[CURLOPT_POSTFIELDS])) {
+
+            $flatten = function($fields, $prefix = '') use (&$flatten) {
+                $result = array();
+                foreach ($fields as $key => $value) {
+                    $name = $prefix === '' ? $key : $prefix . '[' . $key . ']';
+                    if (is_array($value)) foreach ($flatten($value, $name) as $nested_name => $nested_value) $result[$nested_name] = $nested_value;
+                    else $result[$name] = $value;
+                }
+                return $result;
+            };
+
+            $options[CURLOPT_POSTFIELDS] = $flatten($options[CURLOPT_POSTFIELDS]);
+
+        }
 
         // libcurl changes the request method as a side effect of each of these options (CURLOPT_POSTFIELDS switches to
         // POST, CURLOPT_POST set to 0 switches back to GET, etc.) so they are applied first, in this exact order,
