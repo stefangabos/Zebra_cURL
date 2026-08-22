@@ -423,6 +423,17 @@ class Zebra_cURL {
     }
 
     /**
+     *  Closes the multi handle, and with it any connections still open, when the object is destroyed.
+     *
+     *  @return void
+     */
+    public function __destruct() {
+
+        if ($this->_multi_handle) curl_multi_close($this->_multi_handle);
+
+    }
+
+    /**
      *  Enables caching of request results.
      *
      *  >   Note that in case of downloads, only the actual request is cached and not the associated downloads
@@ -2534,8 +2545,8 @@ class Zebra_cURL {
         foreach ($options as $key => $value)
             if (is_null($value) || $value === '' || is_resource($value)) unset($options[$key]);
 
-        // callback, arguments and the file name/handle used for downloads are not part of the key
-        $request = array_diff_key($request, array('callback' => '', 'arguments' => '', 'file_name' => '', 'file_handler' => ''));
+        // callback, arguments, the file name/handle used for downloads and the cache file name itself are not part of the key
+        $request = array_diff_key($request, array('callback' => '', 'arguments' => '', 'file_name' => '', 'file_handler' => '', 'cache_file' => ''));
 
         $request['options'] = $options;
 
@@ -2807,7 +2818,8 @@ class Zebra_cURL {
             if ($this->cache !== false) {
 
                 // get the name to be used for the cache file associated with the request
-                $cache_file = $this->_get_cache_file_name($request);
+                // (and keep it with the request so that it is not computed again when the result is to be cached)
+                $cache_file = $this->_requests[$index]['cache_file'] = $this->_get_cache_file_name($request);
 
                 // if cache file exists, is not expired and we have a callback
                 if ($request['callback'] != '' && file_exists($cache_file) && filemtime($cache_file) + $this->cache['lifetime'] > time()) {
@@ -2851,9 +2863,10 @@ class Zebra_cURL {
         // if there are any requests to process
         if (!empty($this->_requests)) {
 
-            // initialize the multi handle
-            // this will allow us to process multiple handles in parallel
-            $this->_multi_handle = curl_multi_init();
+            // initialize the multi handle, unless already initialized by a previous call
+            // this will allow us to process multiple handles in parallel and, since it is kept for the lifetime of the
+            // object, connections are reused across calls (and across batches when pausing between them)
+            if (!$this->_multi_handle) $this->_multi_handle = curl_multi_init();
 
             // queue the first batch of requests
             // (as many as defined by the "threads" property, or less if there aren't as many requests)
@@ -2892,6 +2905,7 @@ class Zebra_cURL {
 
                     // close the multi curl handle
                     curl_multi_close($this->_multi_handle);
+                    $this->_multi_handle = false;
 
                     // trigger an error and stop execution
                     trigger_error('cURL multi handle error: ' . (function_exists('curl_multi_strerror') ? curl_multi_strerror($status) : $status), E_USER_ERROR);
@@ -2907,11 +2921,8 @@ class Zebra_cURL {
                     // get content associated with the handle
                     $content = curl_multi_getcontent($handle);
 
-                    // if PHP 8+, we know the handle's ID because we stored a randomly generated one in this map when we called curl_init
-                    if (PHP_MAJOR_VERSION >= 8) $resource_number = key(array_filter($this->_running_map, function($value) use ($handle) { return $value === $handle; }));
-
-                    // for PHP 7 and below, get the handle's ID
-                    else $resource_number = preg_replace('/Resource id #/', '', $handle);
+                    // get the handle's ID - the same way it was computed when the request was queued
+                    $resource_number = PHP_MAJOR_VERSION < 8 ? (int)$handle : spl_object_id($handle);
 
                     // get the information associated with the request
                     $request = $this->_running[$resource_number];
@@ -3035,7 +3046,7 @@ class Zebra_cURL {
                     if ($this->cache !== false && $callback_response !== false && $result->response[1] == CURLE_OK) {
 
                         // get the name of the cache file associated with the request
-                        $cache_file = $this->_get_cache_file_name($request);
+                        $cache_file = isset($request['cache_file']) ? $request['cache_file'] : $this->_get_cache_file_name($request);
 
                         // write to a temporary file and rename it into place so that concurrent readers never see a partially written cache file
                         $temporary_file = $cache_file . '.' . getmypid() . '.tmp';
@@ -3075,13 +3086,10 @@ class Zebra_cURL {
 
                 // waits until curl_multi_exec() returns CURLM_CALL_MULTI_PERFORM or until the timeout, whatever happens first
                 // call usleep() if a select returns -1 - workaround for PHP bug: https://bugs.php.net/bug.php?id=61141
-                if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(100);
+                if ($running && curl_multi_select($this->_multi_handle) === -1) usleep(1000);
 
             // as long as there are threads running or requests waiting in the queue
             } while ($running || !empty($this->_running));
-
-            // close the multi curl handle
-            curl_multi_close($this->_multi_handle);
 
         }
 
@@ -3140,8 +3148,8 @@ class Zebra_cURL {
             $handle = curl_init($request['url']);
 
             // get the handle's ID
-            // (if PHP 8+ we generate a random one because $handle is no longer a "Resource" but a "CurlHandle")
-            $resource_number = PHP_MAJOR_VERSION < 8 ? preg_replace('/Resource id #/', '', $handle) : uniqid('', true);
+            // (the resource ID for PHP 7 and below, the object ID for PHP 8+ where $handle is a "CurlHandle" object)
+            $resource_number = PHP_MAJOR_VERSION < 8 ? (int)$handle : spl_object_id($handle);
 
             // if we're downloading something
             if (isset($request['download']) && $request['download']) {
