@@ -2480,23 +2480,27 @@ class Zebra_cURL {
     /**
      *  Returns the cache file name associated with a specific request.
      *
+     *  The name is derived from the URL and from the full set of cURL options the request is made with - instance-level
+     *  options (cookies, headers, authentication, proxy, etc.) merged with the request's own options.
+     *
      *  @param  array<mixed>    $request    The request for which to return the associated cache file name.
      *
-     *  @return string  Returns the set options in "human-readable" format.
+     *  @return string  Returns the path and name of the cache file associated with the request.
      *
      *  @access private
      */
     private function _get_cache_file_name($request) {
 
-        // iterate through the options associated with the request
-        foreach ($request['options'] as $key => $value)
+        $options = $this->_get_request_options($request);
 
-            // ...and remove null or empty values
-            if (is_null($value) || $value == '') unset($request['options'][$key]);
+        // remove empty values and values that cannot be part of the key (the file handle used for downloads)
+        foreach ($options as $key => $value)
+            if (is_null($value) || $value === '' || is_resource($value)) unset($options[$key]);
 
-        // remove some entries associated with the request
-        // callback, arguments and the associated file handler (where it is the case) are not needed
-        $request = array_diff_key($request, array('callback' => '', 'arguments' => '', 'file_handler' => ''));
+        // callback, arguments and the file name/handle used for downloads are not part of the key
+        $request = array_diff_key($request, array('callback' => '', 'arguments' => '', 'file_name' => '', 'file_handler' => ''));
+
+        $request['options'] = $options;
 
         // return the path and name of the file name associated with the request
         return rtrim($this->cache['path'], '/') . '/' . md5(serialize($request));
