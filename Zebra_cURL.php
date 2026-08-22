@@ -1288,7 +1288,7 @@ class Zebra_cURL {
             // add each URL and associated properties to the "_requests" property
             $this->_requests[] = array(
 
-                'url'       =>  $values['url'] . (isset($values['data']) ? '?' . (is_array($values['data']) ? http_build_query($values['data']) : $values['data']) : ''),
+                'url'       =>  $values['url'] . (isset($values['data']) ? (strpos($values['url'], '?') === false ? '?' : '&') . (is_array($values['data']) ? http_build_query($values['data']) : $values['data']) : ''),
 
                 // merge any custom options with the default ones
                 'options'   =>
