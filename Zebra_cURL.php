@@ -2965,17 +2965,9 @@ class Zebra_cURL {
                         '';
 
                     // if _htmlentities is set to TRUE, we're not doing a binary transfer and we have a body, run htmlentities() on it
-                    if ($this->_htmlentities && (!isset($request['download']) || !$request['download']) && $result->body != '') {
-
-                        // since PHP 5.3.0, htmlentities will return an empty string if the input string contains an
-                        // invalid code unit sequence within the given encoding (utf-8 in our case)
-                        // so take care of that
-                        if (defined('ENT_IGNORE')) $result->body = htmlentities($result->body, ENT_IGNORE, 'utf-8');
-
-                        // for PHP versions lower than 5.3.0
-                        else htmlentities($result->body);
-
-                    }
+                    // ENT_IGNORE because htmlentities returns an empty string if the input contains an invalid utf-8 sequence
+                    if ($this->_htmlentities && (!isset($request['download']) || !$request['download']) && $result->body != '')
+                        $result->body = htmlentities($result->body, ENT_IGNORE, 'utf-8');
 
                     // get cURL's response code, its name and the human readable error message (an empty string on success)
                     // result codes newer than our list of names fall back to curl_strerror()
