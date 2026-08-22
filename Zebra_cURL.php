@@ -1982,7 +1982,7 @@ class Zebra_cURL {
     }
 
     /**
-     *  Instructs the library to tunnel all requests through a proxy server.
+     *  Instructs the library to make all requests through a proxy server.
      *
      *  <code>
      *  // instantiate the class
@@ -2023,7 +2023,7 @@ class Zebra_cURL {
      *  });
      *  </code>
      *
-     *  @param  string      $proxy      The HTTP proxy to tunnel requests through.
+     *  @param  string      $proxy      The HTTP proxy to make requests through.
      *
      *                                  Can be an URL or an IP address.
      *
@@ -2057,25 +2057,29 @@ class Zebra_cURL {
      *                                  and setting `CURLOPT_PROXYUSERPWD` to the desired value formatted like
      *                                  `[username]:[password]`.*
      *
+     *  @param  boolean     $tunnel     (Optional) Whether to tunnel *all* requests through the proxy using the HTTP
+     *                                  `CONNECT` method (`CURLOPT_HTTPPROXYTUNNEL`), making the proxy a blind relay.
+     *
+     *                                  HTTPS requests are always tunneled, regardless of this setting. For plain HTTP
+     *                                  requests the default is to let the proxy handle them as an HTTP proxy, because
+     *                                  many proxies refuse `CONNECT` to anything but port 443.
+     *
+     *                                  Default is `FALSE`.
+     *
      *  @return void
      */
-    public function proxy($proxy, $port = 80, $username = '', $password = '') {
+    public function proxy($proxy, $port = 80, $username = '', $password = '', $tunnel = false) {
 
         // if not disabled
         if ($proxy) {
 
             // set the required options
             $this->option(array(
-                CURLOPT_HTTPPROXYTUNNEL     =>  1,
+                CURLOPT_HTTPPROXYTUNNEL     =>  $tunnel ? 1 : null,
                 CURLOPT_PROXY               =>  $proxy,
                 CURLOPT_PROXYPORT           =>  $port,
+                CURLOPT_PROXYUSERPWD        =>  $username != '' ? $username . ':' . $password : null,
             ));
-
-            // if a username is also specified
-            if ($username != '')
-
-                // set authentication values
-                $this->option(CURLOPT_PROXYUSERPWD, $username . ':' . $password);
 
         // if disabled
         } else
@@ -2085,6 +2089,7 @@ class Zebra_cURL {
                 CURLOPT_HTTPPROXYTUNNEL     =>  null,
                 CURLOPT_PROXY               =>  null,
                 CURLOPT_PROXYPORT           =>  null,
+                CURLOPT_PROXYUSERPWD        =>  null,
             ));
 
     }
@@ -2948,7 +2953,7 @@ class Zebra_cURL {
                     $append = array('original_url' => $request['url']);
 
                     // if a proxy was used
-                    if (isset($this->options[CURLOPT_HTTPPROXYTUNNEL]) && $this->options[CURLOPT_HTTPPROXYTUNNEL]) {
+                    if (!empty($this->options[CURLOPT_PROXY])) {
 
                         // add proxy related information
                         $append['proxy'] = $this->options[CURLOPT_PROXY];
