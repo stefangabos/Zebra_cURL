@@ -284,7 +284,12 @@ class Zebra_cURL {
      *
      *  -   `CURLOPT_FOLLOWLOCATION`    -   TRUE to follow any *"Location:"* header that the server sends as part of the
      *                                      HTTP header (note this is recursive, PHP will follow as many *"Location:"*
-     *                                      headers that it is sent, unless `CURLOPT_MAXREDIRS` is set - see below)<br>
+     *                                      headers that it is sent, unless `CURLOPT_MAXREDIRS` is set - see below).<br>
+     *                                      because redirects are followed by default, the result of a request is that
+     *                                      of the *final* URL; the URL the request was made to is available as
+     *                                      `info['original_url']`, the final one as `info['url']`, and the headers of
+     *                                      each hop in `headers['responses']`. set this to `FALSE` through the
+     *                                      {@link option} method to get the redirect response itself instead<br>
      *                                      default: `TRUE`
      *
      *  -   `CURLOPT_HEADER`            -   TRUE to include the header in the output<br>
