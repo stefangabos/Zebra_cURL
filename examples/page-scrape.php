@@ -14,7 +14,8 @@ elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not fou
 require '../Zebra_cURL.php';
 
 // instantiate the Zebra_cURL class
-$curl = new Zebra_cURL();
+// (TRUE so that the scraped page's HTML is shown as source, run through htmlentities(), rather than rendered by the browser)
+$curl = new Zebra_cURL(true);
 
 // cache results 3600 seconds
 $curl->cache('cache', 3600);
