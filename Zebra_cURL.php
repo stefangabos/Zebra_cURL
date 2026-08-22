@@ -492,7 +492,8 @@ class Zebra_cURL {
      *                                  *If set to a non-existing path, the library will try to create the folder
      *                                  and will trigger an error if, for whatever reasons, it is unable to do so. If the
      *                                  folder can be created, its permissions will be set to the value of the $chmod
-     *                                  argument.*
+     *                                  argument plus the execute bit wherever the read bit is set (i.e. `0644` gives
+     *                                  `0755` for the folder), as folders need it to be traversable.*
      *
      *  @param  integer     $lifetime   (Optional) The number of seconds after which cache will be considered expired.
      *
@@ -506,7 +507,8 @@ class Zebra_cURL {
      *
      *  @param  integer     $chmod      (Optional) The file system permissions to be set for newly created cache files.
      *
-     *                                  I suggest using the value `0755` but, if you know what you are doing, here is how
+     *                                  I suggest using the value `0644` (or `0600` if cached responses are not meant
+     *                                  for other users of the system) but, if you know what you are doing, here is how
      *                                  you can calculate the permission levels:
      *
      *                                  - 400 Owner Read
@@ -519,17 +521,21 @@ class Zebra_cURL {
      *                                  - 2 Global Write
      *                                  - 1 Global Execute
      *
-     *                                  Default is `0755`.
+     *                                  Default is `0644`.
      *
      *  @return void
      */
-    public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0755) {
+    public function cache($path, $lifetime = 3600, $compress = true, $chmod = 0644) {
 
         // if caching is not explicitly disabled
         if ($path !== false) {
 
+            // accept permissions given as a string as well (i.e. '0644'), normalize to an integer
+            $chmod = intval($chmod, 8);
+
             // if path doesn't exist, attempt to create it
-            if (!is_dir($path)) @mkdir($path, $chmod, true);
+            // folders get the execute bit wherever the read bit is set, or they would not be traversable
+            if (!is_dir($path)) @mkdir($path, $chmod | (($chmod & 0444) >> 2), true);
 
             // save cache-related properties
             $this->cache = array(
@@ -571,6 +577,9 @@ class Zebra_cURL {
 
             // if file could be create, release handle
             fclose($handle);
+
+            // cookies usually hold session identifiers, make the file readable by the owner only
+            chmod($path, 0600);
 
         }
 
@@ -3057,7 +3066,7 @@ class Zebra_cURL {
                         if (file_put_contents($temporary_file, $this->cache['compress'] ? gzcompress(serialize($result)) : serialize($result), LOCK_EX) !== false) {
 
                             // set rights on the file and rename
-                            chmod($temporary_file, intval($this->cache['chmod'], 8));
+                            chmod($temporary_file, $this->cache['chmod']);
                             rename($temporary_file, $cache_file);
 
                         }
