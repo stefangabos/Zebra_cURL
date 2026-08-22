@@ -79,7 +79,7 @@ class Zebra_cURL {
      * Used by the {@link _process} method to determine whether to run processed requests' bodies through PHP's
      * {@link https://php.net/manual/en/function.htmlentities.php htmlentities} function.
      *
-     * Default is TRUE. Can be changed by instantiating the library with the FALSE argument.
+     * Default is FALSE. Can be changed by instantiating the library with the TRUE argument.
      *
      * @var boolean
      * @access private
@@ -325,15 +325,16 @@ class Zebra_cURL {
      *                                      set your own through the {@link option} method if a different one is needed
      *
      *  @param  boolean $htmlentities       (Optional) Instructs the script whether the response body returned by the
-     *                                      {@link get} and {@link post} methods should be run through PHP's
-     *                                      {@link https://php.net/manual/en/function.htmlentities.php htmlentities}
-     *                                      function.
+     *                                      {@link get}, {@link post} and the other request methods should be run through
+     *                                      PHP's {@link https://php.net/manual/en/function.htmlentities.php htmlentities}
+     *                                      function. Useful when the body is to be output as-is in an HTML page; leave
+     *                                      it off when the response is meant to be processed (JSON, XML, binary, etc.)
      *
-     *                                      Default is `TRUE`
+     *                                      Default is `FALSE`
      *
      *  @return void
      */
-    public function __construct($htmlentities = true) {
+    public function __construct($htmlentities = false) {
 
         // if the cURL extension is not available, trigger an error and stop execution
         if (!extension_loaded('curl')) trigger_error('php_curl extension is not loaded', E_USER_ERROR);
@@ -1284,7 +1285,7 @@ class Zebra_cURL {
      *
      *                                      -   `body`      -   the response of the request (the content of the page at
      *                                                          the URL).<br><br>
-     *                                                          >   Unless disabled via the {@link __construct() constructor},
+     *                                                          >   If enabled via the {@link __construct() constructor},
      *                                                              all applicable characters will be converted to HTML entities
      *                                                              via PHP's {@link https://php.net/manual/en/function.htmlentities.php htmlentities}
      *                                                              function, so remember to use PHP's
