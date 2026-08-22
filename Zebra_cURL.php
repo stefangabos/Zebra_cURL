@@ -97,7 +97,7 @@ class Zebra_cURL {
     /**
      *  The cURL multi handle
      *
-     *  @var resource|boolean
+     *  @var \CurlMultiHandle|resource|false
      *  @access private
      */
     private $_multi_handle;
@@ -120,9 +120,9 @@ class Zebra_cURL {
     private $_running;
 
     /**
-     *  As of PHP 8 we use an extra map as a helper.
+     *  The cURL handles of the currently running requests, indexed the same way as {@link _running}.
      *
-     *  @var array<string>
+     *  @var array<mixed>
      *  @access private
      */
     private $_running_map;
@@ -2871,8 +2871,35 @@ class Zebra_cURL {
                 // get status update
                 while (($status = curl_multi_exec($this->_multi_handle, $running)) == CURLM_CALL_MULTI_PERFORM);
 
-                // if no request has finished yet, keep looping
-                if ($status != CURLM_OK) break;
+                // on a multi-handle error (out of memory, internal error, etc.) release everything and bail out
+                if ($status != CURLM_OK) {
+
+                    // iterate through the requests that are currently running
+                    foreach ($this->_running_map as $resource_number => $handle) {
+
+                        // detach the request's handle from the multi handle and close it
+                        curl_multi_remove_handle($this->_multi_handle, $handle);
+                        curl_close($handle);
+
+                        // get the request associated with the handle
+                        $request = $this->_running[$resource_number];
+
+                        // if the request was a download, close the file it was streaming to
+                        if (isset($request['download']) && $request['download'] && is_resource($request['file_handler']))
+                            fclose($request['file_handler']);
+
+                    }
+
+                    // forget about running requests and about requests still waiting in the queue
+                    $this->_running = $this->_running_map = $this->_requests = array();
+
+                    // close the multi curl handle
+                    curl_multi_close($this->_multi_handle);
+
+                    // trigger an error and stop execution
+                    trigger_error('cURL multi handle error: ' . (function_exists('curl_multi_strerror') ? curl_multi_strerror($status) : $status), E_USER_ERROR);
+
+                }
 
                 // if a request was just completed, we'll have to find out which one
                 while ($info = curl_multi_info_read($this->_multi_handle)) {
@@ -3164,8 +3191,8 @@ class Zebra_cURL {
             // add the normal handle to the multi handle
             curl_multi_add_handle($this->_multi_handle, $handle);
 
-            // if PHP 8+ this is how we keep track of the running requests
-            if (PHP_MAJOR_VERSION >= 8) $this->_running_map[$resource_number] = $handle;
+            // keep track of the cURL handle associated with the running request
+            $this->_running_map[$resource_number] = $handle;
 
             // add request to the list of running requests
             $this->_running[$resource_number] = $request;
