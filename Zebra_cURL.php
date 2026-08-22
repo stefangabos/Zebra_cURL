@@ -51,6 +51,8 @@ class Zebra_cURL {
      *  by the {@link threads} property and then wait for {@link pause_interval} seconds before processing the next
      *  batch of requests.
      *
+     *  Values lower than `1` are treated as `1`.
+     *
      *  Default is `10`
      *
      *  @var integer
@@ -3076,7 +3078,7 @@ class Zebra_cURL {
         while (!empty($urls)) {
 
             // get from the entire list of requests as many as specified by the "threads" property
-            $this->_requests = array_splice($urls, 0, $this->threads, array());
+            $this->_requests = array_splice($urls, 0, max(1, (int)$this->threads), array());
 
             // process those requests
             $this->_process();
@@ -3103,7 +3105,7 @@ class Zebra_cURL {
         $requests_count = count($this->_requests);
 
         // iterate through the items in the queue
-        for ($i = 0; $i < ($requests_count < $this->threads ? $requests_count : $this->threads); $i++) {
+        for ($i = 0; $i < min($requests_count, max(1, (int)$this->threads)); $i++) {
 
             // remove the first request from the queue
             $request = array_shift($this->_requests);
