@@ -2951,7 +2951,7 @@ class Zebra_cURL {
                     } else $callback_response = true;
 
                     // if caching is enabled and the callback function did not return FALSE nor did the cURL request returned an error
-                    if ($this->cache !== false && ($callback_response !== false || $result->response[0] > 0)) {
+                    if ($this->cache !== false && $callback_response !== false && $result->response[1] == CURLE_OK) {
 
                         // get the name of the cache file associated with the request
                         $cache_file = $this->_get_cache_file_name($request);
