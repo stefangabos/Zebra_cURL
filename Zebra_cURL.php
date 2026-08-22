@@ -1773,14 +1773,14 @@ class Zebra_cURL {
      *  });
      *  </code>
      *
-     *  When uploading a file, we need to prefix the file name with `@`
+     *  When uploading a file, pass a {@link https://php.net/manual/en/class.curlfile.php CURLFile} object as the value
      *
      *  <code>
      *  $curl->post(array(
      *      'https://www.somewebsite.com'  =>  array(
      *          'data_1'  =>  'value 1',
      *          'data_2'  =>  'value 2',
-     *          'data_3'  =>  '@absolute/path/to/file.ext',
+     *          'data_3'  =>  new CURLFile('/absolute/path/to/file.ext'),
      *  ), 'mycallback');
      *  </code>
      *
@@ -1849,22 +1849,16 @@ class Zebra_cURL {
      *                                      ));
      *                                      </code>
      *
-     *                                      To post a file, prepend the filename with `@` and use the full server path.
-     *
-     *                                      For PHP 5.5+ files are uploaded using {@link https://php.net/manual/ro/class.curlfile.php CURLFile}
-     *                                      and `{@link https://wiki.php.net/rfc/curl-file-upload CURLOPT_SAFE_UPLOAD}`
-     *                                      will be set to `TRUE`.
-     *
-     *                                      For lower PHP versions, files will be uploaded the *old* way and the file's
-     *                                      mime type should be explicitly specified by following the filename with the
-     *                                      type in the format `';type=mimetype'` as most of the times cURL will send the
-     *                                      wrong mime type...
+     *                                      To post a file, pass a {@link https://php.net/manual/en/class.curlfile.php CURLFile}
+     *                                      object as the value. Values are never interpreted as file paths, so a string
+     *                                      starting with `@` is sent as-is (`{@link https://wiki.php.net/rfc/curl-file-upload CURLOPT_SAFE_UPLOAD}`
+     *                                      is always `TRUE`).
      *
      *                                      <code>
      *                                      $curl->post(array('https://address.com' => array(
      *                                          'data_1'  =>  'value 1',
      *                                          'data_2'  =>  'value 2',
-     *                                          'data_3'  =>  '@absolute/path/to/file.ext',
+     *                                          'data_3'  =>  new CURLFile('/absolute/path/to/file.ext'),
      *                                      )));
      *                                      </code>
      *
@@ -2687,27 +2681,6 @@ class Zebra_cURL {
             $urls = array(array('url' => $urls));
 
         }
-
-        // walk recursively through the array
-        array_walk_recursive($urls, function(&$value) {
-
-            // if we have to upload a file
-            if (strpos($value, '@') === 0) {
-
-                // if PHP version is 5.5+
-                if (version_compare(PHP_VERSION, '5.5') >= 0) {
-
-                    // remove the @ from the name
-                    $file = substr($value, 1);
-
-                    // use CURLFile to prepare the file
-                    $value = new CURLFile($file);
-
-                }
-
-            }
-
-        });
 
         // return the normalized array
         return $urls;
