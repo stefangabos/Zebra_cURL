@@ -310,9 +310,9 @@ class Zebra_cURL {
      *  -   `CURLOPT_TIMEOUT`           -   the maximum number of seconds to allow cURL functions to execute<br>
      *                                      default: `10`
      *
-     *  -   `CURLOPT_USERAGENT`         -   a (slightly) random user agent (Internet Explorer 9 or 10, on Windows Vista,
-     *                                      7 or 8, with other extra strings). Some web services will not respond unless
-     *                                      a valid user-agent string is provided
+     *  -   `CURLOPT_USERAGENT`         -   the user agent string of a current Chrome browser on Windows, as some web
+     *                                      services will not respond unless a browser-like user-agent string is provided;
+     *                                      set your own through the {@link option} method if a different one is needed
      *
      *  @param  boolean $htmlentities       (Optional) Instructs the script whether the response body returned by the
      *                                      {@link get} and {@link post} methods should be run through PHP's
@@ -377,9 +377,9 @@ class Zebra_cURL {
             // the maximum number of seconds to allow cURL functions to execute before timing out
             CURLOPT_TIMEOUT             =>  30,
 
-            // most services/websites will block requests with no/invalid user agents
-            // note that the user agent string is random and will change whenever the library is instantiated!
-            CURLOPT_USERAGENT           =>  $this->_user_agent(),
+            // most services/websites will block requests with no/non-browser user agents
+            // the string is fixed (not random) so that it can be part of the cache key
+            CURLOPT_USERAGENT           =>  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
 
             // return the transfer as a string of instead of outputting it to the screen
             CURLOPT_RETURNTRANSFER      =>  1,
@@ -3169,42 +3169,6 @@ class Zebra_cURL {
             $this->_running[$resource_number] = $request;
 
         }
-
-    }
-
-    /**
-     *  Generates a (slightly) random user agent (Internet Explorer 9 or 10, on Windows Vista, 7 or 8, with other extra
-     *  strings)
-     *
-     *  Some web services will not respond unless a valid user-agent string is provided.
-     *
-     *  @return string
-     *  @access private
-     */
-    private function _user_agent() {
-
-        // browser version: 9 or 10
-        $version = rand(9, 10);
-
-        // windows version; here are the meanings:
-        // Windows NT 6.2   ->  Windows 8                                       //  can have IE10
-        // Windows NT 6.1   ->  Windows 7                                       //  can have IE9 or IE10
-        // Windows NT 6.0   ->  Windows Vista                                   //  can have IE9
-        $major_version = 6;
-
-        $minor_version =
-
-            // for IE9 Windows can have "0", "1" or "2" as minor version number
-            $version == 9 ? rand(0, 2) :
-
-            // for IE10 Windows will have "2" as major version number
-            2;
-
-        // add some extra information
-        $extras = rand(0, 3);
-
-        // return the random user agent string
-        return 'Mozilla/5.0 (compatible; MSIE ' . $version . '.0; Windows NT ' . $major_version . '.' . $minor_version . ($extras == 1 ? '; WOW64' : ($extras == 2 ? '; Win64; IA64' : ($extras == 3 ? '; Win64; x64' : ''))) . ')';
 
     }
 
