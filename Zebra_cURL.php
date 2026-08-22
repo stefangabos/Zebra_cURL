@@ -2609,6 +2609,9 @@ class Zebra_cURL {
      *  @return mixed               Returns an array of headers where each entry also contains an associative array of
      *                              *name* => *value* for each row of data in the respective header.
      *
+     *                              Header names are returned exactly as sent by the server, i.e. `Content-Type` over
+     *                              HTTP/1.1 but `content-type` over HTTP/2, where header names are always lowercase.
+     *
      *                              If `CURLOPT_HEADER` is set to `FALSE` or `0`, this method will return an empty string.
      *
      *  @access private
@@ -2620,18 +2623,19 @@ class Zebra_cURL {
         // if we have nothing to work with
         if ($headers != '') {
 
-            // split multiple headers by blank lines
-            $headers = preg_split('/^\s*$/m', trim($headers));
+            // split multiple headers by blank lines (header blocks are separated by an empty line, usually "\r\n\r\n")
+            $headers = preg_split('/(\r?\n){2,}/', trim($headers));
+
+            // when called with a second argument we are parsing request headers rather than response headers
+            $first_line_name = func_num_args() == 2 ? 'Request Method: ' : 'Status: ';
 
             // iterate through the headers
             foreach($headers as $index => $header) {
 
-                $arguments_count = func_num_args();
-
                 // get all the lines in the header
-                // lines in headers look like [name] : [value]
+                // lines in headers look like [name]:[optional whitespace][value]
                 // also, the first line, the status, does not have a name, so we add the name now
-                preg_match_all('/^(.*?)\:\s(.*)$/m', ($arguments_count == 2 ? 'Request Method: ' : 'Status: ') . trim($header), $matches);
+                preg_match_all('/^([^:\r\n]+):[ \t]*(.*)$/m', $first_line_name . trim($header), $matches);
 
                 // save results
                 foreach ($matches[0] as $key => $value) {
