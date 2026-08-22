@@ -39,7 +39,7 @@ Your support is greatly appreciated and it keeps me motivated continue working o
 
 ## Requirements
 
-PHP 5.3.0+ with the [cURL extension](https://www.php.net/manual/en/curl.installation.php) enabled.
+PHP 5.4.0+ with the [cURL extension](https://www.php.net/manual/en/curl.installation.php) enabled.
 
 ## Installation
 
