@@ -238,15 +238,6 @@ class Zebra_cURL {
     );
 
     /**
-     *  Stores the result of a call to the {@link scrape} method
-     *
-     *  @var mixed
-     *
-     *  @access private
-     */
-    private $_scrape_result;
-
-    /**
      *  In PHP 8.4 CURLOPT_BINARYTRANSFER was deprecated and it had no effect since PHP 5.1.2
      *  see https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
      *
@@ -2299,6 +2290,9 @@ class Zebra_cURL {
      *                                  >   Note that this method only supports a single URL. For processing multiple URLs
      *                                      at once, see the {@link get() get} method.
      *
+     *                                  >   The request is made immediately even if {@link queue} mode is active; requests
+     *                                      already in the queue are left untouched.
+     *
      *  @param  boolean     $body_only  (Optional) When set to `TRUE`, will instruct the method to return *only* the page's
      *                                  content, without info, headers, responses, etc.
      *
@@ -2318,16 +2312,26 @@ class Zebra_cURL {
         // this method requires the $url argument to be a string
         if (is_array($url)) trigger_error('URL must be a string', E_USER_ERROR);
 
+        // this method is synchronous by nature so the request is made right away even if queue() was called; queue mode
+        // and any already queued requests are set aside and restored afterwards
+        $queue = $this->_queue;
+        $requests = $this->_requests;
+        $this->_queue = false;
+        $this->_requests = array();
+
+        $result = null;
+
         // make the request
-        $this->get($url, function($result) {
-
-            // store result in this private property of the library
-            $this->_scrape_result = $result;
-
+        $this->get($url, function($response) use (&$result) {
+            $result = $response;
         });
 
+        // restore queue
+        $this->_queue = $queue;
+        $this->_requests = $requests;
+
         // return result
-        return $body_only ? $this->_scrape_result->body : $this->_scrape_result;
+        return $body_only ? $result->body : $result;
 
     }
 
@@ -2339,6 +2343,9 @@ class Zebra_cURL {
      *
      *                                  >   Note that this method only supports a single URL. For processing multiple URLs
      *                                      at once, see the {@link get() get} method.
+     *
+     *                                  >   The request is made immediately even if {@link queue} mode is active; requests
+     *                                      already in the queue are left untouched.
      *
      *  @param  boolean     $body_only  (Optional) When set to `TRUE`, will instruct the method to return *only* the page's
      *                                  content, without info, headers, responses, etc.
