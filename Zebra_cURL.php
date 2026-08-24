@@ -2410,10 +2410,21 @@ class Zebra_cURL {
 
         $result = null;
 
-        // make the request
-        $this->get($url, function($response) use (&$result) {
-            $result = $response;
-        });
+        try {
+
+            // make the request
+            $this->get($url, function($response) use (&$result) {
+                $result = $response;
+            });
+
+        } catch (Exception $exception) {
+
+            // restore the queue even if the request throws
+            $this->_queue = $queue;
+            $this->_requests = $requests;
+            throw $exception;
+
+        }
 
         // restore queue
         $this->_queue = $queue;
