@@ -2113,7 +2113,7 @@ class Zebra_cURL {
             ));
 
         // if disabled
-        } else
+        } else {
 
             // unset proxy-related options
             $this->option(array(
@@ -2122,6 +2122,8 @@ class Zebra_cURL {
                 CURLOPT_PROXYPORT           =>  null,
                 CURLOPT_PROXYUSERPWD        =>  null,
             ));
+
+        }
 
     }
 
@@ -2743,7 +2745,7 @@ class Zebra_cURL {
             $first_line_name = func_num_args() == 2 ? 'Request Method: ' : 'Status: ';
 
             // iterate through the headers
-            foreach($headers as $index => $header) {
+            foreach ($headers as $index => $header) {
 
                 // get all the lines in the header
                 // lines in headers look like [name]:[optional whitespace][value]
@@ -3079,7 +3081,7 @@ class Zebra_cURL {
                         ) ? $this->_parse_headers($result->info['request_header'], true) : '';
 
                     // remove request headers information from its previous location
-                    unset($result->info['request_header']);
+                    if (isset($result->info['request_header'])) unset($result->info['request_header']);
 
                     // get headers (unless we were explicitly told not to)
                     $result->headers['responses'] = (isset($request['options'][CURLOPT_HEADER]) && $request['options'][CURLOPT_HEADER] == 1) ?
