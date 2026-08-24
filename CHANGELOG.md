@@ -1,3 +1,38 @@
+## version 2.0.0 (TBA)
+
+**this version contains breaking changes.** in practice, most of them will affect very few users: if you use the library to make requests and read the results from a callback, there is likely nothing you need to change. each entry below says who is actually affected:
+
+### breaking changes
+
+- values starting with `@` are no longer converted to file uploads; a string like `@/etc/passwd` in user-supplied `POST` data would have uploaded that file from the server - passing a `CURLFile` object explicitly is now required instead *- affects you only if you upload files using the `@` syntax*
+- replaced trigger_error(E_USER_ERROR) with exceptions in the library, its docs and the examples (E_USER_ERROR is deprecated in PHP 8.4) *- affects you only if you rely on a custom error handler to catch these errors - wrap calls in try/catch instead; the errors were fatal before, so scripts that did not handle them behave the same*
+- response bodies are no longer passed through htmlentities() by default; if the fetched data is meant to be processed (JSON, XML, binary), encoding corrupts it *- affects you if you echo response bodies directly into HTML pages - pass true to the constructor to restore the previous behaviour*
+- restricted the default allowed protocols to HTTP/HTTPS (FTP/FTPS for ftp_download) to block file:// and other schemes *- affects you only if you request URLs with other schemes - allow them back with the CURLOPT_PROTOCOLS option*
+- nested arrays in POST data are now sent as PHP-style fields (a[b]=1) instead of a query string inside a single field *- affects you only if the receiving side was adapted to the old format*
+- `proxy` no longer forces tunnelling (CONNECT) for plain HTTP requests, which many proxies refuse; HTTPS requests are always tunnelled as before *- affects you only if your proxy setup relies on tunnelling plain HTTP requests - enable it back with the new 5th argument*
+- fixed bug when parsing headers where redirects produced an empty extra header block; entries in `headers['responses']` now shift down by one per redirect *- affects you only if you access `headers['responses']` by numeric index for redirected requests*
+- the minimum required PHP version is now 5.4 *- affects you only if you run PHP 5.3, released in 2009*
+
+### other fixes and improvements
+
+- fixed per-request options permanently overwriting instance options and leaking into subsequent requests
+- fixed cache key ignoring instance-level options, allowing cached responses to be shared between requests made with different credentials (existing cache files will not be reused and will expire on their own)
+- fixed bug where failed requests were also being cached
+- fixed bug with request body being dropped for PUT/PATCH/DELETE when CURLOPT_POSTFIELDS is given in per-request options
+- fixed bug with get() method appending query string data with a second "?" when the URL already had a query string
+- fixed bug with scrape() method returning NULL when called while queue mode was active
+- fixed bug with requests being silently dropped (or looping forever with pause_interval) when threads was set to 0 or less
+- fixed a few bugs with downloads: file was still empty inside callback, URLs without a path crashed, encoded file names were not decoded
+- fixed bug when parsing headers where headers without whitespace after the colon were dropped
+- fixed the `body` property of the result object being null instead of an empty string for downloads
+- a failure on a cURL multi handle now throws an exception instead of silently dropping all pending requests
+- hardened result caching via restricted unserialize, writing cache files atomically, treating corrupt cache files as misses
+- cache files are now created with 0644 permissions by default (was 0755) and a cookie file created by the library is readable by its owner only
+- the `response` property of the result object now also contains cURL's human readable error message and unknown cURL result codes no longer trigger a warning
+- replaced the randomized Internet Explorer 9/10 user agent with a fixed, current Chrome user agent
+- we're now letting libcurl advertise all the content encodings it supports instead of hard-coding gzip and deflate
+- performance improvements: faster matching of finished requests on PHP 8, and connections are now reused across all requests made through the same instance (including between batches when pause_interval is used)
+
 ## version 1.7.0 (January 30, 2025)
 
 - fixed [#54](https://github.com/stefangabos/Zebra_cURL/pull/54) about `CURLOPT_BINARYTRANSFER` being depreacted starting with PHP 8.4; thanks [Alisson Linneker](https://github.com/alissonlinneker) for reporting!
