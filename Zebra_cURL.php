@@ -2606,9 +2606,9 @@ class Zebra_cURL {
 
         $options = $this->_get_request_options($request);
 
-        // remove empty values and values that cannot be part of the key (the file handle used for downloads)
+        // remove empty values and values that cannot be part of the key (file handles, callbacks such as CURLOPT_PROGRESSFUNCTION)
         foreach ($options as $key => $value)
-            if (is_null($value) || $value === '' || is_resource($value)) unset($options[$key]);
+            if (is_null($value) || $value === '' || is_resource($value) || $value instanceof Closure) unset($options[$key]);
 
         // callback, arguments, the file name/handle used for downloads and the cache file name itself are not part of the key
         $request = array_diff_key($request, array('callback' => '', 'arguments' => '', 'file_name' => '', 'file_handler' => '', 'cache_file' => ''));
