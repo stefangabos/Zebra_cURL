@@ -65,7 +65,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Version:</h4>
 <ul>
-<li>1.6.4 (last revision: December 13, 2024)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
+<li>2.0.0 (last revision: August 24, 2026)<br>See <a href="https://github.com/stefangabos/Zebra_cURL/blob/master/CHANGELOG.md" class="projects-homepage">CHANGELOG</a></li>
 </ul>
 <h4>License:</h4>
 <ul>
@@ -73,7 +73,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <h4>Copyright:</h4>
 <ul>
-<li>© 2013 - 2024 Stefan Gabos</li>
+<li>© 2013 - 2026 Stefan Gabos</li>
 </ul>
 <div id="top" class="doc_toc">
 <div class="left">
@@ -89,6 +89,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 </ul>
 <ul>
 <li><a href="#method__construct">__construct</a></li>
+<li><a href="#method__destruct">__destruct</a></li>
 <li><a href="#methodcache">cache</a></li>
 <li><a href="#methodcookies">cookies</a></li>
 <li><a href="#methoddelete">delete</a></li>
@@ -103,7 +104,6 @@ I have a few other projects that you might be interested in — <a href="https:/
 <li><a href="#methodproxy">proxy</a></li>
 <li><a href="#methodput">put</a></li>
 <li><a href="#methodqueue">queue</a></li>
-<li><a href="#methodscrap">scrap</a></li>
 <li><a href="#methodscrape">scrape</a></li>
 <li><a href="#methodssl">ssl</a></li>
 <li><a href="#methodstart">start</a></li>
@@ -132,7 +132,7 @@ I have a few other projects that you might be interested in — <a href="https:/
 <p>The number of parallel, asynchronous requests to be processed by the library, at once.</p>
 <p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;process&nbsp;30&nbsp;simultaneous&nbsp;requests&nbsp;at&nbsp;once</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a>&nbsp;</span>=&nbsp;<span class="src-num">30</span><span class="src-sym">;</span></div></li>
-</ol><p>Note that unless <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> is set to a value greater than <code>0</code>, the library will process a constant   number of requests, at all times; it is doing this by starting a new request as soon as another one finishes.</p><p>If <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> is set to a value greater than <code>0</code>, the library will process as many requests as set   by the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property and then wait for <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> seconds before processing the next   batch of requests.</p><p>Default is <code>10</code></p>
+</ol><p>Note that unless <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> is set to a value greater than <code>0</code>, the library will process a constant   number of requests, at all times; it is doing this by starting a new request as soon as another one finishes.</p><p>If <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> is set to a value greater than <code>0</code>, the library will process as many requests as set   by the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property and then wait for <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a> seconds before processing the next   batch of requests.</p><p>Values lower than <code>1</code> are treated as <code>1</code>.</p><p>Default is <code>10</code></p>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
@@ -147,7 +147,7 @@ void
 <span class="src-key">boolean</span>
 <span class="src-var">$htmlentities</span>
 =
-<span class="src-key">true</span>
+<span class="src-key">false</span>
 ]
 ) 
 </p>
@@ -160,16 +160,27 @@ Netscape format, or just plain HTTP-style headers dumped into a file. if the
 name is an empty string, no cookies are loaded, but cookie handling is still
 enabled<br>
 default: <code>an empty string</code></li></ul> <ul><li><code>CURLOPT_CONNECTTIMEOUT</code>    -   the number of seconds to wait while trying to connect<br>
-default: <code>10</code> (use <code>0</code> to wait indefinitely)</li></ul> <ul><li><code>CURLOPT_ENCODING</code>          -   the contents of the &quot;Accept-Encoding: &quot; header. this enables decoding of the
-response. supported encodings are <em>identity</em>, <em>deflate</em>, and <em>gzip</em>. if an
-empty string is set, a header containing all supported encoding types is sent<br>
-default: <code>gzip,deflate</code></li></ul> <ul><li><code>CURLOPT_FOLLOWLOCATION</code>    -   TRUE to follow any <em>&quot;Location:&quot;</em> header that the server sends as part of the
+default: <code>10</code> (use <code>0</code> to wait indefinitely)</li></ul> <ul><li><code>CURLOPT_ENCODING</code>          -   the contents of the &quot;Accept-Encoding: &quot; header. this enables automatic decoding
+of the response. an empty string lets libcurl advertise every encoding it
+was built with (<em>gzip</em>, <em>deflate</em>, and, depending on the build, <em>br</em> and
+<em>zstd</em>), so the most efficient one supported by both ends gets used<br>
+default: <code>an empty string</code></li></ul> <ul><li><code>CURLOPT_FOLLOWLOCATION</code>    -   TRUE to follow any <em>&quot;Location:&quot;</em> header that the server sends as part of the
 HTTP header (note this is recursive, PHP will follow as many <em>&quot;Location:&quot;</em>
-headers that it is sent, unless <code>CURLOPT_MAXREDIRS</code> is set - see below)<br>
+headers that it is sent, unless <code>CURLOPT_MAXREDIRS</code> is set - see below).<br>
+because redirects are followed by default, the result of a request is that
+of the <em>final</em> URL; the URL the request was made to is available as
+<code>info['original_url']</code>, the final one as <code>info['url']</code>, and the headers of
+each hop in <code>headers['responses']</code>. set this to <code>FALSE</code> through the
+<a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method to get the redirect response itself instead<br>
 default: <code>TRUE</code></li></ul> <ul><li><code>CURLOPT_HEADER</code>            -   TRUE to include the header in the output<br>
 default: <code>TRUE</code></li></ul> <ul><li><code>CURLOPT_MAXREDIRS</code>         -   the maximum amount of HTTP redirections to follow. use this option alongside
 <code>CURLOPT_FOLLOWLOCATION</code> - see above<br>
-default: <code>50</code></li></ul> <ul><li><code>CURLOPT_RETURNTRANSFER</code>    -   TRUE to return the transfer's body as a string instead of outputting it
+default: <code>50</code></li></ul> <ul><li><code>CURLOPT_PROTOCOLS</code>         -   the protocols libcurl is allowed to use for the URLs given to the library.
+any other scheme (<code>file://</code>, <code>gopher://</code>, <code>dict://</code>, etc.) is refused, which
+matters when URLs come from user input. <a href="../Zebra_cURL/Zebra_cURL.html#methodftp_download">ftp_download</a> adds <code>FTP</code> and
+<code>FTPS</code> for its own requests<br>
+default: <code>CURLPROTO_HTTP | CURLPROTO_HTTPS</code></li></ul> <ul><li><code>CURLOPT_REDIR_PROTOCOLS</code>   -   the protocols libcurl is allowed to follow redirects to<br>
+default: <code>CURLPROTO_HTTP | CURLPROTO_HTTPS</code></li></ul> <ul><li><code>CURLOPT_RETURNTRANSFER</code>    -   TRUE to return the transfer's body as a string instead of outputting it
 directly<br>
 default: <code>TRUE</code></li></ul> <ul><li><code>CURLOPT_SSL_VERIFYHOST</code>    -   1 to check the existence of a common name in the SSL peer certificate. 2 to
 check the existence of a common name and also verify that it matches the
@@ -178,17 +189,35 @@ see the <a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a> method for mor
 default: <code>TRUE</code></li></ul> <ul><li><code>CURLOPT_SSL_VERIFYPEER</code>    -   FALSE to stop cURL from verifying the peer's certificate<br>
 see the <a href="../Zebra_cURL/Zebra_cURL.html#methodssl">ssl</a> method for more info<br>
 default: <code>TRUE</code></li></ul> <ul><li><code>CURLOPT_TIMEOUT</code>           -   the maximum number of seconds to allow cURL functions to execute<br>
-default: <code>10</code></li></ul> <ul><li><code>CURLOPT_USERAGENT</code>         -   a (slightly) random user agent (Internet Explorer 9 or 10, on Windows Vista,
-7 or 8, with other extra strings). Some web services will not respond unless
-a valid user-agent string is provided</li></ul>
+default: <code>10</code></li></ul> <ul><li><code>CURLOPT_USERAGENT</code>         -   the user agent string of a current Chrome browser on Windows, as some web
+services will not respond unless a browser-like user-agent string is provided;
+set your own through the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method if a different one is needed</li></ul>
 <h5>Arguments</h5>
 <table>
 <tr>
 <td><em>boolean</em></td>
 <td><strong>$htmlentities</strong></td>
-<td><p><span class="optional">Optional</span> Instructs the script whether the response body returned by the                                       <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> and <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> methods should be run through PHP's                                       <a href="https://php.net/manual/en/function.htmlentities.php">htmlentities</a>                                       function.</p><p>Default is <code>TRUE</code></p></td>
+<td><p><span class="optional">Optional</span> Instructs the script whether the response body returned by the                                       <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a>, <a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a> and the other request methods should be run through                                       PHP's <a href="https://php.net/manual/en/function.htmlentities.php">htmlentities</a>                                       function. Useful when the body is to be output as-is in an HTML page; leave                                       it off when the response is meant to be processed (JSON, XML, binary, etc.)</p><p>Default is <code>FALSE</code></p></td>
 </tr>
 </table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cURL extension is not loaded</td>
+</tr>
+</table>
+<a href="#top" class="top">top</a>
+<div class="clear"></div>
+</div>
+<h4 id="method__destruct" class="method"><span><em>destructor</em></span> __destruct()</h4>
+<div class="doc_block">
+<p class="code">
+void
+<span class="src-var">__destruct</span>
+()
+</p>
+<p>Closes the multi handle, and with it any connections still open, when the object is destroyed.</p>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
@@ -219,7 +248,7 @@ void
 <span class="src-key">integer</span>
 <span class="src-var">$chmod</span>
 =
-<span class="src-num">0755</span>
+<span class="src-num">0644</span>
 ]
 ) 
 </p>
@@ -259,11 +288,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -272,7 +301,7 @@ void
 <tr>
 <td><em>mixed</em></td>
 <td><strong>$path</strong></td>
-<td><p>Path where cache files to be stored.</p><p>Setting this to <code>FALSE</code> will disable caching.</p><p><em>If set to a non-existing path, the library will try to create the folder                                   and will trigger an error if, for whatever reasons, it is unable to do so. If the                                   folder can be created, its permissions will be set to the value of the $chmod                                   argument.</em></p></td>
+<td><p>Path where cache files to be stored.</p><p>Setting this to <code>FALSE</code> will disable caching.</p><p><em>If set to a non-existing path, the library will try to create the folder                                   and will throw an exception if, for whatever reasons, it is unable to do so. If the                                   folder can be created, its permissions will be set to the value of the $chmod                                   argument plus the execute bit wherever the read bit is set (i.e. <code>0644</code> gives                                   <code>0755</code> for the folder), as folders need it to be traversable.</em></p></td>
 </tr>
 <tr>
 <td><em>integer</em></td>
@@ -287,7 +316,7 @@ void
 <tr>
 <td><em>integer</em></td>
 <td><strong>$chmod</strong></td>
-<td><p><span class="optional">Optional</span> The file system permissions to be set for newly created cache files.</p><p>I suggest using the value <code>0755</code> but, if you know what you are doing, here is how                                   you can calculate the permission levels:</p><ul><li>400 Owner Read</li><li>200 Owner Write</li><li>100 Owner Execute</li><li>40 Group Read</li><li>20 Group Write</li><li>10 Group Execute</li><li>4 Global Read</li><li>2 Global Write</li><li>1 Global Execute</li></ul><p>                                   Default is <code>0755</code>.</p></td>
+<td><p><span class="optional">Optional</span> The file system permissions to be set for newly created cache files.</p><p>I suggest using the value <code>0644</code> (or <code>0600</code> if cached responses are not meant                                   for other users of the system) but, if you know what you are doing, here is how                                   you can calculate the permission levels:</p><ul><li>400 Owner Read</li><li>200 Owner Write</li><li>100 Owner Execute</li><li>40 Group Read</li><li>20 Group Write</li><li>10 Group Execute</li><li>4 Global Read</li><li>2 Global Write</li><li>1 Global Execute</li></ul><p>                                   Default is <code>0644</code>.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -310,7 +339,14 @@ void
 <tr>
 <td><em>string</em></td>
 <td><strong>$path</strong></td>
-<td><p>The path to a file to save cookies to / retrieve cookies from.</p><p><em>If file does not exist the library will attempt to create it and, if it is unable to                               do so, it will trigger an error.</em></p></td>
+<td><p>The path to a file to save cookies to / retrieve cookies from.</p><p><em>If file does not exist the library will attempt to create it and, if it is unable to                               do so, it will throw an exception.</em></p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException    If the file does not exist and cannot be created</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -334,7 +370,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>DELETE</code> request to one or more URLs with optional POST data, and executes the callback   function specified by the <em>$callback</em> argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> = <code>DELETE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> is also unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> = <code>DELETE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -367,11 +403,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -392,7 +428,15 @@ void
 <table>
 <tr>
 <td><strong>since:</strong>&nbsp;&nbsp;</td>
-<td>1.3.3</td>
+<td><p>1.3.3</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -419,7 +463,7 @@ void
 ) 
 </p>
 <p>Downloads one or more files from one or more URLs, saves the downloaded files to the path specified by the <em>$path</em>   argument, and executes the callback function specified by the <em>$callback</em> argument for each and every request,   as soon as the request finishes.</p>
-<p><p class="highlight">If the path you are downloading from refers to a file, the file's original name will be preserved but, if       you are downloading a file generated by a script (i.e. https://foo.com/bar.php?w=1200&amp;h=800), the downloaded       file's name will be random generated. Refer to the downloaded file's name in the result's <code>info</code> attribute,       in the <code>downloaded_filename</code> section - see the example below.</p><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be set to <code>TRUE</code>.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p><p class="highlight">If the path you are downloading from refers to a file, the file's original name will be preserved but, if       you are downloading a file generated by a script (i.e. https://foo.com/bar.php?w=1200&amp;h=800) or the URL has       no file name in it (i.e. https://foo.com/), the downloaded file's name will be random generated. Refer to the       downloaded file's name in the result's <code>info</code> attribute, in the <code>downloaded_filename</code> section - see the       example below.</p><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be set to <code>TRUE</code>.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -453,11 +497,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'downloaded_filename'</span><span class="src-sym">]</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -492,12 +536,23 @@ void
 <tr>
 <td><em>string</em></td>
 <td><strong>$path</strong></td>
-<td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or the directory is not writable, the                                       library will trigger an error.</em></p></td>
+<td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or the directory is not writable, the                                       library will throw an exception.</em></p></td>
 </tr>
 <tr>
 <td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
-<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If a file cannot be created in <em>$path</em>, the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If <em>$path</em> is not a writable directory, a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -538,7 +593,7 @@ void
 ) 
 </p>
 <p>Works exactly like the <a href="../Zebra_cURL/Zebra_cURL.html#methoddownload">download</a> method but downloads are made from an FTP server.</p>
-<p>Downloads one or more files from an FTP server, to which the connection is made using the given <em>$username</em> and   <em>$password</em> arguments, saves the downloaded files (with their original name) to the path specified by the <em>$path</em>   argument, and executes the callback function specified by the <em>$callback</em> argument for each and every request,   as soon as the request finishes.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be set to <code>TRUE</code>.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>Downloads one or more files from an FTP server, to which the connection is made using the given <em>$username</em> and   <em>$password</em> arguments, saves the downloaded files (with their original name) to the path specified by the <em>$path</em>   argument, and executes the callback function specified by the <em>$callback</em> argument for each and every request,   as soon as the request finishes.</p><p>Downloads are streamed (bytes downloaded are directly written to disk) removing the unnecessary strain from your   server of reading files into memory first, and then writing them to disk.</p><p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_PROTOCOLS</code> = <code>CURLPROTO_FTP | CURLPROTO_FTPS</code></li><li><code>CURLOPT_REDIR_PROTOCOLS</code> = <code>CURLPROTO_FTP | CURLPROTO_FTPS</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_NOBODY</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be set to <code>TRUE</code>.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p class="highlight">If you are downloading multiple files with the same name the later ones will overwrite the previous ones.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -571,11 +626,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
@@ -632,7 +687,7 @@ void
 <tr>
 <td><em>string</em></td>
 <td><strong>$path</strong></td>
-<td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or is not writable, the library will                                       trigger an error.</em></p></td>
+<td><p>The path to where to save the file(s) to.</p><p><em>If path is not pointing to a directory or is not writable, the library will                                       throw an exception.</em></p></td>
 </tr>
 <tr>
 <td><em>string</em></td>
@@ -647,7 +702,18 @@ void
 <tr>
 <td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
-<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If a file cannot be created in <em>$path</em>, the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If <em>$path</em> is not a writable directory, a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -671,7 +737,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>GET</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -706,11 +772,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -762,7 +828,7 @@ to <code>0</code> or <code>FALSE</code> through the <a href="../Zebra_cURL/Zebra
 will be an empty string</li></ul></li></ul><ul><li class="secondary"><ul><li><code>responses</code> an empty string as it is not available for
 this method</li></ul></li></ul><ul><li><code>body</code>      -   the response of the request (the content of the page at
 the URL).<br><br>
-<div class="highlight">Unless disabled via the <a href="../Zebra_cURL/Zebra_cURL.html#method__construct">constructor</a>,
+<div class="highlight">If enabled via the <a href="../Zebra_cURL/Zebra_cURL.html#method__construct">constructor</a>,
 all applicable characters will be converted to HTML entities
 via PHP's <a href="https://php.net/manual/en/function.htmlentities.php">htmlentities</a>
 function, so remember to use PHP's
@@ -771,7 +837,20 @@ function in case you need the decoded values</div><br>
 if explicitly disabled by setting <code>CURLOPT_NOBODY</code> to <code>0</code>
 or <code>FALSE</code> through the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method, this will
 be an empty string</li></ul> <ul><li><code>response</code>  -   the <a href="https://www.php.net/manual/en/function.curl-errno.php#103128">response</a>
-given by the cURL library as an array with 2 items:<br></li></ul>                                                           <ul><li class="secondary"><ul><li>the textual representation of the result's code (i.e. <code>CURLE_OK</code>)</li></ul></li></ul>                                                           <ul><li class="secondary"><ul><li>the result's code (i.e. <code>0</code>)</li></ul></li></ul><p class="highlight">If the callback function returns FALSE  while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, the library will not cache       the respective request, making it easy to retry failed requests without having to clear all cache.</p></td>
+given by the cURL library as an array with 3 items:<br></li></ul>                                                           <ul><li class="secondary"><ul><li>the textual representation of the result's code (i.e. <code>CURLE_OK</code>)</li></ul></li></ul>                                                           <ul><li class="secondary"><ul><li>the result's code (i.e. <code>0</code>)</li></ul></li></ul>                                                           <ul><li class="secondary"><ul><li>the human readable error message as given by cURL
+(i.e. <code>Could not resolve host: example.invalid</code>), or an
+empty string if there was no error</li></ul></li></ul><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -795,7 +874,7 @@ void
 ) 
 </p>
 <p>Works exactly like the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method, the only difference being that this method will only return the   headers, without body.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>TRUE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_HTTPGET</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>TRUE</code></li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_FILE</code></li><li><code>CURLOPT_POST</code></li><li><code>CURLOPT_POSTFIELDS</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;process&nbsp;given&nbsp;URLs</span></div></li>
@@ -816,11 +895,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -834,7 +913,18 @@ void
 <tr>
 <td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
-<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -897,11 +987,11 @@ CURLAUTH_ANY
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol><p>If you have to unset previously set values use</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodhttp_authentication">http_authentication</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
@@ -993,7 +1083,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>PATCH</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PATCH</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PATCH</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -1025,11 +1115,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -1050,7 +1140,15 @@ void
 <table>
 <tr>
 <td><strong>since:</strong>&nbsp;&nbsp;</td>
-<td>1.6.0</td>
+<td><p>1.6.0</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -1074,7 +1172,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>POST</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>TRUE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> = <code>TRUE</code></li><li><code>CURLOPT_HEADER</code> = <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> = <code>FALSE</code></li><li><code>CURLOPT_POST</code> = <code>TRUE</code></li><li><code>CURLOPT_POSTFIELDS</code> = the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_CUSTOMREQUEST</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -1106,18 +1204,18 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-</ol><p>When uploading a file, we need to prefix the file name with <code>@</code></p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
+</ol><p>When uploading a file, pass a <a href="https://php.net/manual/en/class.curlfile.php">CURLFile</a> object as the value</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'https://www.somewebsite.com'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_3'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'@absolute/path/to/file.ext'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_3'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">CURLFile</span><span class="src-sym">(</span><span class="src-str">'/absolute/path/to/file.ext'</span><span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'mycallback'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
 <h5>Arguments</h5>
@@ -1177,17 +1275,28 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
-</ol><p>To post a file, prepend the filename with <code>@</code> and use the full server path.</p><p>For PHP 5.5+ files are uploaded using <a href="https://php.net/manual/ro/class.curlfile.php">CURLFile</a>                                       and <code><a href="https://wiki.php.net/rfc/curl-file-upload">CURLOPT_SAFE_UPLOAD</a></code>                                       will be set to <code>TRUE</code>.</p><p>For lower PHP versions, files will be uploaded the <em>old</em> way and the file's                                       mime type should be explicitly specified by following the filename with the                                       type in the format <code>';type=mimetype'</code> as most of the times cURL will send the                                       wrong mime type...</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'https://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+</ol><p>To post a file, pass a <a href="https://php.net/manual/en/class.curlfile.php">CURLFile</a>                                       object as the value. Values are never interpreted as file paths, so a string                                       starting with <code>@</code> is sent as-is (<code><a href="https://wiki.php.net/rfc/curl-file-upload">CURLOPT_SAFE_UPLOAD</a></code>                                       is always <code>TRUE</code>).</p><ol class="code"><li><div class="src-line"><span class="src-var">$curl</span><span class="src-sym">-&gt;</span><a href="../Zebra_cURL/Zebra_cURL.html#methodpost">post</a><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'https://address.com'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_1'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;1'</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_2'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'value&nbsp;2'</span><span class="src-sym">,</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_3'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-str">'@absolute/path/to/file.ext'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'data_3'&nbsp;&nbsp;</span>=&gt;&nbsp;&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">CURLFile</span><span class="src-sym">(</span><span class="src-str">'/absolute/path/to/file.ext'</span><span class="src-sym">)</span><span class="src-sym">,</span></div></li>
 <li><div class="src-line"><span class="src-sym">)))</span><span class="src-sym">;</span></div></li>
 </ol><p class="highlight">If any data is sent, the &quot;Content-Type&quot; header will be set to                                           &quot;multipart/form-data&quot;</p></td>
 </tr>
 <tr>
 <td><em>mixed</em></td>
 <td><strong>$callback</strong></td>
-<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><p><span class="optional">Optional</span> Callback function to be called as soon as the request finishes.</p><p>Read full description of the argument at the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+</table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -1222,9 +1331,16 @@ void
 =
 <span class="src-str">''</span>
 ]
+, 
+[ 
+<span class="src-key">boolean</span>
+<span class="src-var">$tunnel</span>
+=
+<span class="src-key">false</span>
+]
 ) 
 </p>
-<p>Instructs the library to tunnel all requests through a proxy server.</p>
+<p>Instructs the library to make all requests through a proxy server.</p>
 <p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
@@ -1254,11 +1370,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -1267,7 +1383,7 @@ void
 <tr>
 <td><em>string</em></td>
 <td><strong>$proxy</strong></td>
-<td><p>The HTTP proxy to tunnel requests through.</p><p>Can be an URL or an IP address.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXY</code> to the desired value.</em></p><p>Setting this argument to <code>FALSE</code> will unset all the proxy-related options.</p></td>
+<td><p>The HTTP proxy to make requests through.</p><p>Can be an URL or an IP address.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                   <code>CURLOPT_PROXY</code> to the desired value.</em></p><p>Setting this argument to <code>FALSE</code> will unset all the proxy-related options.</p></td>
 </tr>
 <tr>
 <td><em>integer</em></td>
@@ -1283,6 +1399,11 @@ void
 <td><em>string</em></td>
 <td><strong>$password</strong></td>
 <td><p><span class="optional">Optional</span> The password to be used for the connection to the proxy (if required                                   by the proxy)</p><p>Default is <code>&quot;&quot;</code> (an empty string)</p><p><em>The username and the password can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method                                   and setting <code>CURLOPT_PROXYUSERPWD</code> to the desired value formatted like                                   <code>[username]:[password]</code>.</em></p></td>
+</tr>
+<tr>
+<td><em>boolean</em></td>
+<td><strong>$tunnel</strong></td>
+<td><p><span class="optional">Optional</span> Whether to tunnel <em>all</em> requests through the proxy using the HTTP                                   <code>CONNECT</code> method (<code>CURLOPT_HTTPPROXYTUNNEL</code>), making the proxy a blind relay.</p><p>HTTPS requests are always tunneled, regardless of this setting. For plain HTTP                                   requests the default is to let the proxy handle them as an HTTP proxy, because                                   many proxies refuse <code>CONNECT</code> to anything but port 443.</p><p>Default is <code>FALSE</code>.</p></td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -1306,7 +1427,7 @@ void
 ) 
 </p>
 <p>Performs an HTTP <code>PUT</code> request to one or more URLs and executes the callback function specified by the <em>$callback</em>   argument for each and every request, as soon as the request finishes.</p>
-<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PUT</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_BINARYTRANSFER</code></li><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p>   Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
+<p>This method will automatically set the following options:</p><p><ul><li><code>CURLINFO_HEADER_OUT</code> - <code>TRUE</code></li><li><code>CURLOPT_CUSTOMREQUEST</code> - <code>PUT</code></li><li><code>CURLOPT_HEADER</code> - <code>TRUE</code></li><li><code>CURLOPT_NOBODY</code> - <code>FALSE</code></li><li><code>CURLOPT_POST</code> - <code>FALSE</code></li><li><code>CURLOPT_POSTFIELDS</code> - the POST data</li></ul><p>   ...and will unset the following options:</p><p><ul><li><code>CURLOPT_HTTPGET</code></li><li><code>CURLOPT_FILE</code></li></ul><p class="highlight">For PHP &lt; 5.1.2 <code>CURLOPT_BINARYTRANSFER</code> will also be unset.<br>       For newer versions of PHP this option is not used as <a href="https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated">it has no effect and has been deprecated starting with PHP 8.4</a>.</p><p>Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every   request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,   is set through the <a href="../Zebra_cURL/Zebra_cURL.html#var$threads">threads</a> property. See also <a href="../Zebra_cURL/Zebra_cURL.html#var$pause_interval">pause_interval</a>.</p><p class="highlight">Because requests are done asynchronously, when initiating multiple requests at once, these may not finish in       the order in which they were initiated!</p><ol class="code"><li><div class="src-line"><span class="src-comm">//&nbsp;instantiate&nbsp;the&nbsp;class</span></div></li>
 <li><div class="src-line"><span class="src-var">$curl&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../Zebra_cURL/Zebra_cURL.html">Zebra_cURL</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-comm">//&nbsp;if&nbsp;making&nbsp;requests&nbsp;over&nbsp;HTTPS&nbsp;we&nbsp;need&nbsp;to&nbsp;load&nbsp;a&nbsp;CA&nbsp;bundle</span></div></li>
@@ -1338,11 +1459,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol>
@@ -1363,7 +1484,15 @@ void
 <table>
 <tr>
 <td><strong>since:</strong>&nbsp;&nbsp;</td>
-<td>1.3.3</td>
+<td><p>1.3.3</p><p class="highlight">If the callback function returns FALSE while <a href="../Zebra_cURL/Zebra_cURL.html#methodcache">caching</a> is enabled, or if cURL reported an error       for the request, the library will not cache the respective request, making it easy to retry failed requests       without having to clear all cache.</p></td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>RuntimeException            If the cache path is not writable or the cURL multi handle fails</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If a URL entry lacks the <code>url</code> key or a callback does not exist</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -1395,11 +1524,11 @@ void
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$result</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;show&nbsp;the&nbsp;server's&nbsp;response&nbsp;code</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'Server&nbsp;responded&nbsp;with&nbsp;code&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">info</span><span class="src-sym">[</span><span class="src-str">'http_code'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;something&nbsp;went&nbsp;wrong</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;($result&nbsp;still&nbsp;contains&nbsp;all&nbsp;data&nbsp;that&nbsp;could&nbsp;be&nbsp;gathered)</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><a href="http://www.php.net/trigger_error">trigger_error</a><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">,&nbsp;</span><span class="src-id">E_USER_ERROR</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span>throw&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Exception</span><span class="src-sym">(</span><span class="src-str">'cURL&nbsp;responded&nbsp;with:&nbsp;'&nbsp;</span>.&nbsp;<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">response</span><span class="src-sym">[</span><span class="src-num">0</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
 <li><div class="src-line"><span class="src-sym">}</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
@@ -1440,48 +1569,6 @@ void
 <tr>
 <td><strong>since:</strong>&nbsp;&nbsp;</td>
 <td>1.3.0</td>
-</tr>
-</table>
-<a href="#top" class="top">top</a>
-<div class="clear"></div>
-</div>
-<h4 id="methodscrap" class="method"><span><em>method</em></span> scrap()</h4>
-<div class="doc_block">
-<p class="code">
-mixed
-<span class="src-var">scrap</span>
-(
-<span class="src-key">mixed</span>
-<span class="src-var">$url</span>
-, 
-[ 
-<span class="src-key">boolean</span>
-<span class="src-var">$body_only</span>
-=
-<span class="src-key">true</span>
-]
-) 
-</p>
-<p>Same as the <a href="../Zebra_cURL/Zebra_cURL.html#methodscrape">scrape()</a> method but with incorrect name.</p>
-<p>Kept for backward compatibility purposes.</p>
-<h5>Arguments</h5>
-<table>
-<tr>
-<td><em>mixed</em></td>
-<td><strong>$url</strong></td>
-<td><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                       at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
-</tr>
-<tr>
-<td><em>boolean</em></td>
-<td><strong>$body_only</strong></td>
-<td><p><span class="optional">Optional</span> When set to <code>TRUE</code>, will instruct the method to return <em>only</em> the page's                                   content, without info, headers, responses, etc.</p><p>When set to <code>FALSE</code>, will instruct the method to return everything it can about                                   the scraped page, as an object with properties as described for the <em>$callback</em>                                   argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p>Default is <code>TRUE</code>.</p></td>
-</tr>
-</table>
-<h5>Tags</h5>
-<table>
-<tr>
-<td><strong>return:</strong>&nbsp;&nbsp;</td>
-<td>Returns the scraped page's content, when <em>$body_only</em> is set to <code>TRUE</code>, or an object with properties                   as described for the <em>$callback</em> argument of the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -1531,7 +1618,7 @@ mixed
 <tr>
 <td><em>mixed</em></td>
 <td><strong>$url</strong></td>
-<td><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                       at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p></td>
+<td><p>An URL to fetch.</p><p class="highlight">Note that this method only supports a single URL. For processing multiple URLs                                       at once, see the <a href="../Zebra_cURL/Zebra_cURL.html#methodget">get</a> method.</p><p class="highlight">The request is made immediately even if <a href="../Zebra_cURL/Zebra_cURL.html#methodqueue">queue</a> mode is active; requests                                       already in the queue are left untouched.</p></td>
 </tr>
 <tr>
 <td><em>boolean</em></td>
@@ -1548,6 +1635,10 @@ mixed
 <tr>
 <td><strong>since:</strong>&nbsp;&nbsp;</td>
 <td>1.3.3</td>
+</tr>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException    If <em>$url</em> is not a string</td>
 </tr>
 </table>
 <a href="#top" class="top">top</a>
@@ -1628,6 +1719,13 @@ of this option should be kept at <code>2</code>;</li></ul><p>                   
 <td><p><span class="optional">Optional</span> An absolute path to a directory that holds multiple CA                                           certificates. This only makes sense if <code>CURLOPT_SSL_VERIFYPEER</code> is set                                           to <code>TRUE</code>.</p><p>Default is <code>FALSE</code>.</p><p><em>This option can also be set using the <a href="../Zebra_cURL/Zebra_cURL.html#methodoption">option</a> method and setting                                           <code>CURLOPT_CAPATH</code> to the desired value.</em></p></td>
 </tr>
 </table>
+<h5>Tags</h5>
+<table>
+<tr>
+<td><strong>throws:</strong>&nbsp;&nbsp;</td>
+<td>InvalidArgumentException        If <em>$file</em> or <em>$path</em> do not exist</td>
+</tr>
+</table>
 <a href="#top" class="top">top</a>
 <div class="clear"></div>
 </div>
@@ -1655,7 +1753,7 @@ void
 </tr>
 </table>
 <div id="doc_footer">
-Documentation generated on <span>Thu, 30 January 2025</span>
+Documentation generated on <span>Mon, 24 August 2026</span>
 </div>
 </div>
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0301ZD47Q7"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0301ZD47Q7');</script></body>
