@@ -301,8 +301,8 @@ class Zebra_cURL {
      *
      *  -   `CURLOPT_PROTOCOLS`         -   the protocols libcurl is allowed to use for the URLs given to the library.
      *                                      any other scheme (`file://`, `gopher://`, `dict://`, etc.) is refused, which
-     *                                      matters when URLs come from user input. {@link ftp_download} adds `FTP` and
-     *                                      `FTPS` for its own requests<br>
+     *                                      matters when URLs come from user input. {@link ftp_download} also allows `FTP`
+     *                                      and `FTPS` for its own requests<br>
      *                                      default: `CURLPROTO_HTTP | CURLPROTO_HTTPS`
      *
      *  -   `CURLOPT_REDIR_PROTOCOLS`   -   the protocols libcurl is allowed to follow redirects to<br>
@@ -947,8 +947,8 @@ class Zebra_cURL {
      *  - `CURLINFO_HEADER_OUT` = `TRUE`
      *  - `CURLOPT_HEADER` = `TRUE`
      *  - `CURLOPT_FILE`
-     *  - `CURLOPT_PROTOCOLS` = `CURLPROTO_FTP | CURLPROTO_FTPS`
-     *  - `CURLOPT_REDIR_PROTOCOLS` = `CURLPROTO_FTP | CURLPROTO_FTPS`
+     *  - `CURLOPT_PROTOCOLS` = `CURLPROTO_FTP | CURLPROTO_FTPS | CURLPROTO_HTTP | CURLPROTO_HTTPS`
+     *  - `CURLOPT_REDIR_PROTOCOLS` = `CURLPROTO_FTP | CURLPROTO_FTPS | CURLPROTO_HTTP | CURLPROTO_HTTPS`
      *
      *  ...and will unset the following options:
      *
@@ -1126,8 +1126,8 @@ class Zebra_cURL {
                         CURLINFO_HEADER_OUT     =>  1,
                         CURLOPT_HEADER          =>  0,
                         CURLOPT_USERPWD         =>  $username != '' ? $username . ':' . $password : null,
-                        CURLOPT_PROTOCOLS       =>  CURLPROTO_FTP | CURLPROTO_FTPS,
-                        CURLOPT_REDIR_PROTOCOLS =>  CURLPROTO_FTP | CURLPROTO_FTPS,
+                        CURLOPT_PROTOCOLS       =>  CURLPROTO_FTP | CURLPROTO_FTPS | CURLPROTO_HTTP | CURLPROTO_HTTPS,
+                        CURLOPT_REDIR_PROTOCOLS =>  CURLPROTO_FTP | CURLPROTO_FTPS | CURLPROTO_HTTP | CURLPROTO_HTTPS,
                         CURLOPT_CUSTOMREQUEST   =>  null,
                         CURLOPT_HTTPGET         =>  null,
                         CURLOPT_NOBODY          =>  null,
