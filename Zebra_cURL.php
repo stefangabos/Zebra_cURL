@@ -12,8 +12,8 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.7.0 (last revision: January 30, 2025)
- *  @copyright  © 2013 - 2025 Stefan Gabos
+ *  @version    2.0.0 (last revision: August 24, 2026)
+ *  @copyright  © 2013 - 2026 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
