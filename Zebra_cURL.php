@@ -2591,6 +2591,37 @@ class Zebra_cURL {
     }
 
     /**
+     *  Detaches and closes the cURL handles of all the currently running requests, closes the files they were
+     *  downloading to, and resets the list of running requests.
+     *
+     *  @return void
+     *
+     *  @access private
+     */
+    private function _discard_running_requests() {
+
+        // iterate through the requests that are currently running
+        foreach ($this->_running_map as $resource_number => $handle) {
+
+            // detach the request's handle from the multi handle and close it
+            curl_multi_remove_handle($this->_multi_handle, $handle);
+            curl_close($handle);
+
+            // get the request associated with the handle
+            $request = $this->_running[$resource_number];
+
+            // if the request was a download, close the file it was streaming to
+            if (isset($request['download']) && $request['download'] && is_resource($request['file_handler']))
+                fclose($request['file_handler']);
+
+        }
+
+        // forget about running requests and about requests still waiting in the queue
+        $this->_running = $this->_running_map = array();
+
+    }
+
+    /**
      *  Returns the cache file name associated with a specific request.
      *
      *  The name is derived from the URL and from the full set of cURL options the request is made with - instance-level
@@ -2876,6 +2907,10 @@ class Zebra_cURL {
      */
     private function _process() {
 
+        // requests left running by a previous call that was aborted by an exception (thrown from a callback, for instance)
+        // would otherwise be picked up by this call, with stale state, so we discard them
+        $this->_discard_running_requests();
+
         // if caching is enabled but path doesn't exist, or is not writable
         if ($this->cache !== false && (!is_dir($this->cache['path']) || !is_writable($this->cache['path']))) {
 
@@ -2970,24 +3005,9 @@ class Zebra_cURL {
                 // on a multi-handle error (out of memory, internal error, etc.) release everything and bail out
                 if ($status != CURLM_OK) {
 
-                    // iterate through the requests that are currently running
-                    foreach ($this->_running_map as $resource_number => $handle) {
-
-                        // detach the request's handle from the multi handle and close it
-                        curl_multi_remove_handle($this->_multi_handle, $handle);
-                        curl_close($handle);
-
-                        // get the request associated with the handle
-                        $request = $this->_running[$resource_number];
-
-                        // if the request was a download, close the file it was streaming to
-                        if (isset($request['download']) && $request['download'] && is_resource($request['file_handler']))
-                            fclose($request['file_handler']);
-
-                    }
-
-                    // forget about running requests and about requests still waiting in the queue
-                    $this->_running = $this->_running_map = $this->_requests = array();
+                    // release the running requests and forget about the requests still waiting in the queue
+                    $this->_discard_running_requests();
+                    $this->_requests = array();
 
                     // close the multi curl handle
                     curl_multi_close($this->_multi_handle);
