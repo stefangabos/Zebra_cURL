@@ -16,6 +16,8 @@ For maximum efficiency downloads are streamed (bytes downloaded are directly wri
 
 The code is heavily commented and generates no warnings/errors/notices when PHP's error reporting level is set to [E_ALL](https://www.php.net/manual/en/function.error-reporting.php).
 
+> **Upgrading from 1.x?** Version 2.0.0 contains breaking changes - see the [CHANGELOG](CHANGELOG.md) for the list and who is actually affected.
+
 ## Features
 
 - supports GET (with caching), POST, HEADER, PUT, PATCH and DELETE requests, basic downloads as well as downloads from FTP servers, HTTP Authentication, and requests through proxy servers
@@ -71,7 +73,8 @@ require_once 'path/to/Zebra_cURL.php';
 require 'path/to/Zebra_cURL.php';
 
 // instantiate the Zebra cURL class
-$curl = new Zebra_cURL();
+// (TRUE so that the scraped page's HTML is shown as source, run through htmlentities(), rather than rendered by the browser)
+$curl = new Zebra_cURL(true);
 
 // cache results 3600 seconds
 $curl->cache('path/to/cache', 3600);
@@ -148,11 +151,11 @@ $curl->get(array_keys($feeds), function($result) use ($feeds) {
                 }
 
         // show the server's response code
-        } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+        } else throw new Exception('Server responded with code ' . $result->info['http_code']);
 
     // something went wrong
     // ($result still contains all data that could be gathered)
-    } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+    } else throw new Exception('cURL responded with: ' . $result->response[0]);
 
 });
 ```
@@ -198,6 +201,6 @@ $curl = new Zebra_cURL();
 // you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
-// download one of the official twitter image
-$curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
+// download this project's logo
+$curl->download('https://raw.githubusercontent.com/stefangabos/zebrajs/master/docs/images/logo.png', 'cache');
 ```
