@@ -5,10 +5,10 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // make sure cache folder exists and is writable
-if (!is_dir('cache') || !is_writable('cache')) trigger_error('the "cache" folder must be present and be writable in the "examples" folder', E_USER_ERROR);
+if (!is_dir('cache') || !is_writable('cache')) throw new Exception('the "cache" folder must be present and be writable in the "examples" folder');
 
 // make sure CA bundle exists
-elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not found', E_USER_ERROR);
+elseif (!file_exists('cacert.pem')) throw new Exception('"cacert.pem" file was not found');
 
 // include the library
 require '../Zebra_cURL.php';
@@ -21,7 +21,7 @@ $curl = new Zebra_cURL();
 // you can always update this bundle from https://curl.se/docs/caextract.html
 $curl->ssl(true, 2, __DIR__ . '/cacert.pem');
 
-// download one of the official twitter image
-$curl->download('https://abs.twimg.com/a/1362101114/images/resources/twitter-bird-callout.png', 'cache');
+// download this project's logo
+$curl->download('https://raw.githubusercontent.com/stefangabos/zebrajs/master/docs/images/logo.png', 'cache');
 
-echo 'File downloaded to the "cache" folder.<br>Click <a href="cache/twitter-bird-callout.png">here</a> to open it.';
+echo 'File downloaded to the "cache" folder.<br>Click <a href="cache/logo.png">here</a> to open it.';

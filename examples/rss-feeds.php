@@ -55,10 +55,10 @@
     error_reporting(E_ALL);
 
     // make sure cache folder exists and is writable
-    if (!is_dir('cache') || !is_writable('cache')) trigger_error('the "cache" folder must be present and be writable in the "examples" folder', E_USER_ERROR);
+    if (!is_dir('cache') || !is_writable('cache')) throw new Exception('the "cache" folder must be present and be writable in the "examples" folder');
 
     // make sure CA bundle exists
-    elseif (!file_exists('cacert.pem')) trigger_error('"cacert.pem" file was not found', E_USER_ERROR);
+    elseif (!file_exists('cacert.pem')) throw new Exception('"cacert.pem" file was not found');
 
     // include the library
     require '../Zebra_cURL.php';
@@ -122,11 +122,11 @@
                     }
 
             // show the server's response code
-            } else trigger_error('Server responded with code ' . $result->info['http_code'], E_USER_ERROR);
+            } else throw new Exception('Server responded with code ' . $result->info['http_code']);
 
         // something went wrong
         // ($result still contains all data that could be gathered)
-        } else trigger_error('cURL responded with: ' . $result->response[0], E_USER_ERROR);
+        } else throw new Exception('cURL responded with: ' . $result->response[0]);
 
     });
 
